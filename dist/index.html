@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="css/stylesheet.css">
+<link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Dosis" rel="stylesheet">
+
+
+
+<head>
+    <title>In Progress...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript">
+        var myVar;
+                
+        function startLoadScreen() {
+            myVar = setTimeout(showPage, 3000);
+        }
+        
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("scroll-wrapper").style.display = "block";
+            document.getElementById("greeting-message").style.display = "block";
+        }
+    </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+</head>
+
+
+<body onload="startLoadScreen()">
+    <div id="loader" class="loader"></div>
+    
+    <div id="scroll-wrapper">
+        <div id="page1" style="height:100vh;width:100vw;">
+            <div id="greeting-message" style="display:none;">
+                <h1>BRENNEN GREEN</h1>
+                <div class="msg">
+                        <p>passionate nerd and student learning</p> 
+                        <p>how to take ideas from vision to reality with
+                                    the power of computers.</p>        
+                </div>
+                <a href="#page2" class="navbutton"><span>About Me</span></a>
+                <a href="#page3" class="navbutton"><span>Projects</span></a>
+                <a href="#page4"  class="navbutton"><span>Resume</span></a>
+            </div>
+        </div>
+    
+        <div id="page2" style="width:100vw;margin:0;">
+            <div class="aboutme-container">
+                <h2>NICE TO MEET YOU...</h2>
+                <div>
+                    <p>
+                        My name is Brennen and I am a computer science student at the University of Kentucky. I started out programming making games for my friends to play when I was in 7th grade.
+                        Since then this craft has became my passion and hopefully soon my profession. Currently, I spend most my time tinkering with electronics
+                        and learning more about web apps. However, I am open to all types of learning and make it my goal every day to learn something new. I hope you enjoy
+                        this website I put together and please reach out for more information!
+                    </p>
+                </div>
+                <h3>I'm a Wildcat...</h3>
+                <div>
+                    <table>
+                    <tbody>
+                        <tr>
+                            <td><img src="media/uk.svg" style="height: 3em; width: auto; margin: 1em"></td>
+                            <td>
+                                <span style="float:left;"><b>University of Kentucky</b></span>
+                                <br>
+                                B.S. Computer Science
+                                <br>
+                                Class of 2023 (expected)
+
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>table-container
+                </div>
+
+                <h3>Work Experience:</h3>
+                <div id="facts" class="facts">
+                    <table>
+                    <tbody>
+                        <tr>
+                            <td><img src="media/uk.svg" style="height: 3em; width: auto; margin: 1em"></td>
+                            <td>
+                                <span style="float:left;"><b>University of Kentucky Cancer Center,</b> Bioinformatics Research Assistant</span>
+                                <span style="float: right; font-size: 0.8em; margin: 0">(August 2018 - December 2018)</span>
+                                <br>
+                                While working as a member of the lab I got to work within a
+                                <b>Linux</b>
+                                work environment which allowed me to learn how to harness the power of unix-based operating systems.
+                                My main role on the team was to focus on learning as much about programming as I could through the use of
+                                weekly code critiques and programming projects based around bioinformatics. The projects I contributed were
+                                written entirely in
+                                <b>Python</b>
+                                but also required me to read over and comprehend codebases written in other languages such as
+                                <b>Java.</b>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                <div id="facts" class="facts">
+                    <table>
+                    <tbody>
+                        <tr>
+                            <td><img src="media/cf.svg" style="height: 3em; width: auto; margin: 1em"></td>
+                            <td>
+                                <span style="float:left;"><b>Change Force Corporation,</b> Web Developer</span>
+                                <span style="float: right; font-size: 0.8em; margin: 0">(October 2017 - May 2018)</span>
+                                <br>
+                                As the sole web developer on our small team my job was to role out a fully functional first website
+                                for the non-profit using mostly
+                                <b>Wordpress</b>
+                                This position also allowed me to tinker with
+                                <b>PHP</b>
+                                for the first time and also <b>CRM</b> tools and <b>SQL</b> the most beneficial part of this position
+                                was being able to learn how to communicate technical information with a non-technical team.
+
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="background-color:#1db954; height:100%;">
+                <div id=music-button>
+                    <h3 style="color: white;margin:0;padding:0;">Check out what I listen to while I code!</h3>
+                    <iframe src="https://open.spotify.com/embed/user/brennengreen-us/playlist/3uWxhMxrSwY4t3ei92gOCo"
+                     width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>                
+                </div>
+            </div>
+        </div>
+
+        <div id="page3" style="padding-bottom:10vh;background-color: #1a1818;color:white;">
+            <div>
+                <h2 style="padding-top:10vh;margin-left:10vw;margin-right:10vw;">My Projects</h2>
+                <div id="table-container" style="margin-left:10vw;margin-right:10vw;background-color:white;"></div>
+            </div>
+            
+        </div>
+
+        <div id="page4" style="height: 100vh;">
+            <div id="resume" style="height:100%">
+                <h2 style="padding-top:2.5vh;margin-left:25vw;margin-right:25vw;">Resume <span style="font-size: 1rem">(updated Dec. 18 2018)</span></h2>
+                <object  height="100%" width="50%" type="application/pdf" data="media/resume.pdf"style="padding-top:10vh;margin-left:25vw;margin-right:25vw;">
+                    <p>Insert your error message here, if the PDF cannot be displayed.</p>
+                </object> 
+            </div>
+            
+            <a id="resume-fallback" href="media/resume.pdf" style="padding-top:10vh;margin-left:12.5vw;margin-right:12.5vw;"><h2>We could not embedd my resume on your device, you may download it here!</h2></a>       
+        </div>
+
+    </div>
+    
+
+
+    <footer>
+        <p>Email me at: brennengreen@outlook.com</p>
+    </footer>
+
+    <!-- Load our React component. -->
+    <script  src="./main.js"></script>
+</body>

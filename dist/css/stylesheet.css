@@ -1,0 +1,87 @@
+@media screen and (min-width: 600px) {
+    #greeting-message .navbutton {display: inline}
+    #page2 img {display: inline;}
+    #page2 .aboutme-container {padding:0;margin-bottom:0; margin-top:2em;margin-top:1em; margin-left: 25vw;margin-right: 25vw;}
+    #page2 #music-button{margin-left:25vw;margin-right:25vw;}
+    #resume {display:block}
+    #resume-fallback {display: none}
+}
+@media screen and (min-width: 0) and (max-width: 599px) {
+    #greeting-message .navbutton {display: none}
+    #page2 img {display: none;}
+    #page2 .aboutme-container {padding:0; margin-bottom:0; margin-top:2em;margin-top:1em; margin-left: 5vw;margin-right: 5vw;}
+    #resume {display:none}
+    #resume-fallback {display: block}
+}
+
+
+html {scroll-behavior: smooth;margin: 0;padding: 0;}
+body { margin: 0 auto;padding: 0;background-color: white;font-family: 'Dosis', sans-serif;}
+h1 {font-size: 4vh;font-family: 'Do Hyeon', sans-serif;margin: 0}
+h2 {font-size: 3vh;font-family: 'Do Hyeon', sans-serif;margin: 0}
+p {font-size: 2vh;font-family: 'Dosis', sans-serif;margin: 0}
+
+
+.loader {border: 16px solid white;border-top: 16px solid #707070;border-left: 16px solid #707070;border-right: 16px solid #707070;
+    border-radius: 50%;position: absolute;left: 50%;top: 50%;z-index: 1;width: 120px;height: 120px;margin: -75px 0 0 -75px;
+    -webkit-animation: spin 2s linear infinite;animation: spin 2s linear infinite;}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }     
+}
+@keyframes spin {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}
+
+
+#scroll-wrapper {margin: 0; padding: 0;display: none;width:100vw;}
+
+
+#page1 {background-image: url("../media/cv100718.jpg");background-size: cover; }
+#greeting-message {
+    color: gainsboro;
+    text-align: center;
+    margin: 0;
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);-webkit-animation-name: animatebottom;-webkit-animation-duration: 1s;animation-name: animatebottom;animation-duration: 1s;
+}
+#greeting-message .msg {margin: 0;padding-bottom: 1.25rem;}
+#greeting-message h1 {letter-spacing: .5em;margin:0;padding:0;}
+#greeting-message p {margin: 0;padding-bottom: 0;}
+
+
+@-webkit-keyframes animatebottom {
+    from {top: 0%; opacity: 0;}
+    to {top: 50vh; opacity: 1;}
+}
+@keyframes animatebottom {
+    from {top: 0%; opacity: 0;}
+    to {top: 50vh; opacity: 1;}
+}
+
+
+#greeting-message .navbutton {
+    border-radius: .5em;
+    background-color:  inherit;
+    border: 1px solid #dcdcdc;
+    color: gainsboro;
+    text-align: center;
+    padding: .5em;
+    width: 2em;
+    transition: all 0.5s;cursor: pointer;
+    margin: .5em;
+}
+#greeting-message .navbutton span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}
+#greeting-message .navbutton span:after{content: '\00bb';position: absolute;opacity: 0;top: 0;right: .75em;transition: 0.5s;}
+#greeting-message .navbutton:hover span {padding-right: 25px;}
+#greeting-message .navbutton:hover span:after {opacity: 1;right: 0;}
+
+.facts {background-color: #f5f5f5;padding: 0.5em;margin-top:0.5em;margin-bottom:0.5em;}
+
+#table-container {overflow-x: hidden;}
+
+footer p { position: fixed;left: 0;bottom: 0;padding-left: 15px;color: #dcdcdc;}
