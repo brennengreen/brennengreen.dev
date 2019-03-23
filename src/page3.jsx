@@ -4,12 +4,13 @@ import "../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min
 
 
 const products = [
+                    {'name':"GoList", 'desc':"WebScraper that stores data in postgresql db", 'date':"03/21/2019",'tool':"Golang, SQL",link:"https://github.com/brennengreen/golist" },
+                    {'name':"My Portfolio", 'desc':"A website to show off my personality and technical interests", 'tool':"WebDev w/ JS",'link':"https://github.com/brennengreen/brennengreen.dev"},
                     {'name':"pystudy", 'desc':"Virtual flash cards", 'date':"08/28/2018",'tool':"Python",link:"https://github.com/brennengreen/pystudy" },
                     {'name':"pybrarian", 'desc':"Wiki-web-scraper, provides info such as Author, Length, general summary of any book user provides on CLI",
                          'date':"08/05/2018",'tool':"Python", link:"https://github.com/brennengreen/pybrarian"},
                     {'name':"pytax", 'desc':"A tax calculator which uses the TaxJar sales api to help users figure out tax costs",
-                     'date':"11/04/2018",'tool':"Python", link:"https://github.com/brennengreen/pytax"},
-                    {'name':"My Portfolio", 'desc':"A website to show off my personality and technical interests", 'tool':"WebDev w/ JS",'link':"xxx"}];
+                     'date':"11/04/2018",'tool':"Python", link:"https://github.com/brennengreen/pytax"}];
 
 
 const Main = () => {
