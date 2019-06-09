@@ -9,6 +9,10 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(public ,'index.html'));
 })
 
+app.get('/discterpreter', function() {
+    res.send('Hello world!')
+})
+
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port}`);
 });
