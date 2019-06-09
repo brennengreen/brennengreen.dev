@@ -9,7 +9,7 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(public ,'index.html'));
 })
 
-app.get('/discterpreter', function() {
+app.get('discterpreter', function() {
     res.send('Hello world!')
 })
 
