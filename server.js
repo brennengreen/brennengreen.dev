@@ -9,8 +9,8 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(public ,'index.html'));
 })
 
-app.get('discterpreter', function(req, res) {
-    res.sendFile(path.join(public ,'discterpreter','index.html'));
+app.get('admin', function(req, res) {
+    res.sendFile(path.join(public ,'admin','index.html'));
 })
 
 app.listen(port, (req, res) => {
