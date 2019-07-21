@@ -13,6 +13,10 @@ app.get('admin', function(req, res) {
     res.sendFile(path.join(public ,'admin','index.html'));
 })
 
+app.post('admin/panel.html', function(req, res) {
+    res.sendFile(path.join(public, 'admin', 'panel.html'));
+})
+
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port}`);
 });
