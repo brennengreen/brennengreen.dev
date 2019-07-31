@@ -3,15 +3,6 @@
 
 <style>
     /* ADMIN */
-    #login-div {
-        font-family: 'Do Hyeon';
-        position:absolute;margin:0;top:35%;right:0;left:35%;width:30vw;height:30vh;
-        background-color: #1a1818;
-        border-radius: 10px;
-        text-align: center;
-        box-shadow: 5px 5px 10px;
-    }
-
     #login-form {
         color: whitesmoke
     }
@@ -27,15 +18,13 @@
 </style>
 
 <script>
-    function validateForm() {
-        var user = document.getElementById("username").value;
-        var pass = document.getElementById("password").value;
-        if ((user == "username") && (pass == "password")) {
-            return true;
-        } else {
-            alert("Incorrect username and/or password");
+    function validate() {
+        var token = document.getElementById("AdminToken").value;
+        if (token.trim() == "") {
+            alert("Invalid Login Input")
             return false;
-        }
+        } 
+        return true;
     }
 </script>
 
@@ -43,25 +32,17 @@
     <title>Admin Login</title>
 </head>
 
-<body style="height: 100vh; width:100vw;background-color: #1db954;background-image: url(../media/admin-background.png)">
-    <div id="login-div">
-        <form id="login-form" onsubmit="return validateForm()" action="./panel.html" method="POST">
-                <h1 style="display: block">Login!</h1>
+<body style="height: 100vh; width:100vw;background-color:#1a1818;">
+    <form id="login-form" action="panel.html" method="POST" onsubmit="return validate()" style="position:absolute;margin:0 auto;left:45vw;top:50vh;width:100%;">
+            
+        <div id="token-div" style="padding-top:.5em;">
+                <label style="font-family: Dosis" for="username">Administration Token</label>
+                <input type="password" placeholder="Private Token" id="AdminToken" style="border:none;display:inline-block;padding:1em;border-radius:5px;"/>
+        </div>
 
-                <div id="username-div">
-                    <label for="username">Username</label>
-                    <input type="text" value="username" id="username" placeholder="Username" style="display:inline-block"/>
-                </div>
-        
-                <div id="password-div">
-                    <label for="username">Password</label>
-                    <input type="text" value="password" id="password" placeholder="Password" style="display:inline-block"/>
-                </div>
-
-                <div id="submit-div">
-                    <input type="submit" value="Login"/>
-                </div>
-            </form>
-    </div>
-
+        <div id="submit-div">
+            <input type="submit" value="Login" style="border:none;display:inline-block;padding-top:.5em;padding-bottom:.5em;padding-left:1em;padding-right:1em;border-radius:5px;font-family: Dosis;"/>
+        </div>
+            
+    </form>
 </body>
