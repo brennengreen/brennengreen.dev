@@ -5,11 +5,6 @@ var bodyParser = require('body-parser');
 const public = path.join(__dirname, 'dist');
 const port = process.env.PORT || 5000;
 
-
-var processReq = function (req, res, next) {
-    console.log(res);
-    next();
-}
 function validToken(token) {
     if (token === "iambrennen!") {
         return true
