@@ -4,6 +4,7 @@ import "../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min
 
 
 const products = [
+    {'name':"2D Procedural Generation", 'desc':"Conway's game of life based proc gen", 'date':"01/10/2020",'tool':"Unity, C#",link:"https://github.com/brennengreen/2D-Procedural-Generation" },
     {'name':"Ditto", 'desc':"A media assisting bot for Discord", 'date':"06/28/2019",'tool':"Python",link:"https://github.com/brennengreen/ditto" },
     {'name':"GoList", 'desc':"WebScraper that stores data in postgresql db", 'date':"03/21/2019",'tool':"Golang, SQL",link:"https://github.com/brennengreen/golist" },
     {'name':"My Portfolio", 'desc':"A website to show off my personality and technical interests", 'tool':"WebDev w/ JS",'link':"https://github.com/brennengreen/brennengreen.dev"},
