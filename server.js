@@ -36,6 +36,10 @@ app.get('admin', function(req, res) {
     res.sendFile(path.join(public ,'admin','index.html'));
 })
 
+app.get('blog', function(req, res) {
+    res.sendFile(path.join(public ,'admin','index.html'));
+})
+
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port}`);
 });
