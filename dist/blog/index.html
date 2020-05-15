@@ -4,11 +4,17 @@
 <style>
 	body {background-color: white;font-family: 'Nanum Gothic Coding', monospace;}
 	#header { display: table; margin: 0 auto; border: 0px solid black; text-align: center; }
-	#post { border: 1px solid black; margin-left: 25vw; margin-right: 25vw;padding: 1em;margin-top: 1em;}
+	#post { border: 1px solid black; margin-left: 25vw; margin-right: 25vw;padding: 1em;margin-top: 1.25em;box-shadow: 10px 10px;}
+	#post h3 {margin-top: 0;}
 	a:link { color: black; }
-	a:visited { color: lightgrey; }
+	a:visited { color: black; }
 </style>
 
+<script>
+	var body = document.getElementsByTagName('body')[0];
+
+
+</script>
 
 <head>
 	<title>Blog</title>
@@ -22,19 +28,25 @@
 
 	<hr>
 
+	<div id="posts">
+		<!-- Load our React component. -->
+		<script type="module" src="./gen_posts.js"></script>
+	</div>
+
+
 	<div id="post">
 		<h3>Complex Shader Post</h3>
 		<p>Lorem ipsum dolor sit amet, id elit lorem adipisci vis. Vel eius intellegam disputationi an, in mei novum graece eligendi. Eu mea dicunt ornatus debitis, at regione feugiat adipisci his, te oratio albucius euripidis cum. Id nec aliquam facilis, volumus cotidieque ad mel.</p>
-		<a href="#" id="read">Read More >></a>
+		<a href="posts/1" id="read">Read More >></a>
 	</div>
 	<div id="post">
 		<h3>Complex Game Post</h3>
 		<p>Lorem ipsum dolor sit amet, id elit lorem adipisci vis. Vel eius intellegam disputationi an, in mei novum graece eligendi. Eu mea dicunt ornatus debitis, at regione feugiat adipisci his, te oratio albucius euripidis cum. Id nec aliquam facilis, volumus cotidieque ad mel.</p>
-		<a href="#" id="read">Read More >></a>
+		<a href="posts/2" id="read">Read More >></a>
 	</div>
 	<div id="post">
 		<h3>Complex Algorithm Post</h3>
 		<p>Lorem ipsum dolor sit amet, id elit lorem adipisci vis. Vel eius intellegam disputationi an, in mei novum graece eligendi. Eu mea dicunt ornatus debitis, at regione feugiat adipisci his, te oratio albucius euripidis cum. Id nec aliquam facilis, volumus cotidieque ad mel.</p>
-		<a href="#" id="read">Read More >></a>
+		<a href="posts/3" id="read">Read More >></a>
 	</div>
 </body>

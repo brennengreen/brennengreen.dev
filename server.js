@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const fs = require('fs');
 var bodyParser = require('body-parser');
 const public = path.join(__dirname, 'dist');
 const port = process.env.PORT || 5000;
@@ -37,8 +38,24 @@ app.get('admin', function(req, res) {
 })
 
 app.get('blog', function(req, res) {
-    res.sendFile(path.join(public ,'admin','index.html'));
+    res.sendFile(path.join(public ,'blog','index.html'));
 })
+
+const POSTS_FOLDER = path.join(public ,'blog','posts');
+
+fs.readdir(POSTS_FOLDER, function (err, files) {
+	if (err) { return console.log('Unable to scan director: ' + err);}
+
+	files.forEach( function(file) {
+		app.get(`/posts/${file}`, function(req, res) {
+            res.sendFile(path.join(public ,'blog','posts', `${file}`, 'index.html'));
+        })
+        console.log(`/posts/${file} routed`);
+	})
+})
+
+
+
 
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port}`);
