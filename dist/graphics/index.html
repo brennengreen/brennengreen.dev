@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+	body {background-color: white;font-family: 'Nanum Gothic Coding', monospace;}
+	#header { display: table; margin: 0 auto; border: 0px solid black; text-align: center; }
+	#post { border: 1px solid black; margin-left: 25vw; margin-right: 25vw;padding: 1em;margin-top: 1.25em;box-shadow: 10px 10px;}
+	#post h3 {margin-top: 0;}
+	a:link { color: black; }
+	a:visited { color: black; }
+	.fav { margin-left: 25vw; margin-right: 25vw;padding: 1em;margin-top: 1.25em;}
+</style>
+
+<script>
+	var body = document.getElementsByTagName('body')[0];
+
+
+</script>
+
+<head>
+	<title>Graphics Blog</title>
+</head>
+
+<body>
+	<div id="header">
+		<h1>Brennen Green</h1>
+		<p>An assortment of cool computer graphics related projects and pictures</p>
+	</div>
+
+	<hr>
+
+	<div id="posts">
+		<!-- Load our React component. -->
+		<script type="module" src="./gen_posts.js"></script>
+	</div>
+
+	<div id="post">
+		<h3>PBRT Renderer Implementation</h3>
+		<p>My implementation of the PBRT physically based renderer. Includes assignments from projects in the book and cool things I implemented myself.</p>
+		<a href="posts/1" id="read">More Stuff >></a>
+	</div>
+
+	<div id="post">
+		<h3>Physically Based Raytracer</h3>
+		<p>Physically Based Raytracer written from scratch in C++. Included are pictures from the entire process from terrible sphere to monte carlo rendered cornell box.</p>
+		<a href="posts/1" id="read">More Stuff >></a>
+	</div>
+
+	<div id="post">
+		<h3>Geometry Processor</h3>
+		<p>
+			While working through Dr. Keenan Crane's [CMU] course on Discrete Differential Geometry, I implemented several additions to his labs Geometry Processor provided 
+			for the course. Here's a collection of cool features and my though process on the assignments!
+		</p>
+		<a href="posts/1" id="read">More Stuff >></a>
+	</div>
+
+	<div id="post">
+		<h3>Raymarcher</h3>
+		<p>A Unity Engine Raymarcher implemented entirely in HLSL. Cool pictures of funky objects generated.</p>
+		<a href="posts/1" id="read">More Stuff >></a>
+	</div>
+
+	<div id="post">
+		<h3>Rendering Engine</h3>
+		<p>A toy rendering engine written in the OpenGL Core Profile. Pictures include shader implementations and cool things.</p>
+		<a href="posts/1" id="read">More Stuff >></a>
+	</div>
+
+	<div class="fav">
+		<h2> My Favorites </h2>
+		<p>
+			An assortment of images from all my projects that I would love to show off for you all. 
+			Please enjoy these images and I'd love to hear some constructive feedback about your favorites!
+		</p>
+	</div>
+
+</body>

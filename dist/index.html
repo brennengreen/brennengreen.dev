@@ -1,273 +1,130 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="css/stylesheet.css">
-<link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Dosis" rel="stylesheet">
-
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
 
 <head>
-    <title>Meet Brennen!</title>
+    <title>Brennen Green</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript">
-        var myVar;
-                
-        function startLoadScreen() {
-            myVar = setTimeout(showPage, 3000);
-        }
-        
-        function showPage() {
-            document.getElementById("loader").style.display = "none";
-            document.getElementById("scroll-wrapper").style.display = "block";
-            document.getElementById("greeting-message").style.display = "block";
-        }
-    </script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-
 </head>
 
 
-<body onload="startLoadScreen()">
-    <div id="loader" class="loader"></div>
+<body>
+    <header style="background-color: #2c2d48;height:7.5vh;top:0;left:0;right:0;"></header>
+
+    <ul class="flex-container">
+        <li class="flex-item"><h1>Brennen Green</h1></li>
+        <li class="flex-item"><a href="#"><span>Experience</span></a></li>
+        <li class="flex-item"><a href="#"><span>Projects</span></a></li>
+        <li class="flex-item"><a href="./graphics"><span>Graphics</span></a></li>
+        <li class="flex-item"><a href="#"><span>Resume</span></a></li>
+        <li class="flex-item"><a href="#"><span>CV</span></a></li>
+        <li class="flex-item"><a href="./blog"><span>Blog</span></a></li>
+    </ul>
+    <hr style="height:1vh;background-color: #2c2d48;margin: 0 15%; margin-top: 0;">
+    <div style="margin: 0 15%; margin-top: 0;height: auto;">
+        <p style="text-align: justify;">
+            <img src="media/prom.jpg" style="padding-left:3rem;float:right;max-width:15vw;max-height:20rem;width: auto;height: auto;" alt="Brennen">
     
-    <div id="scroll-wrapper">
-        <div id="page1" style="height:100vh;width:100vw;">
-            <div id="greeting-message" style="display:none;">
-                <h1>BRENNEN GREEN</h1>
-                <div class="msg">
-                        <p>passionate nerd and student learning</p> 
-                        <p>how to take ideas from vision to reality with
-                                    the power of science and computers.</p>        
-                </div>
-                <a href="#page2" class="navbutton"><span>About Me</span></a>
-                <a href="#page3" class="navbutton"><span>Projects</span></a>
-                <a href="./media/resume.pdf"  class="navbutton"><span>Resume</span></a>
-                <a href="./blog"  class="navbutton"><span>Blog</span></a>
-            </div>
-        </div>
+            I am a <b>computer science</b> and <b>mathematics</b> student at the <b>University of Kentucky.</b>
+            I am inspired by the intersection of <b>Computer Graphics</b>, <b>Geometry</b>, and <b>Artificial Intelligence.</b>
+            As a researcher I have explored this intersection first hand. With experience working in both a biomedical imaging
+            laboratory, and a sustainable manufacturing institute building <b>computer vision</b> driven machine learning models.
+            Professionaly I have also had the amazing experience to work at <b>Twitch</b> building tools for mobile gamers to enjoy streaming
+            just as much as their PC and console counter parts. Before that I worked at Intel and the University of Kentucky in various roles.
+            I hope to continue my career pursuing a Ph.D. in Computer Graphics, continuing to discover the new ways for this intersection
+            of fields to inspire people through <b>Film</b>, <b>Games</b>, and <b>Sustainable Solutions</b>.
+            <br><br>
+            In my free time I spend a lot of time cooking, skating, and travelling. I am also an avid
+            lover of video games and Pixar movies. I spend a lot of time reading and thinking of ways we
+            can create better learning environments for students of all ages. <b>:)</b>
+        </p>
     
-        <div id="page2" style="width:100vw;margin:0;">
-            <div class="aboutme-container">
-                <h2>NICE TO MEET YOU...</h2>
-                <div>
-                    <p>
-                        My name is Brennen and I am a <b>computer science</b> and <b>mathematics</b> student at the University of Kentucky. I want to use engineering and science to help
-                        other people. Because of this, I have vaguely defined career goals of working in a position that will allow me to see my product be used to make
-                        the world a better place, not a worse one. I find my passion in <b>computer graphics</b> and the <b>gaming / film</b> industries. The smiles that I can see my work
-                        bring to peoples face is an extremely powerful source of happiness for me. But I also am very passionate about <b>statistics</b>, and its
-                        applications to <b>artificial intelligence</b> and <b>machine learning</b>. But to summarize it simply, if there is an opportunity to <b>better human life</b>;
-                        I want to be apart of it.
-                        <br>
-                        <div style="background-color: #f5f5f5;padding: 0.5em;margin-top:0.5em;margin-bottom:0.5em;">
-                            "All labor that uplifts humanity has dignity and importance and should be undertaken with painstaking excellence." - Martin Luther King Jr.
-                        </div>
-                    </p>
-                </div>
-                <h3>I'm a Wildcat...</h3>
-                <div>
-                    <table>
-                    <tbody>
-                        <tr>
-                            <td><img src="media/uk.svg" style="height: 3em; width: auto; margin: 1em"></td>
-                            <td>
-                                <span style="float:left;"><b>University of Kentucky</b></span>
-                                <br>
-                                B.S. Computer Science and Mathematics
-                                <br>
-                                Class of 2023 (expected)
 
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-
-                <h3>Work Experience:</h3>
-                <div id="facts" class="facts">
-                    <table>
-                    <tbody>
-                        <tr>
-                            <td><img src="media/twitch.svg" style="height: 3em; width: auto; margin: 1em"></td>
-                            <td>
-                                <span style="float:left;"><b>Twitch,</b> Engineering Intern</span>
-                                <span style="float: right; font-size: 0.8em; margin: 0">(June 2021 - Aug 2021)</span>
-                                <br>
-                                Part of the 2021 summer engineering intern cohort. Working on the emerging markets mobile
-                                streaming services team.
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-                <div id="facts" class="facts">
-                    <table>
-                    <tbody>
-                        <tr>
-                            <td><img src="media/intel.svg" style="height: 3em; width: auto; margin: 1em"></td>
-                            <td>
-                                <span style="float:left;"><b>Intel Corporation,</b> Controller Integration Engineering Intern</span>
-                                <span style="float: right; font-size: 0.8em; margin: 0">(Oct 2020 - May 2021)</span>
-                                <br>
-                                As an intern it was my responsibility to learn and fully understand the <b>FPGA</b> based simulation environment.
-                                This involved intenstive projects that involved running and writing emulation scripts in a <b>C based Simics</b>
-                                environment. I was also responsible for <b>automating</b> several important testing processes which helped
-                                streamline development in the department.
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-                <div id="facts" class="facts">
-                    <table>
-                    <tbody>
-                        <tr>
-                            <td><img src="media/uk.svg" style="height: 3em; width: auto; margin: 1em"></td>
-                            <td>
-                                <span style="float:left;"><b>University of Kentucky Department of Communication,</b> Technical Developer</span>
-                                <span style="float: right; font-size: 0.8em; margin: 0">(May 2019 - July 2020)</span>
-                                <br>
-                                My role as a technical developer is to enable researchers through building various data gathering applications. On a day to day basis
-                                I can be doing anything from <b>wrangling data with Python</b> to building useful web applications and stunning data visualizations with <b>PHP, Drupal, and JavaScript</b>. My 
-                                secondary role as a technical developer is to serve as a first responder for any technical issues within our department.
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-                <div id="facts" class="facts">
-                    <table>
-                    <tbody>
-                        <tr>
-                            <td><img src="media/cf.svg" style="height: 3em; width: auto; margin: 1em"></td>
-                            <td>
-                                <span style="float:left;"><b>Change Force Corporation,</b> Web Developer</span>
-                                <span style="float: right; font-size: 0.8em; margin: 0">(October 2017 - May 2018)</span>
-                                <br>
-                                As the sole web developer on our small team my job was to roll out a fully functional first website
-                                for the non-profit using mostly
-                                <b>Wordpress</b>
-                                This position also allowed me to tinker with
-                                <b>PHP</b>
-                                for the first time and also <b>CRM</b> tools and <b>SQL</b> the most beneficial part of this position
-                                was being able to learn how to communicate technical information with a non-technical team.
-
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-                <h3>Research Experience:</h3>
-                <div id="facts" class="facts">
-                    <table>
-                    <tbody>
-                        <tr>
-                            <td><img src="media/ism.svg" style="height: 3em; width: auto; margin: 1em"></td>
-                            <td>
-                                <span style="float:left;"><b>Institute for Sustainable Manufacturing,</b> Research Assistant</span>
-                                <span style="float: right; font-size: 0.8em; margin: 0">(Jan 2021 - Present)</span>
-                                <br>
-                                Worked with Dr. Peng Wang developing a <b>siamese convolutional neural network</b> to process thermal imaging collected from metal-based
-                                additive manufacturing processes. The network was developed to automatically characterize the images as well as recognize
-                                characteristics such as porosity, grain size, and direction, melt pool depth, as well as other microstructural features. 
-
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-                <div id="facts" class="facts">
-                    <table>
-                    <tbody>
-                        <tr>
-                            <td><img src="media/uk.svg" style="height: 3em; width: auto; margin: 1em"></td>
-                            <td>
-                                <span style="float:left;"><b>University of Kentucky College of Engineering,</b> Biomedical Imaging Lab Assistant</span>
-                                <span style="float: right; font-size: 0.8em; margin: 0">(March 2020 - Oct 2020)</span>
-                                <br>
-                                In my research I have been focused on improving the efficiency of a spectroscopy imaging device
-                                though the use of <b>CUDA</b> based GPU Acceleration. Additionally, I have been pursuing
-                                a <b>machine learning</b> project to use a long short term memory <b>neural network</b> to map cerebal bloodflow
-                                data from our device to intercranial pressure using <b>Pytorch</b>. 
-
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-                <div id="facts" class="facts">
-                    <table>
-                    <tbody>
-                        <tr>
-                            <td><img src="media/uk.svg" style="height: 3em; width: auto; margin: 1em"></td>
-                            <td>
-                                <span style="float:left;"><b>University of Kentucky Cancer Center,</b> Bioinformatics Research Assistant</span>
-                                <span style="float: right; font-size: 0.8em; margin: 0">(August 2018 - December 2018)</span>
-                                <br>
-                                While working as a member of the lab I got to work within a
-                                <b>Linux</b>
-                                work environment which allowed me to learn how to harness the power of unix-based operating systems.
-                                My main role on the team was to focus on learning as much about programming as I could through the use of
-                                weekly code critiques and programming projects based around bioinformatics. The projects I contributed were
-                                written entirely in
-                                <b>Python</b>
-                                but also required me to read over and comprehend codebases written in other languages such as
-                                <b>Java.</b>
-
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div style="background-color:#1db954; height:100%;">
-                <div id=music-button>
-                    <h3 style="color: white;margin:0;padding:0;">Music</h3>
-                    <p style="color: white;margin:0;padding:0;">
-                        I listen to music to inspire creativity, it's an important part of my life and always has been.
-                        But I also realize music is a powerful platform to inspire change, and it's time I help music achieve that cause.
-                        This section was previously dedicated to music I listen to while I'm programming. Now I am dedicating this section to
-                        artists who are demanding equality, calling for a change for humanity, and speaking up. Black Lives Matter,
-                        LGBTQ+ Rights Matter, hate, inequality, and oppression should have no place in this world.
-                    </p> 
-                    <div id="playlists" style="display: flex; margin-top:1em;">
-                        <div id="music-card">
-                            <h5 style="color: white;margin:0;padding:0;">Black Lives Matter ✊🏿 :</h4>
-                            <iframe src="https://open.spotify.com/embed/playlist/5TqktKYpIXvZPLTq1GFHu5" width="300" height="380" 
-                                frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-                        </div>
-                        
-                        <div id="music-card">
-                            <h5 style="color: white;margin:0;padding:0;">Be Proud of Who You Are 🏳️‍🌈 :</h4>
-                            <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWU8quswnFt3c" width="300" height="380" frameborder="0" 
-                                allowtransparency="true" allow="encrypted-media"></iframe>
-                        </div>
-
-                        <div id="music-card">
-                            <h5 style="color: white;margin:0;padding:0;">Programming Playlist 🖥️ :</h4>
-                            <iframe src="https://open.spotify.com/embed/playlist/3uWxhMxrSwY4t3ei92gOCo" width="300" height="380"
-                                frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>   
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-
-        <div id="page3" style="padding-bottom:10vh;background-color: #1a1818;color:white;">
-            <div>
-                <h2 style="padding-top:10vh;margin-left:10vw;margin-right:10vw;">My Projects</h2>
-                <div id="table-container" style="margin-left:10vw;margin-right:10vw;background-color:white;"></div>
-            </div>
-            
-        </div>
     </div>
-    
 
 
-    <footer>
-        <p>Email me at: brennengreen@outlook.com</p>
-    </footer>
+    <div style="margin: 0 15%; margin-top: 0;height: auto;">
+        <h2 style="margin: 0;">
+            Experience
+        </h2>
+        <hr style="height:0.25vh;background-color: #2c2d48;margin: 0;">
 
-    <!-- Load our React component. -->
-    <script  src="./main.js"></script>
+        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
+            <div id="picture" style="max-width: 20%;">
+                <img style="max-width: 100%;" src="media/research.JPG">
+            </div>
+            <div id="desc" style="width:80%;padding-left: 5px;">
+                <h3 style="margin: 0;">Research</h3>
+                <hr style="margin: 0; color: #2c2d48;">
+                <p>
+                    My academic research falls into primairly two areas: <b>Computer Graphics</b> and <b>Artificial Intelligence</b>.
+                    As a undergraduate research assistant at UK I worked in both imaging and machine learning. While working
+                    in a <bbiomedical imaging lab></b> I developed an optimized biomedical imaging device that would allow the reconstruction of cerebral
+                    bloodflow using CUDA and MATLAB. Currently I am researching the applications of convolutional neural networks
+                    to characterize part defects and optimize manufacturing processes with the <b>Institute of Sustainable Manufacturing</b> at UK. 
+                    In the future I would like to continue studying the applications of computer graphics for physically based models as a Ph.D. student.
+                </p>
+                <ul style="padding:0;margin:0;list-style: none;display: flex;">
+                    <li id="button" style="margin:0;"><a href="https://github.com/brennengreen"><span>GitHub</span></a></li>
+                    <li id="button" style="margin:0;"><a href="./graphics"><span>CV</span></a></li>
+                    <li id="button" style="margin:0;"><a href="./blog"><span>Google Scholar</span></a></li>
+                    <li id="button" style="margin:0;"><a href="./blog"><span>Graphics</span></a></li>
+                    <li id="button" style="margin:0;"><a href="./blog"><span>Blog</span></a></li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
+            <div id="picture" style="max-width: 20%;">
+                <img style="max-width: 100%;" src="media/dev.jpg">
+            </div>
+            <div id="desc" style="width:80%;padding-left: 5px;">
+                <h3 style="margin: 0;">Software Development</h3>
+                <hr style="margin: 0; color: #2c2d48;">
+                <p>
+                    My experience as a software developer has a lot of <b>breadth</b>. I have had the unique opportunity
+                    to be involved with many areas of software development. From <b>processor design and validation</b>,
+                    <b>devops</b>, web development, and currently <b>app and video streaming development</b>. I've had the pleasure
+                    to work professionally at <b>Twitch, Intel Corporation, and the University of Kentucky</b>. I hope to
+                    one day work in the industry as a research fellow in computer graphics.    
+                </p>
+                <ul style="padding:0;margin:0;list-style: none;display: flex;">
+                    <li id="button" style="margin:0;"><a href="https://github.com/brennengreen"><span>LinkedIn</span></a></li>
+                    <li id="button" style="margin:0;"><a href="./graphics"><span>Resume</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
+            <div id="picture" style="max-width: 20%;">
+                <img style="max-width: 100%;" src="media/cornell.jpg">
+            </div>
+            <div id="desc" style="width:80%;padding-left: 5px;">
+                <h3 style="margin: 0;">Personal Projects</h3>
+                <hr style="margin: 0; color: #2c2d48;">
+                <p>
+                    Personally, my work is focused entirely on computer graphics. Typically I am working on some sort of
+                    <b>rendering</b> engine, both <b>physically based</b> and <b>real-time</b>. I have several rendering algorithms from scratch
+                    for my own developmental purposes as well. Outside of that I try to remain constantly involved with
+                    the <b>open-source</b> community; in the past I have contributed to both <b>Blender</b> and <b>Godot Engine</b>.    
+                </p>
+                <div>
+                    <ul style="padding:0;margin:0;list-style: none;display: flex;">
+                        <li  id="button"  style="margin:0;"><a href="https://github.com/brennengreen"><span>GitHub</span></a></li>
+                        <li  id="button" style="margin:0;"><a href="./graphics"><span>Graphics</span></a></li>
+                        <li  id="button" style="margin:0;"><a href="./blog"><span>Blog</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div style="height: 10vh;"></div>
+
+    <footer style="background-color: #2c2d48;height:7.5vh;bottom:0;left:0;right:0;"></footer>
 </body>

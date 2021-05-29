@@ -41,6 +41,10 @@ app.get('blog', function(req, res) {
     res.sendFile(path.join(public ,'blog','index.html'));
 })
 
+app.get('graphics', function(req, res) {
+    res.sendFile(path.join(public ,'graphics','index.html'));
+})
+
 const POSTS_FOLDER = path.join(public ,'blog','posts');
 
 fs.readdir(POSTS_FOLDER, function (err, files) {
