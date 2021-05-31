@@ -19,9 +19,10 @@
 
 html {scroll-behavior: smooth;margin: 0;padding: 0;}
 body { margin: 0 auto;padding: 0;background-color: #fcf8f5; color: #2c2d48;font-family: 'Lora', serif;}
-h1 {font-size: 8vh;font-family: 'Lora', serif; margin:0;font-weight: 700;}
-h2 {font-size: 3vh;font-family: 'Lora', serif;margin: 0}
-p {font-size: 2vh;font-family: 'Poppins', sans-serif;}
+h1 {font-size: 5vw;font-family: 'Lora', serif; margin:0;font-weight: 700;}
+h2 {font-size: 2vw;font-family: 'Lora', serif;margin: 0}
+h3 {font-size: 1.5vw;}
+p {font-size: 1.05vw;font-family: 'Poppins', sans-serif;}
 
 
 #desc p {text-align: justify;padding:0;margin:0;}
@@ -39,12 +40,9 @@ p {font-size: 2vh;font-family: 'Poppins', sans-serif;}
 #button a {
         color: #2c2d48;
         padding: 0.5em;
-
-
 }
 
 .flex-container {
-    margin: 0 15% 0;
     list-style: none;
     
     display: -webkit-box;
@@ -57,9 +55,9 @@ p {font-size: 2vh;font-family: 'Poppins', sans-serif;}
 .flex-item h1 {padding-right: 1em;}
 .flex-item a {
     color:  #2c2d48;
-    padding: 0.5em;
-    font-size: 2vh;
-    left: 100%
+    padding-right: 1rem;
+    font-size: 1.25vw;
 }
-  
+
+.flex-item {  margin-bottom: 0; }
 
