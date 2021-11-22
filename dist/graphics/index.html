@@ -5,6 +5,8 @@
 	body {background-color: white;font-family: 'Nanum Gothic Coding', monospace;}
 	#header { display: table; margin: 0 auto; border: 0px solid black; text-align: center; }
 	#post { border: 1px solid black; margin-left: 25vw; margin-right: 25vw;padding: 1em;margin-top: 1.25em;box-shadow: 10px 10px;}
+	#column {float:left; width: 32%; padding: 5px;}
+	#row::after {content: "";clear:both;display: table;}
 	#post h3 {margin-top: 0;}
 	a:link { color: black; }
 	a:visited { color: black; }
@@ -35,17 +37,41 @@
 	</div>
 
 	<div id="post">
-		<h3>PBRT Renderer Implementation</h3>
-		<p>My implementation of the PBRT physically based renderer. Includes assignments from projects in the book and cool things I implemented myself.</p>
-		<a href="posts/1" id="read">More Stuff >></a>
-	</div>
-
-	<div id="post">
 		<h3>Physically Based Raytracer</h3>
 		<p>Physically Based Raytracer written from scratch in C++. The raytracer implements a monte carlo rendering algorithm presented by Dr. Peter Shirley [NVIDIA].
 			The raytracer uses an abstract implementation of materials and surfaces to represent just about any sort of object, medium, etc. that could come to mind.
 		</p>
-		<a href="posts/1" id="read">More Stuff >></a>
+		<p><b>Key Technologies:</b> Modern C++, Multithreading, Physically Based Rendering, STB_IMAGE Library, SDL</p>
+		<div id="row">
+			<div id="column">
+				<img src="../media/portfolio/cornell.jpg" style="width:100%"/>
+			</div>
+			<div id="column">
+				<img src="../media/portfolio/moon.jpg" style="width:100%"/>
+			</div>
+			<div id="column">
+				<img src="../media/portfolio/rtow.jpg" style="width:100%"/>
+			</div>
+		</div>
+	</div>
+
+	<div id="post">
+		<h3>OpenGL Rendering Engine</h3>
+		<p>A toy rendering engine written in the OpenGL Core Profile.  Includes support for the ASSIMP library as well as
+			2D and 3D rendering. Pictures include shader implementations and cool things.</p>
+		<p><b>Key Technologies:</b> Modern C++, OpenGL Core Profile, RenderDoc, NVIDIA Nsight, GLSL, ASSIMP</p>
+		<div id="row">
+			<div id="column">
+				<img src="../media/portfolio/walrus.gif" style="width:100%"/>
+			</div>
+			<div id="column">
+				<img src="../media/portfolio/mandel.gif" style="width:100%"/>
+			</div>
+			<div id="column">
+				<img src="../media/portfolio/planet.gif" style="width:100%"/>
+			</div>
+			</div>
+		</div>
 	</div>
 
 	<div id="post">
@@ -54,7 +80,12 @@
 			While working through Dr. Keenan Crane's [CMU] course on Discrete Differential Geometry, I implemented several additions to his labs Geometry Processor provided 
 			for the course. Here's a collection of cool features and my though process on the assignments!
 		</p>
-		<a href="posts/1" id="read">More Stuff >></a>
+		<p><b>Key Technologies:</b> Modern C++, OpenGL Core Profile, GLSL, Differential Geometry Numerical Methods, Dear ImGui</p>
+		<div id="row">
+			<div id="column">
+				<img src="../media/portfolio/bunny.gif" style="width:100%"/>
+			</div>
+		</div>
 	</div>
 
 	<div id="post">
@@ -62,30 +93,26 @@
 		<p>A Unity Engine Raymarcher implemented entirely in HLSL. The entire engine is contained within a single shader and can support any signed distance function
 			or field thrown at it.
 		</p>
-		<a href="posts/1" id="read">More Stuff >></a>
-	</div>
-
-	<div id="post">
-		<h3>OpenGL Rendering Engine</h3>
-		<p>A toy rendering engine written in the OpenGL Core Profile.  Includes support for the ASSIMP library as well as
-			2D and 3D rendering. Pictures include shader implementations and cool things.</p>
-		<a href="posts/1" id="read">More Stuff >></a>
+		<p><b>Key Technologies:</b> Unity Game Engine, Compute Shaders, HLSL, CSG Algorithms</p>
+		<div id="row">
+			<div id="column">
+				<img src="../media/portfolio/explode.gif" style="width:100%"/>
+			</div>
+			<div id="column">
+				<img src="../media/portfolio/csg.gif" style="width:100%"/>
+			</div>
+			<div id="column">
+				<img src="../media/portfolio/random.gif" style="width:100%"/>
+			</div>
+			</div>
+		</div>
 	</div>
 
 	<div id="post">
 		<h3>Vulkan Rendering Engine</h3>
+		<p><b>Key Technologies:</b> Vulkan API, Modern C++, Dear ImGui</p>
 		<p>A work in progress implementation of a Vulkan Rendering Engine. Plans currently include fully interactive rendering as well as 
 			minimal scene manipulation. 
 		</p>
-		<a href="posts/1" id="read">More Stuff >></a>
 	</div>
-
-	<div class="fav">
-		<h2> My Favorites </h2>
-		<p>
-			An assortment of images from all my projects that I would love to show off for you all. 
-			Please enjoy these images and I'd love to hear some constructive feedback about your favorites!
-		</p>
-	</div>
-
 </body>
