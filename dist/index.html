@@ -13,7 +13,7 @@
 <body>
     <header style="background-color: #2c2d48;height:7.5vh;top:0;left:0;right:0;"></header>
 
-    <div style="margin: 0 15% 0; margin-bottom: 0; padding:0;">
+    <div id="head">
         <h1 style="display:inline-block; margin:0;">Brennen Green</h1>
         <ul class="flex-container" style="display:inline-flex; margin:0;">
             <li class="flex-item"><a href="./graphics"><span>Graphics Projects</span></a></li>
@@ -24,8 +24,8 @@
     </div>
 
 
-    <hr style="height:1vh;background-color: #2c2d48;margin: 0 15%; margin-top: 0; padding-top: 0;">
-    <div style="margin: 0 15%; margin-top: 0;height: auto;">
+    <hr id="head" style="height:1vh;background-color: #2c2d48;">
+    <div id="head">
         <p style="text-align: justify;">
             <img src="media/prom.jpg" style="padding-left:3rem;float:right;max-width:15vw;max-height:20rem;width: auto;height: auto;" alt="Brennen">
     
@@ -38,13 +38,13 @@
             I hope to continue pursuing a career to inspire people through <b>Film</b> and <b>Games</b>. In the summer of 2022
             I will be joining the World of Warcraft team at <b>Blizzard Entertainment</b> as a <b>Technical Artist/Graphics Programming Intern</b>.
         
-            <br>
+            <br><br>
 
             My passion is for enabling the development of inspiration and entertaining works of arts. Assiting artists
             by providing the necesssary tooling, technology, and pipelines to fulfill their artistic
             vision in the most frictionless environment possible.
 
-            <br>
+            <br><br>
 
             When I'm not obsessing over computer graphics however, you can find me playing games, cooking, skating, surfing
             or doing anything outdoors!
@@ -54,7 +54,7 @@
     </div>
 
 
-    <div style="margin: 0 15%; margin-top: 0;height: auto;">
+    <div id="head">
         <h2 style="margin: 0;">
             Experience
         </h2>
@@ -62,9 +62,35 @@
 
         <div class="flex-container" style="margin: 0; margin-top: 1rem;">
             <div id="picture" style="max-width: 20%;">
+                <img style="max-width: 100%;" src="media/wow.jpg">
+            </div>
+            <div id="desc">
+                <h3 style="margin: 0;">Software Development / Computer Graphics</h3>
+                <hr style="margin: 0; color: #2c2d48;">
+                <p>
+                    As a software developer, I've taken a passionate interest in the design and optimization of low-level systems and tools.
+                    Specifically, I have professionally backed experience in developing tooling and systems meant to enable the use
+                    and validation of complex low level systems. This experience started at <b>Intel</b> where I worked as a validation
+                    engineer, designing automated test cases for pre-silicon CPU designs. I expanded into the domain of <b>Computer Graphics</b> in pursuit of my passion
+                    for enabling artists and their artistic vision. Since then, I had the amazing opportunity to work as a 
+                    <b>Android Graphics Engineer</b> at Twitch, owning a novel rendering system developed with OpenGL ES to render dynamic
+                    streaming visuals for our mobile-only creators. On my next quest however, I will be joining <b>Blizzard Entertainment</b>
+                    working as a <b>Graphics Programmer</b> and <b>Technical Artist</b> on the <b>World of Warcraft</b> team, helping to develop
+                    a new generation suite of tools aimed at enabling artists to their fullest capacity to create captivating, inspirational,
+                    and entertaining worlds for the game.
+                </p>
+                <ul style="padding:0;margin:0;list-style: none;display: flex;">
+                    <li id="button" style="margin:0;"><a href="https://www.linkedin.com/in/brennen-green/"><span>LinkedIn</span></a></li>
+                    <li id="button" style="margin:0;"><a href="./media/res.pdf"><span>Resume</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
+            <div id="picture" style="max-width: 20%;">
                 <img style="max-width: 100%;" src="media/research.JPG">
             </div>
-            <div id="desc" style="width:80%;padding-left: 5px;">
+            <div id="desc">
                 <h3 style="margin: 0;">Research</h3>
                 <hr style="margin: 0; color: #2c2d48;">
                 <p>
@@ -89,32 +115,9 @@
 
         <div class="flex-container" style="margin: 0; margin-top: 1rem;">
             <div id="picture" style="max-width: 20%;">
-                <img style="max-width: 100%;" src="media/blizz.png">
-            </div>
-            <div id="desc" style="width:80%;padding-left: 5px;">
-                <h3 style="margin: 0;">Software Development</h3>
-                <hr style="margin: 0; color: #2c2d48;">
-                <p>
-                    My experience as a software developer has a lot of <b>breadth</b>. I have had the unique opportunity
-                    to be involved with many areas of software development. From processor design and validation,
-                    devops, web development, and currently app and video streaming development. I've had the pleasure
-                    to work professionally at <b>Twitch</b>, <b>Intel Corporation</b>, and the <b>University of Kentucky</b>. Most recently,
-                    I have been working at <b>Twitch</b> as an <b>Android Graphics Engineer</b> building <b>OpenGL ES</b> pipelines that render dynamic content on which helps to enable our content creators to provide the best viewing experience
-                    and branding possible. Follow me on my next quest in the Summer of 2022 when I join the <b> World of Warcraft </b>
-                    team at Blizzard Entertainment as a <b>Graphics Programming Intern</b>.
-                </p>
-                <ul style="padding:0;margin:0;list-style: none;display: flex;">
-                    <li id="button" style="margin:0;"><a href="https://www.linkedin.com/in/brennen-green/"><span>LinkedIn</span></a></li>
-                    <li id="button" style="margin:0;"><a href="./media/res.pdf"><span>Resume</span></a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
-            <div id="picture" style="max-width: 20%;">
                 <img style="max-width: 100%;" src="media/cornell.jpg">
             </div>
-            <div id="desc" style="width:80%;padding-left: 5px;">
+            <div id="desc">
                 <h3 style="margin: 0;">Personal Projects</h3>
                 <hr style="margin: 0; color: #2c2d48;">
                 <p>
@@ -123,7 +126,7 @@
                     for my own developmental purposes as well. My goal at the moment is to maintain two fully functional engines. One for
                     real-time optimization work and another for photorealistic work. In development with these engines
                     I typically work with <b>Modern C++</b>, <b>OpenGL</b>, and <b>Vulkan</b>. Outside of that I try to remain constantly involved with
-                    the <b>open-source</b> community; in the past I have contributed to both <b>Blender</b> and <b>Godot Engine</b>.    
+                    the <b>open-source</b> community; in the past I have contributed to both <b>Blender</b> and <b>Godot Engine</b>. 
                 </p>
                 <div>
                     <ul style="padding:0;margin:0;list-style: none;display: flex;">
@@ -134,11 +137,42 @@
                 </div>
             </div>
         </div>
-
     </div>
 
+    <div id="head">
+        <h2 style="margin: 0;">
+            Featured Portfolio
+        </h2>
+        <hr style="height:0.25vh;background-color: #2c2d48;margin: 0;">
 
+        <div id="row">
+            <div id="column">
+				<img src="../media/portfolio/random.gif" style="width:100%"/>
+			</div>
+            <div id="column">
+				<img src="../media/portfolio/cornell.jpg" style="width:100%"/>
+			</div>
+            <div id="column">
+				<img src="../media/portfolio/sponza-tp.gif" style="width:100%"/>
+			</div>  
+			<div id="column">
+				<img src="../media/portfolio/walrus.gif" style="width:100%"/>
+			</div>
+            <div id="column">
+				<img src="../media/portfolio/moon.jpg" style="width:100%"/>
+            </div>
+            <div id="column">
+				<img src="../media/portfolio/mandel.gif" style="width:100%"/>
+			</div>
+            <div id="column">
+				<img src="../media/portfolio/csg.gif" style="width:100%"/>
+			</div>
+            <div id="column">
+				<img src="../media/portfolio/bunny.gif" style="width:100%"/>
+			</div>
+		</div>
+    </div>
     <div style="height: 10vh;"></div>
 
-    <footer style="background-color: #2c2d48;height:7.5vh;bottom:0;left:0;right:0;"></footer>
+    <footer style="width:100%;background-color: #2c2d48;height:7.5vh;bottom:0;left:0;right:0;"></footer>
 </body>
