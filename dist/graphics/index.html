@@ -4,13 +4,45 @@
 <style>
 	body {background-color: white;font-family: 'Nanum Gothic Coding', monospace;}
 	#header { display: table; margin: 0 auto; border: 0px solid black; text-align: center; }
-	#post { border: 1px solid black; margin-left: 25vw; margin-right: 25vw;padding: 1em;margin-top: 1.25em;box-shadow: 10px 10px;}
-	#column {float:left; width: 32%; padding: 5px;}
-	#row::after {content: "";clear:both;display: table;}
+	#post { border: 1px solid black; margin-left: 10vw; margin-right: 10vw;padding: 1em;margin-top: 1.25em;box-shadow: 10px 10px;}
 	#post h3 {margin-top: 0;}
 	a:link { color: black; }
 	a:visited { color: black; }
 	.fav { margin-left: 25vw; margin-right: 25vw;padding: 1em;margin-top: 1.25em;}
+	#row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+  	}
+  
+	/* Create four equal columns that sits next to each other */
+	#column {
+	flex: 24%;
+	max-width: 24%;
+	padding: 0 4px;
+	}
+
+	#column img {
+	margin-top: 8px;
+	vertical-align: middle;
+	width: 100%;
+	}
+
+	/* Responsive layout - makes a two column-layout instead of four columns */
+	@media screen and (max-width: 800px) {
+	#column {
+		flex: 45%;
+		max-width: 45%;
+	}
+	}
+
+	/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+	@media screen and (max-width: 600px) {
+	#column {
+		flex: 45%;
+		max-width: 45%;
+	}
+	}
 </style>
 
 <script>
@@ -77,16 +109,6 @@
 	</div>
 
 	<div id="post">
-		<h3>Vulkan Toy Rendering Engine</h3>
-		<p>A reimplementation of my OpenGL Toy Rendering engine, a delve into understanding of the Vulkan side of things.
-			With a specific focus on better understanding the graphics pipeline and how Vulkan exposes that to the advantage of the
-			programmer.
-		</p>
-		<p><b>Key Technologies:</b> Vulkan API, Vulkan Memory Allocator (AMD),Modern C++, Dear ImGui, SDL, RenderDoc</p>
-		<p><a href="https://github.com/brennengreen/VkGuide-Vulkan-Renderer">Source</a></p>
-	</div>
-
-	<div id="post">
 		<h3>Teapot Graphics Engine</h3>
 		<p>A work in progress, minimal graphics engine. A expansion and improvement on both my toy engines.
 			This project is being developed for the purpose of fully understanding a game engines lifecycle. 
@@ -100,6 +122,16 @@
 				<img src="../media/portfolio/sponza-tp.gif" style="width:100%"/>
 			</div>
 		</div>
+	</div>
+
+	<div id="post">
+		<h3>Vulkan Toy Rendering Engine</h3>
+		<p>A reimplementation of my OpenGL Toy Rendering engine, a delve into understanding of the Vulkan side of things.
+			With a specific focus on better understanding the graphics pipeline and how Vulkan exposes that to the advantage of the
+			programmer.
+		</p>
+		<p><b>Key Technologies:</b> Vulkan API, Vulkan Memory Allocator (AMD),Modern C++, Dear ImGui, SDL, RenderDoc</p>
+		<p><a href="https://github.com/brennengreen/VkGuide-Vulkan-Renderer">Source</a></p>
 	</div>
 
 	<div id="post">

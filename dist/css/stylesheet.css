@@ -42,12 +42,6 @@
     h2 {font-size: 6vw;font-family: 'Lora', serif;margin: 0}
     h3 {font-size: 3.5vw;}
     p {font-size: 2.5vw;font-family: 'Poppins', sans-serif;}
-    #column {float:left; width: 20.0%; padding: 2px;}
-    #row::after {content: "";clear:both;display: table;}
-
-    #column {
-        min-height: 9vh;
-    }
 }
 
 @media (min-width: 1024px) {
@@ -59,8 +53,6 @@
     h2 {font-size: 2vw;font-family: 'Lora', serif;margin: 0}
     h3 {font-size: 1.5vw;}
     p {font-size: 1.05vw;font-family: 'Poppins', sans-serif;}
-    #column {float:left; width: 21.0%; padding: 5px;}
-    #row::after {content: "";clear:both;display: table;}
 
     #desc p {text-align: justify;padding:0;margin:0;}
     #picture img { box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);}
@@ -103,8 +95,47 @@
     }
 
     .flex-item {  margin-bottom: 0; }
+}
 
-    #column {
-        min-height: 20vh;
-    }
+#img-grid {
+    width: 100%;
+    height: auto 0;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+}
+
+#row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+  }
+  
+/* Create four equal columns that sits next to each other */
+#column {
+flex: 24%;
+max-width: 24%;
+padding: 0 4px;
+}
+
+#column img {
+margin-top: 8px;
+vertical-align: middle;
+width: 100%;
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 800px) {
+#column {
+    flex: 45%;
+    max-width: 45%;
+}
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+#column {
+    flex: 45%;
+    max-width: 45%;
+}
 }
