@@ -92,17 +92,39 @@
 		<h3>Teapot Graphics Engine</h3>
 		<p>A work in progress, minimal graphics engine. A expansion and improvement on both my toy engines.
 			This project is being developed for the purpose of fully understanding a game engines lifecycle. 
-			Eventual features will include, but not limited to: Full Scenegraph Implementation, Physically Based Rendering,
-			Geometry Editing and Processing. Future featues may include: Rendering API Indepedence, Entity Component System
+			Features include: Physically based rendering material pipeline, HDR w/ ACES tonemapping, gltf model support,
+			omnidirectional shadow mapping.
 		</p>
 		<p><b>Key Technologies:</b> Modern C++, OpenGL Core Profile, RenderDoc, GLSL, ASSIMP, USD, GLFW, Cmake</p>
 		<p><a href="https://github.com/brennengreen/Teapot-Engine">Source</a></p>
 		<div id="row">
 			<div id="column">
-				<img src="../media/portfolio/sponza-tp.gif" style="width:100%"/>
+				<img src="../media/portfolio/aces.gif" style="width:100%"/>
 			</div>
 			<div id="column">
 				<img src="../media/portfolio/pbr.gif" style="width:100%"/>
+			</div>
+		</div>
+	</div>
+
+	<div id="post">
+		<h3>Voxel Engine</h3>
+		<p>
+			A voxel engine based on my foundational graphics engine, Maxwell. The engine is written in C++ and implemmented in
+			OpenGL and supports the interactive rendering of 16.7 million plus voxels. Along with that, utilizing the FastNoise2
+			library there is customizable noise-based terrain generation. To improve the realism of the terrain, I also implemented
+			a physically-based hydrological erosion simulation using particles and classical mechanics.
+
+			On the left below, you can see an example terrain rendered with no simulation, and 150k particles simulated on the right.
+		</p>
+		<p><b>Key Technologies:</b> Modern C++, OpenGL Core Profile, RenderDoc, GLSL, GLFW, Cmake, FastNoise2, Multithreading, Physically based animation, Particle Dynamics</p>
+		<p><a href="https://github.com/brennengreen/mwVoxelEngine">Source</a></p>
+		<div id="row">
+			<div id="column">
+				<img src="../media/portfolio/nosim.png" style="width:100%"/>
+			</div>
+			<div id="column">
+				<img src="../media/portfolio/sim.png" style="width:100%"/>
 			</div>
 		</div>
 	</div>
