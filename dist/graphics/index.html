@@ -99,7 +99,7 @@
 		<p><a href="https://github.com/brennengreen/Teapot-Engine">Source</a></p>
 		<div id="row">
 			<div id="column">
-				<img src="../media/portfolio/aces.gif" style="width:100%"/>
+				<img src="../media/portfolio/hdr-exposure.gif" style="width:100%"/>
 			</div>
 			<div id="column">
 				<img src="../media/portfolio/pbr.gif" style="width:100%"/>
@@ -113,9 +113,12 @@
 			A voxel engine based on my foundational graphics engine, Maxwell. The engine is written in C++ and implemmented in
 			OpenGL and supports the interactive rendering of 16.7 million plus voxels. Along with that, utilizing the FastNoise2
 			library there is customizable noise-based terrain generation. To improve the realism of the terrain, I also implemented
-			a physically-based hydrological erosion simulation using particles and classical mechanics.
+			a physically-based hydrological erosion simulation using particles and classical mechanics, I also use C++ Multithreading to
+			spawn a worker thread and compute the simulation step, allowing for a realtime, interactive, visualization.
 
 			On the left below, you can see an example terrain rendered with no simulation, and 150k particles simulated on the right.
+
+			
 		</p>
 		<p><b>Key Technologies:</b> Modern C++, OpenGL Core Profile, RenderDoc, GLSL, GLFW, Cmake, FastNoise2, Multithreading, Physically based animation, Particle Dynamics</p>
 		<p><a href="https://github.com/brennengreen/mwVoxelEngine">Source</a></p>
@@ -125,6 +128,9 @@
 			</div>
 			<div id="column">
 				<img src="../media/portfolio/sim.png" style="width:100%"/>
+			</div>
+			<div id="column">
+				<img src="../media/portfolio/erosionfast.gif" style="width:100%"/>
 			</div>
 		</div>
 	</div>
