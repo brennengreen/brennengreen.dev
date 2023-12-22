@@ -2,7 +2,7 @@
 @media (max-width: 1024px) {
     .flex-container {
         display: block;
-        width: 100%;
+        width: 80%;
         list-style: none;
 
     }
