@@ -1,219 +1,428 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="css/stylesheet.css">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-
-
+<html lang="en">
 <head>
-    <title>Brennen Green</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brennen Green</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/stylesheet.css" />
 </head>
-
-
 <body>
-    <header style="background-color: #2c2d48;height:7.5vh;top:0;left:0;right:0;"></header>
-
-    <div id="head">
-        <h1 style="display:inline-block; margin:0;">Brennen Green</h1>
-        <ul class="flex-container" style="display:inline-flex; margin:0;">
-            <li class="flex-item"><a href="./graphics/index.html"><span>Graphics Projects</span></a></li>
-        </ul>
+  <header class="site-header">
+    <div class="wrapper nav">
+      <div style="display:flex; align-items:center; gap:.85rem;">
+        <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#243041,#11161d);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
+          <img src="media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:grayscale(60%) contrast(1.15);"/>
+        </div>
+        <strong style="font-size:1rem;letter-spacing:.5px;font-weight:600;color:#fff;">Brennen&nbsp;Green</strong>
+      </div>
+      <nav class="links">
+        <a href="#experience">Experience</a>
+        <a href="#credits">Credits</a>
+        <a href="#systems">Systems</a>
+        <a href="./graphics/index.html">Archive</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact" class="cta">Connect</a>
+      </nav>
     </div>
+  </header>
 
-
-    <hr id="head" style="height:1vh;background-color: #2c2d48;">
-    <div id="head">
-        <p style="text-align: justify; float: left; width: 70%;">
-            I am a software engineer interested in the domain of computer graphics. I am inspired by the intersection
-            of <b>art</b> and <b>technology</b>, specifically for the domains of <b>film</b> and <b>games</b>. I am particularly interested in
-            the topics of <b>rendering</b>, <b>animation</b>, <b>game engines</b>, <b>gpu architecture</b>, and <b>GPGPU computing</b>. 
-            Through my experiences working at Intel, Twitch, Blizzard Entertainment, and now, DreamWorks Animation I hope to continue my career
-            in the entertainment industry building pipelines that enable artists to fulfill their artistic vision to the fullest.
-            <br><br>
-    
-            Computer Graphics is my passion, and I love getting my hands dirty in the low-level details of hardware implementation
-            and how it can be used to enable the performance and accessibility of systems across games, movies, and the ever-increasing
-            world of GPGPU programming.
+  <main>
+    <!-- HERO -->
+    <section class="section" style="padding-top:5.5rem;" id="hero">
+      <div class="wrapper hero-intro">
+        <h1>Engineering scalable graphics & creative pipelines</h1>
+        <p class="hero-sub">
+          Shipping rendering & compute features, procedural pipeline tooling, and performance instrumentation that shorten iteration loops and keep complexity legible across animation, engines, mobile clients, and validation environments.
         </p>
-        <img src="media/prom.jpg" alt="Brennen" class="profile-image" style="border-radius: 50%; max-width: 20%; max-height: 20%; height: auto; margin-left: 5%; margin-bottom: 10px; float: left;">
-        <br style="clear: both;">
+        <div class="inline-stats signal-chips">
+          <span><strong>Film</strong> Lighting & pipeline tooling</span>
+          <span><strong>Game</strong> Engine particle & geometry systems</span>
+          <span><strong>Mobile</strong> Real‑time overlay render service</span>
+          <span><strong>Hardware</strong> Pre‑silicon validation automation</span>
+        </div>
+        <div class="hero-filament" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <div class="hr-accent"></div>
+
+    <!-- EXPERIENCE -->
+    <section class="section" id="experience">
+      <div class="wrapper">
+        <h2>Experience Narrative</h2>
+        <p>A progression from direct shot & asset support to system design, engine modernization, and platform‑level
+          performance + workflow instrumentation.</p>
+        <div class="experience-wrapper">
+          <div class="experience-timeline">
+
+            <div class="xp-node" data-range="Now">
+              <div class="xp-card">
+                <h3>DreamWorks Animation</h3>
+                <div class="xp-role">Software Engineer · Pipeline & Lighting Tooling</div>
+                <div class="xp-narrative">
+                  <div class="xp-line"><span class="key">Scope</span> Houdini ecosystem extensions, OpenUSD graph policies, surfacing & lighting automation.</div>
+                  <div class="xp-line"><span class="key">Leverage</span> Prior Lighting TD context to target friction in shot iteration & look development.</div>
+                </div>
+                <div class="xp-metrics">
+                  <div class="xp-metric"><strong>Stability</strong> Refactored node suite → reduced failure reports in surfacing chain.</div>
+                  <div class="xp-metric"><strong>Latency</strong> Iteration speed-ups via cached procedural layers & dependency pruning.</div>
+                  <div class="xp-metric"><strong>Adoption</strong> Internal OpenUSD initiatives (composition + hdMoonray integration points).</div>
+                </div>
+                <div class="xp-pill-row">
+                  <span class="pill" data-type="stack">USD</span>
+                  <span class="pill" data-type="stack">Houdini</span>
+                  <span class="pill" data-type="stack">Python</span>
+                  <span class="pill" data-type="stack">C++</span>
+                  <span class="pill" data-type="theme">Procedural</span>
+                  <span class="pill" data-type="theme">Lighting</span>
+                </div>
+                <div class="xp-footer">Tooling · Data Flow · Non‑Destructive Pipelines</div>
+              </div>
+            </div>
+
+            <div class="xp-node" data-range="Prev">
+              <div class="xp-card">
+                <h3>Blizzard Entertainment</h3>
+                <div class="xp-role">Graphics Programmer Intern · Engine, Simulation</div>
+                <div class="xp-narrative">
+                  <div class="xp-line"><span class="key">Focus</span> Compute shader particle / geometry emission systems for live service MMO.</div>
+                  <div class="xp-line"><span class="key">Constraint</span> Deliver fidelity while honoring long tail of legacy hardware.</div>
+                </div>
+                <div class="xp-metrics">
+                  <div class="xp-metric"><strong>Pipeline</strong> Mesh emission + animation path enabling surface aware VFX.</div>
+                  <div class="xp-metric"><strong>Features</strong> Force/Noise modules & shape emitters integrated in tooling UI.</div>
+                  <div class="xp-metric"><strong>Profiling</strong> Iterative GPU capture & perf instrumentation to bound frame cost.</div>
+                </div>
+                <div class="xp-pill-row">
+                  <span class="pill" data-type="stack">DirectX 11/12</span>
+                  <span class="pill" data-type="stack">HLSL Compute</span>
+                  <span class="pill" data-type="stack">Modern C++</span>
+                  <span class="pill" data-type="theme">Particles</span>
+                  <span class="pill" data-type="theme">Optimization</span>
+                </div>
+                <div class="xp-footer">Engine Modernization · GPU Workflows</div>
+              </div>
+            </div>
+
+            <div class="xp-node" data-range="2021">
+              <div class="xp-card">
+                <h3>Twitch Interactive</h3>
+                <div class="xp-role">Android Graphics Engineer Intern</div>
+                <div class="xp-narrative">
+                  <div class="xp-line"><span class="key">Goal</span> Introduce real‑time, low‑overhead overlay rendering to creator toolchain.</div>
+                  <div class="xp-line"><span class="key">Result</span> Increased active stream session persistence (internal KPI).</div>
+                </div>
+                <div class="xp-metrics">
+                  <div class="xp-metric"><strong>Rendering</strong> OpenGL ES compositor + GLSL effect stages.</div>
+                  <div class="xp-metric"><strong>Architecture</strong> Reactive data flow (RxJava) integrated with MVP boundaries.</div>
+                  <div class="xp-metric"><strong>Quality</strong> CI sustainment through JUnit5 & Mockito coverage.</div>
+                </div>
+                <div class="xp-pill-row">
+                  <span class="pill" data-type="stack">Kotlin</span>
+                  <span class="pill" data-type="stack">OpenGL ES</span>
+                  <span class="pill" data-type="stack">GLSL</span>
+                  <span class="pill" data-type="theme">Creator Tools</span>
+                  <span class="pill" data-type="theme">Mobile Perf</span>
+                </div>
+                <div class="xp-footer">Mobile Runtime Rendering · Client Systems</div>
+              </div>
+            </div>
+
+            <div class="xp-node xp-collapsed" data-range="20-21" >
+              <details class="xp-collapse">
+                <summary><span>Intel Corporation – Pre‑Silicon Validation Engineer Intern</span></summary>
+                <div class="xp-card">
+                  <h3>Intel Corporation</h3>
+                  <div class="xp-role">Pre‑Silicon Validation Engineer</div>
+                  <div class="xp-narrative">
+                    <div class="xp-line"><span class="key">Objective</span> Increase early detection of configuration regressions in simulated SoC.</div>
+                    <div class="xp-line"><span class="key">Method</span> Deterministic Simics scenarios + automated C/Python harnesses.</div>
+                  </div>
+                  <div class="xp-metrics">
+                    <div class="xp-metric"><strong>Coverage</strong> Firmware initialization & microcode interaction pathways.</div>
+                    <div class="xp-metric"><strong>Automation</strong> Bash scripts shortening repetitive validation loops.</div>
+                  </div>
+                  <div class="xp-pill-row">
+                    <span class="pill" data-type="stack">C</span>
+                    <span class="pill" data-type="stack">Python</span>
+                    <span class="pill" data-type="stack">Simics</span>
+                    <span class="pill" data-type="theme">Validation</span>
+                    <span class="pill" data-type="theme">Architecture</span>
+                  </div>
+                  <div class="xp-footer">Deterministic Test Surfaces · Early Regression Surfacing</div>
+                </div>
+              </details>
+            </div>
+
+            <div class="xp-node xp-collapsed" data-range="20‑22">
+              <details class="xp-collapse">
+                <summary><span>University of Kentucky – Machine Learning Research Assistant</span></summary>
+                <div class="xp-card">
+                  <h3>University of Kentucky</h3>
+                  <div class="xp-role">Machine Learning Research Assistant · Mar 2020 – Oct 2022</div>
+                  <div class="xp-narrative">
+                    <div class="xp-line"><span class="key">Publications</span> 2 peer‑reviewed papers on GPU‑accelerated biomedical imaging; conference presentations.</div>
+                    <div class="xp-line"><span class="key">Enablement</span> Trained researchers on optimized visualization workflows for biomedical datasets.</div>
+                  </div>
+                  <div class="xp-metrics">
+                    <div class="xp-metric"><strong>Acceleration</strong> CUDA / shader pipelines reduced imaging preprocessing latency.</div>
+                    <div class="xp-metric"><strong>Workflow</strong> Standardized data prep & visualization scripts adopted across lab.</div>
+                  </div>
+                  <div class="xp-pill-row">
+                    <span class="pill" data-type="stack">Python</span>
+                    <span class="pill" data-type="stack">CUDA</span>
+                    <span class="pill" data-type="stack">PyTorch</span>
+                    <span class="pill" data-type="theme">Imaging</span>
+                    <span class="pill" data-type="theme">GPU</span>
+                  </div>
+                  <div class="xp-footer">Biomedical Imaging · GPU Acceleration · Research Tooling</div>
+                </div>
+              </details>
+            </div>
+
+            <div class="xp-node xp-collapsed" data-range="19‑20">
+              <details class="xp-collapse">
+                <summary><span>University of Kentucky – Junior Systems Automation Engineer</span></summary>
+                <div class="xp-card">
+                  <h3>University of Kentucky</h3>
+                  <div class="xp-role">Junior Systems Automation Engineer · May 2019 – Aug 2020</div>
+                  <div class="xp-narrative">
+                    <div class="xp-line"><span class="key">Scope</span> Department software deployment & internal application process automation.</div>
+                    <div class="xp-line"><span class="key">Shift</span> Transitioned from ad‑hoc servers to reproducible containerized delivery.</div>
+                  </div>
+                  <div class="xp-metrics">
+                    <div class="xp-metric"><strong>Automation</strong> Streamlined faculty/staff job application processing scripts.</div>
+                    <div class="xp-metric"><strong>Containerization</strong> Re‑packaged legacy services into Docker images for portability.</div>
+                    <div class="xp-metric"><strong>Portal</strong> Maintained faculty data portal (JavaScript / PHP) with iterative enhancements.</div>
+                  </div>
+                  <div class="xp-pill-row">
+                    <span class="pill" data-type="stack">Python</span>
+                    <span class="pill" data-type="stack">Bash</span>
+                    <span class="pill" data-type="stack">Docker</span>
+                    <span class="pill" data-type="stack">JavaScript</span>
+                    <span class="pill" data-type="stack">PHP</span>
+                    <span class="pill" data-type="theme">Automation</span>
+                  </div>
+                  <div class="xp-footer">Deployment Modernization · Internal Process Tooling</div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILM & GAME CREDITS -->
+    <section class="section" id="credits">
+      <div class="wrapper">
+        <h2>Production Credits</h2>
+        <p>Representative production involvement across feature animation, large‑scale game engine development, and mobile platform client engineering.</p>
+
+        <div class="credits-group" aria-labelledby="cg-dwa">
+          <h3 id="cg-dwa" class="credits-label">DreamWorks Animation (Feature Film)</h3>
+          <div class="credits-grid">
+            <div class="credit-card" data-kind="film" title="The Bad Guys 2">
+              <img src="media/credits/bad-guys-2.jpg" loading="lazy" alt="The Bad Guys 2 promotional artwork" />
+              <div class="credit-meta">
+                <h4>The Bad Guys 2</h4>
+                <span>Tools / Lighting, LookDev, FX</span>
+              </div>
+            </div>
+            <div class="credit-card" data-kind="film" title="The Wild Robot">
+              <img src="media/credits/wild-robot.jpg" loading="lazy" alt="The Wild Robot promotional artwork" />
+              <div class="credit-meta">
+                <h4>The Wild Robot</h4>
+                <span>Pipeline / Lighting, Tools / Lighting, LookDev</span>
+              </div>
+            </div>
+            <div class="credit-card" data-kind="film" title="Trolls 3 (Band Together)">
+              <img src="media/credits/trolls-3.jpg" loading="lazy" alt="Trolls 3 (Band Together) poster" />
+              <div class="credit-meta">
+                <h4>Trolls 3</h4>
+                <span>Pipeline / Lighting</span>
+              </div>
+            </div>
+            <div class="credit-card" data-kind="film" title="Dog Man">
+              <img src="media/credits/dog-man.jpg" loading="lazy" alt="Dog Man film promotional image" />
+              <div class="credit-meta">
+                <h4>Dog Man</h4>
+                <span>Tools / Lighting, LookDev</span>
+              </div>
+            </div>
+            <div class="credit-card" data-kind="film" title="Kung Fu Panda 4">
+              <img src="media/credits/kung-fu-panda-4.jpg" loading="lazy" alt="Kung Fu Panda 4 poster" />
+              <div class="credit-meta">
+                <h4>Kung Fu Panda 4</h4>
+                <span>Pipeline / Lighting</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="credits-group" aria-labelledby="cg-blizzard">
+          <h3 id="cg-blizzard" class="credits-label">Blizzard Entertainment (Game Engine)</h3>
+          <div class="credits-grid">
+            <div class="credit-card" data-kind="game" title="World of Warcraft (Dragonflight Era)">
+              <img src="media/credits/world-of-warcraft.jpg" loading="lazy" alt="World of Warcraft Dragonflight key art" />
+              <div class="credit-meta">
+                <h4>World of Warcraft</h4>
+                <span>Engine / Graphics</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="credits-group" aria-labelledby="cg-twitch">
+          <h3 id="cg-twitch" class="credits-label">Twitch Interactive (Mobile Platform)</h3>
+          <div class="credits-grid">
+            <div class="credit-card" data-kind="app" title="Twitch Android Client">
+              <img src="media/credits/twitch.jpg" loading="lazy" alt="Twitch Android client branding" />
+              <div class="credit-meta">
+                <h4>Twitch Android App</h4>
+                <span>Mobile Creator Tools</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="hr-accent"></div>
+
+    <!-- SYSTEMS & CAPABILITIES -->
+    <section class="section" id="systems">
+      <div class="wrapper">
+        <h2>Core Engineering Strengths</h2>
+        <p>I build graphics and content tooling systems that stay performant, observable, and easy for artists & engineers to evolve. Below is a concise view of the durable skill surface I apply across roles.</p>
+        <div class="systems-layout" style="gap:2.5rem;">
+          <div class="systems-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+            <div class="sys-block">
+              <h3>Rendering & GPU</h3>
+              <p>Real‑time / offline shading & compute features with explicit performance envelopes and profiling hooks.</p>
+              <ul class="mini-list">
+                <li>PBR & lighting integration</li>
+                <li>Particles / instancing paths</li>
+                <li>Shader authoring & review</li>
+                <li>GPU capture analysis</li>
+              </ul>
+            </div>
+            <div class="sys-block">
+              <h3>Procedural & Data Tooling</h3>
+              <p>USD / node graph workflows exposing intent early; non‑destructive layering & dependency reduction.</p>
+              <ul class="mini-list">
+                <li>Layering & variant policy</li>
+                <li>Dependency pruning & cache use</li>
+                <li>Publish validation surfaces</li>
+                <li>Contextual UI affordances</li>
+              </ul>
+            </div>
+            <div class="sys-block">
+              <h3>Performance & Reliability</h3>
+              <p>Measurement culture: budgets, instrumentation, regression nets, staged hardening before scale.</p>
+              <ul class="mini-list">
+                <li>Frame & task instrumentation</li>
+                <li>Resource / memory budgeting</li>
+                <li>Deterministic test scenes</li>
+                <li>Guardrails & activation flags</li>
+              </ul>
+            </div>
+            <div class="sys-block">
+              <h3>Iteration & Delivery</h3>
+              <p>Ambiguity → actionable slices; feedback surfaced early to keep users in the loop.</p>
+              <ul class="mini-list">
+                <li>RFC & scope framing</li>
+                <li>Vertical slice prototyping</li>
+                <li>Integration & rollout gates</li>
+                <li>Adoption + impact follow‑through</li>
+              </ul>
+            </div>
+            <div class="sys-block">
+              <h3>Collaboration & Enablement</h3>
+              <p>Translate between engine, tooling, and artist mental models; reduce opaque complexity.</p>
+              <ul class="mini-list">
+                <li>Cross‑discipline alignment</li>
+                <li>Lightweight documentation</li>
+                <li>On‑ramp & training material</li>
+                <li>Healthy review culture</li>
+              </ul>
+            </div>
+            <div class="sys-block">
+              <h3>Technical Judgment</h3>
+              <p>Bias for solutions that are testable, explainable, reversible; explicit trade‑off framing.</p>
+              <ul class="mini-list">
+                <li>Trade‑off articulation</li>
+                <li>Latency vs fidelity balance</li>
+                <li>Risk surfaced early</li>
+                <li>Maintenance cost awareness</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO / MEDIA GRID -->
+    <section class="section" id="portfolio">
+      <div class="wrapper">
+        <h2>Selected Project Media</h2>
+        <p>Visual slices from independent engines, simulation experiments, and rendering studies.</p>
+        <div class="media-grid">
+          <button class="media-tile" data-media-tile data-label="SDF Raymarch" aria-label="Raymarch shader"><img src="media/portfolio/random.gif" alt="Random"/></button>
+          <button class="media-tile" data-media-tile data-label="Path Tracer" aria-label="Cornell box"><img src="media/portfolio/cornell.jpg" alt="Cornell"/></button>
+          <button class="media-tile" data-media-tile data-label="PBR Models" aria-label="Physically based rendering"><img src="media/portfolio/pbr.gif" alt="PBR"/></button>
+          <button class="media-tile" data-media-tile data-label="HDR Exposure" aria-label="HDR Exposure"><img src="media/portfolio/hdr-exposure.gif" alt="HDR"/></button>
+          <button class="media-tile" data-media-tile data-label="Walrus Anim" aria-label="Animation"><img src="media/portfolio/walrus.gif" alt="Walrus"/></button>
+          <button class="media-tile" data-media-tile data-label="Lunar Surface" aria-label="Moon"><img src="media/portfolio/moon.jpg" alt="Moon"/></button>
+          <button class="media-tile" data-media-tile data-label="Erosion Sim" aria-label="Erosion Simulation"><img src="media/portfolio/erosionfast.gif" alt="Erosion"/></button>
+          <button class="media-tile" data-media-tile data-label="CSG Ops" aria-label="CSG"><img src="media/portfolio/csg.gif" alt="CSG"/></button>
+          <button class="media-tile" data-media-tile data-label="Diff Geometry" aria-label="Bunny"><img src="media/portfolio/bunny.gif" alt="Bunny"/></button>
+          <button class="media-tile" data-media-tile data-label="Point Cloud" aria-label="Point Cloud"><img src="media/portfolio/points-statue.jpg" alt="Point Cloud"/></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / LIGHT CTA -->
+    <section class="section" id="contact" style="padding-bottom:6rem;">
+      <div class="wrapper">
+        <h2>Contact / Connect</h2>
+        <p>For collaboration or technical discussion related to rendering, engine systems, or tooling—feel free to reach out.</p>
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:1.5rem;">
+          <div class="panel">
+            <div class="tagline">Direct</div>
+            <h3>Email</h3>
+            <p><a href="mailto:brennengreen@outlook.com">brennengreen@outlook.com</a></p>
+            <p class="muted">Typical response < 48h.</p>
+          </div>
+          <div class="panel">
+            <div class="tagline">Profiles</div>
+            <h3>External</h3>
+            <p>
+              <a href="https://github.com/brennengreen" target="_blank" rel="noopener">GitHub</a><br/>
+              <a href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="noopener">LinkedIn</a>
+            </p>
+            <p class="muted">Additional technical write‑ups live in the project archive.</p>
+          </div>
+          <div class="panel">
+            <div class="tagline">Archive</div>
+            <h3>Legacy / Extended</h3>
+            <p>Older write‑ups, exploratory prototypes, and incremental engine dev logs are retained in the archive section for historical context.</p>
+            <p class="muted">Continuously pruned for clarity & relevance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="padding:2.5rem 0; background:#0b0d11; border-top:1px solid rgba(255,255,255,.05);">
+    <div class="wrapper" style="display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:space-between;">
+      <span style="font-size:.7rem; letter-spacing:.75px; color:var(--text-dim);">© <script>document.write(new Date().getFullYear())</script> Brennen Green</span>
+      <span class="muted" style="font-size:.65rem;">Site: custom static build · No trackers</span>
     </div>
-    
-    <div id="head">
-        <h2 style="margin: 0;">
-            Work Experience
-        </h2>
-        <hr style="height:0.25vh;background-color: #2c2d48;margin: 0;">
-        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
-            <div id="desc">
-                <h3 style="margin: 0;">DreamWorks Animation - Software Engineer</h3>
-                <hr style="margin: 0; color: #2c2d48;">
-                <p>
-                    - Building tools to streamline artist workflows in DCC software such as Houdini and Nuke using Python and C++ <br>
-                    - Utilizing computer graphics tools such as USD, Alembic, and more to create non-destructive procedural workflows <br>
-                    - Directly serving production lighting and surfacing departments by delievering new tools and workflows crucial to show development <br>
-                    - Involved with many studio wide efforts to maintain, and improve, our production pipeline's efficiency and artist's enjoyment <br>
-                </p>
-                <br>
-                <p>
-                    At DreamWorks Animation I am a Software Engineer on the technology side of the studio. I work
-                    with lighting and surfacing departments on a day-to-day basis to develop and maintain our Houdini ecosystem.
-                    Aside from my primary responbilities, I am one of a group of individuals at the studio aiming to progress our 
-                    studios OpenUSD ecosystem, both for our proprietary tooling and open-source tools such as hdMoonray. Prior to my 
-                    current role I also spent a year directly supporting production artists as a feature film Lighting TD.
-                </p>
-            </div>
-        </div>
+  </footer>
 
-        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
-            <div id="desc">
-                <h3 style="margin: 0;">Blizzard Entertainment - Graphics Programmer</h3>
-                <hr style="margin: 0; color: #2c2d48;">
-                <p>
-                    - Worked with technologies such as DirectX, HLSL, and C++ to build modern, compute oriented, particle system.<br>
-                    - Owned development of format-flexible mesh processing and animation system to emit particles from the surface of dynamic meshes<br>
-                    - Built many small features and additions to the system such as: physical forces, continuous-noise module, and emitter geometries<br>
-                    - Responsible for writing and debugging compute shader pipelines using HLSL and profiling tools like RenderDoc<br>
-                    - Write performant, hardware considerate code capable of running on 20-year old machines and cutting edge ones<br>
-                </p>
-                <br>
-                <p>
-                    At Blizzard I work on the game engine for World of Warcraft, I'm part of a team of engineers bringing up several modern iterations of
-                    systems throughout the engine. Specifically, I have worked quite extensively with geometry and animation pipelines to help build
-                    a new compute shader based particle system that will allow VFX artists to create high-fidelity, and high-performing, in-game VFX.
-                </p>
-            </div>
-        </div>
-
-        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
-            <div id="desc">
-                <h3 style="margin: 0;">Twitch Interactive - Android Graphics Engineer</h3>
-                <hr style="margin: 0; color: #2c2d48;">
-                <p>
-                    - Owned creator tools that improved time spent streaming by >15% developed with Dagger, RxJava, and Kotlin<br>
-                    - Pioneered system utilizing OpenGL ES rendering pipeline and GLSL shaders for rendering dynamic visuals<br>
-                    - Developed automated unit tests for MVP architecture to maintain CI/CD with JUnit5 and Mockito<br>
-                </p>
-                <br>
-                <p>
-                    I joined Twitch as an Android mobile engineer, and while working on the my summer internship project I saw a unique opportunity
-                    to utilize OpenGL ES within our application to create a new suite a creator tools aimed at improving stream branding, accessibility,
-                    and viewer interactivity. Coming back for the fall, I built a 2D rendering service which could was used to render stream elements as overlays to the streamers
-                    content. 
-                </p>
-            </div>
-        </div>
-
-        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
-            <div id="desc">
-                <h3 style="margin: 0;">Intel Corporation - Pre-Silicon Validation Engineer</h3>
-                <hr style="margin: 0; color: #2c2d48;">
-                <p>
-                    - Analyzed system design using computer architecture knowledge to design validation tests in C and Python<br>
-                    - Validated pre-silicon processor firmware configurations simulated on FPGA in Simics to detect vulnerabilities<br>
-                    - Developed scripts in Bash to streamline validation workflow in UNIX / Linux environment<br>
-                </p>
-                <br>
-                <p>
-                    At Intel I got to work on the Alder Lake family of CPUs writing automated test cases to aid in the pre-silicon validation
-                    of CPU architecture. I frequently worked with C, Python, and Simics, to write these test cases for the driver engineers.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <div id="head">
-        <h2 style="margin: 0;">
-            About Me
-        </h2>
-        <hr style="height:0.25vh;background-color: #2c2d48;margin: 0;">
-
-        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
-            <div id="desc">
-                <h3 style="margin: 0;">Software Development / Computer Graphics</h3>
-                <hr style="margin: 0; color: #2c2d48;">
-                <p>
-                    As a software developer, I aim to build creative solutions to problems which impact artists and end-users. 
-                    In the past I've worked as a <b>Graphics Programmer</b> at both <b>Twitch</b> and <b>Blizzard Entertainment</b>, building tools which 
-                    could be used by artists and creators to fulfil their creative vision. Now, I am a <b>Software Engineer</b> at <b>DreamWorks</b>, working day-to-day
-                    with artists to build tools that complement and enhance procedural workflows in Houdini.
-                </p>
-            </div>
-        </div>
-
-        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
-            <div id="desc">
-                <h3 style="margin: 0;">Personal Projects</h3>
-                <hr style="margin: 0; color: #2c2d48;">
-                <p>
-                    Personally, my work is focused entirely on computer graphics. Typically I am working on some sort of
-                    <b>rendering</b> engine, both <b>physically based</b> and <b>real-time</b>. I have written several rendering algorithms from scratch
-                    for my own developmental purposes as well. My goal at the moment is to maintain two fully functional engines. One for
-                    real-time optimization work and another for photorealistic work. In development with these engines
-                    I typically work with <b>Modern C++</b>, <b>OpenGL</b>, and <b>Vulkan</b>.
-                </p>
-            </div>
-        </div>
-
-        <div class="flex-container" style="margin: 0; margin-top: 1rem;">
-            <div id="desc">
-                <h3 style="margin: 0;">Research</h3>
-                <hr style="margin: 0; color: #2c2d48;">
-                <p>
-                    While an undergraduate, I did research which falls into primarily two areas: <b>Computer Graphics</b> and <b>Machine Learning</b>.
-                    As a undergraduate research assistant at UK I worked in both imaging and machine learning. While working
-                    in a <b>biomedical imaging lab</b> I developed an optimized biomedical imaging device that would allow the reconstruction of cerebral
-                    bloodflow using CUDA and MATLAB. I also did research for the application of convolutional neural networks
-                    to characterize part defects and optimize manufacturing processes with the <b>Institute of Sustainable Manufacturing</b> at UK. The bulk
-                    of my work involves heavy amounts of <b>data analysis and processing</b> using <b>Python</b> and tools such as 
-                    <b>Tensorflow</b>, <b>Keras</b>, <b>Pytorch</b>, <b>CUDA</b>, and <b>Pandas</b> to enable my machine learning workflow.
-                 </p>
-            </div>
-        </div>
-    </div>
-
-    <div id="head">
-        <h2 style="margin: 0;">
-            Featured Portfolio
-        </h2>
-        <hr style="height:0.25vh;background-color: #2c2d48;margin: 0;">
-        
-        <div id="img-grid">
-            <div id="row">
-                <div id="column">
-                    <img src="./media/portfolio/random.gif" style="width:100%"/>
-                </div>
-                <div id="column">
-                    <img src="./media/portfolio/cornell.jpg" style="width:100%"/>
-                </div>
-                <div id="column">
-                    <img src="./media/portfolio/pbr.gif" style="width:100%"/>
-                </div>
-                <div id="column">
-                    <img src="./media/portfolio/hdr-exposure.gif" style="width:100%"/>
-                </div>  
-                <div id="column">
-                    <img src="./media/portfolio/walrus.gif" style="width:100%"/>
-                </div>
-                <div id="column">
-                    <img src="./media/portfolio/moon.jpg" style="width:100%"/>
-                </div>
-                <div id="column">
-                    <img src="./media/portfolio/erosionfast.gif" style="width:100%"/>
-                </div>
-                <div id="column">
-                    <img src="./media/portfolio/csg.gif" style="width:100%"/>
-                </div>
-                <div id="column">
-                    <img src="./media/portfolio/bunny.gif" style="width:100%"/>
-                </div>
-                <div id="column">
-                    <img src="./media/portfolio/points-statue.jpg" style="width:100%"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div style="height: 10vh;"></div>
-
-    <footer style="width:100%;background-color: #2c2d48;height:7.5vh;bottom:0;left:0;right:0;"></footer>
+  <script src="js/interactive-grid.js" type="module"></script>
 </body>
+</html>
