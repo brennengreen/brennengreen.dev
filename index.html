@@ -9,14 +9,18 @@
   <link rel="stylesheet" href="css/stylesheet.css" />
 </head>
 <body>
+  <!-- Scroll progress indicator -->
+  <div class="scroll-progress" aria-hidden="true"></div>
+
   <header class="site-header">
     <div class="wrapper nav">
       <div style="display:flex; align-items:center; gap:.85rem;">
-        <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#243041,#11161d);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
+        <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#2a1a41,#110a1d);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
           <img src="media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:grayscale(60%) contrast(1.15);"/>
         </div>
         <strong style="font-size:1rem;letter-spacing:.5px;font-weight:600;color:#fff;">Brennen&nbsp;Green</strong>
       </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
       <nav class="links">
         <a href="#experience">Experience</a>
         <a href="#credits">Credits</a>
@@ -32,42 +36,67 @@
     <!-- HERO -->
     <section class="section" style="padding-top:5.5rem;" id="hero">
       <div class="wrapper hero-intro">
-        <h1>Engineering scalable pipelines and workflows</h1>
+        <div class="hero-glow" aria-hidden="true"></div>
+        <h1>Building the tools behind the things you love</h1>
         <p class="hero-sub">
-          Designing and shipping scalable solutions to specialized problems across the software engineering discipline.
+          Platform engineer and graphics programmer shipping tools and systems across studios like DreamWorks, Blizzard, and Xbox.
         </p>
         <div class="inline-stats signal-chips">
-          <span><strong>Film</strong> Lighting & Pipeline Tooling</span>
-          <span><strong>Game</strong> Engine Systems</span>
-          <span><strong>General</strong> Software Design & Solution Engineering</span>
+          <span><strong>Platform</strong> Developer tools & partner workflows</span>
+          <span><strong>Film</strong> Lighting & rendering pipelines</span>
+          <span><strong>Game</strong> Engine systems & GPU compute</span>
         </div>
         <div class="hero-filament" aria-hidden="true"></div>
       </div>
     </section>
 
-    <div class="hr-accent"></div>
+    <div class="section-divider"></div>
 
     <!-- EXPERIENCE -->
     <section class="section" id="experience">
       <div class="wrapper">
-        <h2>Experience</h2>
-        <p>A progression from direct shot & asset support to system design, engine modernization, and platform‑level
-          performance + workflow instrumentation.</p>
+        <span class="section-num reveal">01 — Experience</span>
+        <h2 class="reveal">Experience</h2>
+        <p class="reveal">From hands-on rendering and pipeline work to platform-level systems design and partner engineering — each role built on the last.</p>
         <div class="experience-wrapper">
           <div class="experience-timeline">
 
-            <div class="xp-node" data-range="Now">
+            <div class="xp-node reveal" data-range="Now">
+              <div class="xp-card">
+                <h3>Microsoft — Xbox</h3>
+                <div class="xp-role">Technical Account Manager</div>
+                <div class="xp-narrative">
+                  <div class="xp-line"><span class="key">Scope</span> Primary technical point of contact for AAA studios shipping on Xbox — from pre-production through launch.</div>
+                  <div class="xp-line"><span class="key">Focus</span> Ensuring third-party titles integrate smoothly with Xbox platform services, GDK, and certification requirements.</div>
+                </div>
+                <div class="xp-metrics">
+                  <div class="xp-metric"><strong>Partners</strong> Guiding studios through certification, middleware integration, and platform best practices.</div>
+                  <div class="xp-metric"><strong>Platform</strong> GDK adoption, cross-platform tooling support, and developer experience improvements.</div>
+                  <div class="xp-metric"><strong>Impact</strong> Bridging engineering, partner teams, and product to keep launches on track.</div>
+                </div>
+                <div class="xp-pill-row">
+                  <span class="pill" data-type="stack">Xbox Platform</span>
+                  <span class="pill" data-type="stack">GDK</span>
+                  <span class="pill" data-type="theme">Developer Relations</span>
+                  <span class="pill" data-type="theme">AAA Partnerships</span>
+                  <span class="pill" data-type="theme">Middleware</span>
+                </div>
+                <div class="xp-footer">Partner Engineering · Platform Advocacy · Launch Support</div>
+              </div>
+            </div>
+
+            <div class="xp-node reveal" data-range="Prev">
               <div class="xp-card">
                 <h3>DreamWorks Animation</h3>
                 <div class="xp-role">Software Engineer · Pipeline & Lighting Tooling</div>
                 <div class="xp-narrative">
                   <div class="xp-line"><span class="key">Scope</span> Houdini ecosystem extensions, OpenUSD workflows, surfacing & lighting automation.</div>
-                  <div class="xp-line"><span class="key">Leverage</span> Prior Lighting TD context to target friction in shot iteration & look development.</div>
+                  <div class="xp-line"><span class="key">Leverage</span> Prior Lighting TD experience to target real friction points in shot iteration and look development.</div>
                 </div>
                 <div class="xp-metrics">
-                  <div class="xp-metric"><strong>Stability</strong> Introduced new CI/CD systems to improve artist workflows.</div>
-                  <div class="xp-metric"><strong>Latency</strong> Iteration speed-ups via cached procedural layers & dependency pruning.</div>
-                  <div class="xp-metric"><strong>Adoption</strong> Internal OpenUSD initiatives (pipeline, hdMoonray integration, systems improvements).</div>
+                  <div class="xp-metric"><strong>Stability</strong> Introduced CI/CD systems that reduced tool failures and improved artist confidence.</div>
+                  <div class="xp-metric"><strong>Latency</strong> Iteration speed-ups via cached procedural layers and dependency pruning.</div>
+                  <div class="xp-metric"><strong>Adoption</strong> Drove internal OpenUSD initiatives — pipeline integration, hdMoonray, and systems improvements.</div>
                 </div>
                 <div class="xp-pill-row">
                   <span class="pill" data-type="stack">USD</span>
@@ -79,18 +108,18 @@
               </div>
             </div>
 
-            <div class="xp-node" data-range="Prev">
+            <div class="xp-node reveal" data-range="2022">
               <div class="xp-card">
                 <h3>Blizzard Entertainment</h3>
-                <div class="xp-role">Graphics Programmer Intern · Engine, Simulation</div>
+                <div class="xp-role">Graphics Programmer Intern</div>
                 <div class="xp-narrative">
-                  <div class="xp-line"><span class="key">Focus</span> Compute shader particle / geometry emission systems for live service MMO.</div>
-                  <div class="xp-line"><span class="key">Constraint</span> Deliver fidelity while honoring long tail of legacy hardware.</div>
+                  <div class="xp-line"><span class="key">Focus</span> GPU-driven particle system for World of Warcraft — compute shaders, mesh emission, and VFX tooling.</div>
+                  <div class="xp-line"><span class="key">Constraint</span> Performance targets across a wide hardware range, including legacy GPU support.</div>
                 </div>
                 <div class="xp-metrics">
-                  <div class="xp-metric"><strong>Pipeline</strong> Mesh emission + animation path enabling surface aware VFX.</div>
-                  <div class="xp-metric"><strong>Features</strong> Force/Noise modules & shape emitters integrated in tooling UI.</div>
-                  <div class="xp-metric"><strong>Profiling</strong> Iterative GPU capture & perf instrumentation to bound frame cost.</div>
+                  <div class="xp-metric"><strong>Pipeline</strong> Built mesh emission features enabling richer VFX artist workflows.</div>
+                  <div class="xp-metric"><strong>Features</strong> Force fields, noise functions, and shape emitters for the compute particle system.</div>
+                  <div class="xp-metric"><strong>Profiling</strong> GPU profiling and frame budget optimization using RenderDoc and internal tools.</div>
                 </div>
                 <div class="xp-pill-row">
                   <span class="pill" data-type="stack">DirectX 11/12</span>
@@ -99,22 +128,22 @@
                   <span class="pill" data-type="theme">Particles</span>
                   <span class="pill" data-type="theme">Optimization</span>
                 </div>
-                <div class="xp-footer">Engine Modernization · GPU Workflows</div>
+                <div class="xp-footer">Compute Shaders · GPU Particles · Engine Graphics</div>
               </div>
             </div>
 
-            <div class="xp-node" data-range="2021">
+            <div class="xp-node reveal" data-range="2021">
               <div class="xp-card">
                 <h3>Twitch Interactive</h3>
                 <div class="xp-role">Android Graphics Engineer Intern</div>
                 <div class="xp-narrative">
-                  <div class="xp-line"><span class="key">Goal</span> Introduce real‑time, low‑overhead overlay rendering to creator toolchain.</div>
-                  <div class="xp-line"><span class="key">Result</span> Increased active stream session persistence (internal KPI).</div>
+                  <div class="xp-line"><span class="key">Goal</span> Build a performant overlay rendering system for the Twitch Android creator tools.</div>
+                  <div class="xp-line"><span class="key">Result</span> Improved stream overlay performance on mobile, directly supporting creator workflows.</div>
                 </div>
                 <div class="xp-metrics">
-                  <div class="xp-metric"><strong>Rendering</strong> OpenGL ES compositor + GLSL effect stages.</div>
-                  <div class="xp-metric"><strong>Architecture</strong> Reactive data flow (RxJava) integrated with MVP boundaries.</div>
-                  <div class="xp-metric"><strong>Quality</strong> CI sustainment through JUnit5 & Mockito coverage.</div>
+                  <div class="xp-metric"><strong>Rendering</strong> OpenGL ES overlay pipeline optimized for low-end Android devices.</div>
+                  <div class="xp-metric"><strong>Architecture</strong> RxJava reactive data flows with careful lifecycle and memory management.</div>
+                  <div class="xp-metric"><strong>Quality</strong> Comprehensive JUnit and integration test coverage for the rendering layer.</div>
                 </div>
                 <div class="xp-pill-row">
                   <span class="pill" data-type="stack">Kotlin</span>
@@ -123,11 +152,11 @@
                   <span class="pill" data-type="theme">Creator Tools</span>
                   <span class="pill" data-type="theme">Mobile Perf</span>
                 </div>
-                <div class="xp-footer">Mobile Runtime Rendering · Client Systems</div>
+                <div class="xp-footer">Mobile Graphics · Creator Tools · Reactive Architecture</div>
               </div>
             </div>
 
-            <div class="xp-node xp-collapsed" data-range="20-21" >
+            <div class="xp-node xp-collapsed reveal" data-range="20-21" >
               <details class="xp-collapse">
                 <summary><span>Intel Corporation – Pre‑Silicon Validation Engineer Intern</span></summary>
                 <div class="xp-card">
@@ -153,7 +182,7 @@
               </details>
             </div>
 
-            <div class="xp-node xp-collapsed" data-range="20‑22">
+            <div class="xp-node xp-collapsed reveal" data-range="20‑22">
               <details class="xp-collapse">
                 <summary><span>University of Kentucky – Machine Learning Research Assistant</span></summary>
                 <div class="xp-card">
@@ -179,7 +208,7 @@
               </details>
             </div>
 
-            <div class="xp-node xp-collapsed" data-range="19‑20">
+            <div class="xp-node xp-collapsed reveal" data-range="19‑20">
               <details class="xp-collapse">
                 <summary><span>University of Kentucky – Junior Systems Automation Engineer</span></summary>
                 <div class="xp-card">
@@ -213,10 +242,45 @@
     <!-- FILM & GAME CREDITS -->
     <section class="section" id="credits">
       <div class="wrapper">
-        <h2>Production Credits</h2>
-        <p>Representative production involvement across feature animation, large‑scale game engine development, and mobile platform client engineering.</p>
+        <span class="section-num reveal">02 — Credits</span>
+        <h2 class="reveal">Production Credits</h2>
+        <p class="reveal">Shipped products I've contributed to — from feature films and game engines to platform services.</p>
 
-        <div class="credits-group" aria-labelledby="cg-dwa">
+        <div class="credits-group reveal" aria-labelledby="cg-xbox">
+          <h3 id="cg-xbox" class="credits-label">Microsoft — Xbox (Platform Partner)</h3>
+          <div class="credits-grid">
+            <div class="credit-card" data-kind="app" title="Xbox Platform">
+              <img src="media/credits/xbox-platform.jpg" loading="lazy" alt="Xbox platform branding" />
+              <div class="credit-meta">
+                <h4>Xbox Platform</h4>
+                <span>Developer Relations / TAM</span>
+              </div>
+            </div>
+            <div class="credit-card" data-kind="game" title="Marathon — Bungie">
+              <img src="media/credits/marathon.jpg" loading="lazy" alt="Marathon by Bungie key art" />
+              <div class="credit-meta">
+                <h4>Marathon</h4>
+                <span>Platform Partner</span>
+              </div>
+            </div>
+            <div class="credit-card" data-kind="game" title="Helldivers 2 — Arrowhead">
+              <img src="media/credits/helldivers-2.jpg" loading="lazy" alt="Helldivers 2 key art" />
+              <div class="credit-meta">
+                <h4>Helldivers 2</h4>
+                <span>Platform Partner</span>
+              </div>
+            </div>
+            <div class="credit-card" data-kind="game" title="MLB The Show — San Diego Studio">
+              <img src="media/credits/mlb-the-show.jpg" loading="lazy" alt="MLB The Show key art" />
+              <div class="credit-meta">
+                <h4>MLB The Show</h4>
+                <span>Platform Partner</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="credits-group reveal" aria-labelledby="cg-dwa">
           <h3 id="cg-dwa" class="credits-label">DreamWorks Animation (Feature Film)</h3>
           <div class="credits-grid">
             <div class="credit-card" data-kind="film" title="The Bad Guys 2">
@@ -257,7 +321,7 @@
           </div>
         </div>
 
-        <div class="credits-group" aria-labelledby="cg-blizzard">
+        <div class="credits-group reveal" aria-labelledby="cg-blizzard">
           <h3 id="cg-blizzard" class="credits-label">Blizzard Entertainment (Game Engine)</h3>
           <div class="credits-grid">
             <div class="credit-card" data-kind="game" title="World of Warcraft (Dragonflight Era)">
@@ -270,7 +334,7 @@
           </div>
         </div>
 
-        <div class="credits-group" aria-labelledby="cg-twitch">
+        <div class="credits-group reveal" aria-labelledby="cg-twitch">
           <h3 id="cg-twitch" class="credits-label">Twitch Interactive (Mobile Platform)</h3>
           <div class="credits-grid">
             <div class="credit-card" data-kind="app" title="Twitch Android Client">
@@ -286,72 +350,73 @@
       </div>
     </section>
 
-    <div class="hr-accent"></div>
+    <div class="section-divider"></div>
 
     <!-- SYSTEMS & CAPABILITIES -->
     <section class="section" id="systems">
       <div class="wrapper">
-        <h2>Core Engineering Strengths</h2>
-        <p>I build graphics and content tooling systems that stay performant, observable, and easy for artists & engineers to evolve. Below is a concise view of the durable skill surface I apply across roles.</p>
+        <span class="section-num reveal">03 — Strengths</span>
+        <h2 class="reveal">Core Engineering Strengths</h2>
+        <p class="reveal">Recurring themes across roles — the skills and instincts I bring to every team I join.</p>
         <div class="systems-layout" style="gap:2.5rem;">
-          <div class="systems-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
-            <div class="sys-block">
+          <div class="systems-grid reveal-stagger" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+            <div class="sys-block reveal">
               <h3>Rendering & GPU</h3>
-              <p>Real‑time / offline shading & compute features with explicit performance envelopes and profiling hooks.</p>
+              <p>Real-time and offline rendering pipelines — from shaders and lighting to GPU profiling and optimization.</p>
               <ul class="mini-list">
-                <li>PBR & lighting integration</li>
-                <li>Particles / instancing paths</li>
-                <li>Shader authoring & review</li>
-                <li>GPU capture analysis</li>
+                <li>PBR shading & lighting systems</li>
+                <li>Particle & VFX pipelines</li>
+                <li>Shader debugging & GPU profiling</li>
+                <li>Frame budget analysis & optimization</li>
               </ul>
             </div>
-            <div class="sys-block">
+            <div class="sys-block reveal">
               <h3>Procedural & Data Tooling</h3>
-              <p>USD / node graph workflows exposing intent early; non‑destructive layering & dependency reduction.</p>
+              <p>OpenUSD pipelines, Houdini tooling, and artist-facing tools that respect real production workflows.</p>
               <ul class="mini-list">
-                <li>Layering & variant policy</li>
-                <li>Dependency pruning & cache use</li>
-                <li>Publish validation surfaces</li>
-                <li>Contextual UI affordances</li>
+                <li>USD composition & layer management</li>
+                <li>Caching strategies & dependency graphs</li>
+                <li>Validation & data integrity tooling</li>
+                <li>Artist-friendly interfaces</li>
               </ul>
             </div>
-            <div class="sys-block">
+            <div class="sys-block reveal">
               <h3>Performance & Reliability</h3>
-              <p>Measurement culture: budgets, instrumentation, regression nets, staged hardening before scale.</p>
+              <p>Finding bottlenecks, tightening budgets, and building systems that hold up under real-world load.</p>
               <ul class="mini-list">
-                <li>Frame & task instrumentation</li>
-                <li>Resource / memory budgeting</li>
-                <li>Deterministic test scenes</li>
-                <li>Guardrails & activation flags</li>
+                <li>End-to-end profiling workflows</li>
+                <li>Memory & compute budget enforcement</li>
+                <li>Deterministic testing & CI/CD</li>
+                <li>Feature flagging & safe rollouts</li>
               </ul>
             </div>
-            <div class="sys-block">
+            <div class="sys-block reveal">
               <h3>Iteration & Delivery</h3>
-              <p>Ambiguity → actionable slices; feedback surfaced early to keep users in the loop.</p>
+              <p>Shipping working software on schedule — scoping, prototyping, gating, and following through on adoption.</p>
               <ul class="mini-list">
-                <li>RFC & scope framing</li>
-                <li>Vertical slice prototyping</li>
-                <li>Integration & rollout gates</li>
-                <li>Adoption + impact follow‑through</li>
+                <li>RFCs & design documentation</li>
+                <li>Vertical slice development</li>
+                <li>Staged rollouts with quality gates</li>
+                <li>Post-ship adoption tracking</li>
               </ul>
             </div>
-            <div class="sys-block">
+            <div class="sys-block reveal">
               <h3>Collaboration & Enablement</h3>
-              <p>Translate between engine, tooling, and artist mental models; reduce opaque complexity.</p>
+              <p>Bridging engineering, art, and product — clear communication across disciplines.</p>
               <ul class="mini-list">
-                <li>Cross‑discipline alignment</li>
-                <li>Lightweight documentation</li>
-                <li>On‑ramp & training material</li>
-                <li>Healthy review culture</li>
+                <li>Cross-team coordination</li>
+                <li>Documentation that gets read</li>
+                <li>Effective onboarding materials</li>
+                <li>Constructive code review</li>
               </ul>
             </div>
-            <div class="sys-block">
+            <div class="sys-block reveal">
               <h3>Technical Judgment</h3>
-              <p>Bias for solutions that are testable, explainable, reversible; explicit trade‑off framing.</p>
+              <p>Knowing when to build, when to buy, and when to push back — with an eye on long-term maintenance.</p>
               <ul class="mini-list">
-                <li>Trade‑off articulation</li>
-                <li>Latency vs fidelity balance</li>
-                <li>Risk surfaced early</li>
+                <li>Trade-off analysis & scoping</li>
+                <li>Pragmatic technology choices</li>
+                <li>Early risk identification</li>
                 <li>Maintenance cost awareness</li>
               </ul>
             </div>
@@ -363,18 +428,19 @@
     <!-- PORTFOLIO / MEDIA GRID -->
     <section class="section" id="portfolio">
       <div class="wrapper">
-        <h2>Selected Project Media</h2>
-        <p>Visual slices from independent engines, simulation experiments, and rendering studies.</p>
-        <div class="media-grid">
-          <button class="media-tile" data-media-tile data-label="SDF Raymarching Engine" aria-label="Raymarch shader"><img src="media/portfolio/random.gif" alt="Random"/></button>
-          <button class="media-tile" data-media-tile data-label="CSG Ops via SDF" aria-label="CSG"><img src="media/portfolio/csg.gif" alt="CSG"/></button>
-          <button class="media-tile" data-media-tile data-label="Cornell Box | Custom Path Tracer" aria-label="Cornell box"><img src="media/portfolio/cornell.jpg" alt="Cornell"/></button>
-          <button class="media-tile" data-media-tile data-label="PBR Models | Realtime Renderer" aria-label="Physically based rendering"><img src="media/portfolio/pbr.gif" alt="PBR"/></button>
-          <button class="media-tile" data-media-tile data-label="HDR + Exposure Mapping | Realtime Renderer" aria-label="HDR Exposure"><img src="media/portfolio/hdr-exposure.gif" alt="HDR"/></button>
-          <button class="media-tile" data-media-tile data-label="Moon Render | Custom Path Tracer" aria-label="Moon"><img src="media/portfolio/moon.jpg" alt="Moon"/></button>
-          <button class="media-tile" data-media-tile data-label="Erosion Sim | Voxel Physical Sim" aria-label="Erosion Simulation"><img src="media/portfolio/erosionfast.gif" alt="Erosion"/></button>
-          <button class="media-tile" data-media-tile data-label="Diff Geometry" aria-label="Bunny"><img src="media/portfolio/bunny.gif" alt="Bunny"/></button>
-          <button class="media-tile" data-media-tile data-label="Point Cloud | Unity URP" aria-label="Point Cloud"><img src="media/portfolio/points-statue.jpg" alt="Point Cloud"/></button>
+        <span class="section-num reveal">04 — Portfolio</span>
+        <h2 class="reveal">Selected Project Media</h2>
+        <p class="reveal">Visual slices from independent engines, simulation experiments, and rendering studies.</p>
+        <div class="media-grid reveal-stagger">
+          <button class="media-tile reveal" data-media-tile data-label="SDF Raymarching Engine" aria-label="Raymarch shader"><img src="media/portfolio/random.gif" alt="Random"/></button>
+          <button class="media-tile reveal" data-media-tile data-label="CSG Ops via SDF" aria-label="CSG"><img src="media/portfolio/csg.gif" alt="CSG"/></button>
+          <button class="media-tile reveal" data-media-tile data-label="Cornell Box | Custom Path Tracer" aria-label="Cornell box"><img src="media/portfolio/cornell.jpg" alt="Cornell"/></button>
+          <button class="media-tile reveal" data-media-tile data-label="PBR Models | Realtime Renderer" aria-label="Physically based rendering"><img src="media/portfolio/pbr.gif" alt="PBR"/></button>
+          <button class="media-tile reveal" data-media-tile data-label="HDR + Exposure Mapping | Realtime Renderer" aria-label="HDR Exposure"><img src="media/portfolio/hdr-exposure.gif" alt="HDR"/></button>
+          <button class="media-tile reveal" data-media-tile data-label="Moon Render | Custom Path Tracer" aria-label="Moon"><img src="media/portfolio/moon.jpg" alt="Moon"/></button>
+          <button class="media-tile reveal" data-media-tile data-label="Erosion Sim | Voxel Physical Sim" aria-label="Erosion Simulation"><img src="media/portfolio/erosionfast.gif" alt="Erosion"/></button>
+          <button class="media-tile reveal" data-media-tile data-label="Diff Geometry" aria-label="Bunny"><img src="media/portfolio/bunny.gif" alt="Bunny"/></button>
+          <button class="media-tile reveal" data-media-tile data-label="Point Cloud | Unity URP" aria-label="Point Cloud"><img src="media/portfolio/points-statue.jpg" alt="Point Cloud"/></button>
         </div>
       </div>
     </section>
@@ -382,39 +448,46 @@
     <!-- CONTACT / LIGHT CTA -->
     <section class="section" id="contact" style="padding-bottom:6rem;">
       <div class="wrapper">
-        <h2>Contact / Connect</h2>
-        <p>For collaboration or technical discussion related to rendering, engine systems, or tooling—feel free to reach out.</p>
-        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:1.5rem;">
-          <div class="panel">
+        <span class="section-num reveal">05 — Contact</span>
+        <h2 class="reveal">Contact / Connect</h2>
+        <p class="reveal">Always happy to connect — feel free to reach out about work, collaboration, or just to say hello.</p>
+        <div class="grid reveal-stagger" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:1.5rem;">
+          <div class="panel reveal">
             <div class="tagline">Direct</div>
             <h3>Email</h3>
             <p><a href="mailto:brennengreen@outlook.com">brennengreen@outlook.com</a></p>
-            <p class="muted">Typical response < 48h.</p>
+            <p class="muted">Typically the fastest way to reach me.</p>
           </div>
-          <div class="panel">
+          <div class="panel reveal">
             <div class="tagline">Profiles</div>
-            <h3>External</h3>
+            <h3>Profiles</h3>
             <p>
               <a href="https://github.com/brennengreen" target="_blank" rel="noopener">GitHub</a><br/>
               <a href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="noopener">LinkedIn</a>
             </p>
-            <p class="muted">Additional technical write‑ups live in the project archive.</p>
+            <p class="muted">Open-source work and professional background.</p>
           </div>
-          <div class="panel">
+          <div class="panel reveal">
             <div class="tagline">Archive</div>
-            <h3>Legacy / Extended</h3>
-            <p>Older write‑ups, exploratory prototypes, and incremental engine dev logs are retained in the archive section for historical context.</p>
-            <p class="muted">Continuously pruned for clarity & relevance.</p>
+            <h3>Archive</h3>
+            <p>Older projects, graphics experiments, and blog posts from earlier in my career — preserved for reference.</p>
+            <p class="muted">Personal project history.</p>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer style="padding:2.5rem 0; background:#0b0d11; border-top:1px solid rgba(255,255,255,.05);">
-    <div class="wrapper" style="display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:space-between;">
-      <span style="font-size:.7rem; letter-spacing:.75px; color:var(--text-dim);">© <script>document.write(new Date().getFullYear())</script> Brennen Green</span>
-      <span class="muted" style="font-size:.65rem;">Site: custom static build · No trackers</span>
+  <footer class="site-footer">
+    <div class="wrapper footer-inner">
+      <span class="footer-copy">© <script>document.write(new Date().getFullYear())</script> Brennen Green</span>
+      <div class="footer-links">
+        <a href="https://github.com/brennengreen" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:brennengreen@outlook.com">Email</a>
+        <a href="./graphics/index.html">Archive</a>
+      </div>
+      <span class="footer-copy">Custom static build · No trackers</span>
     </div>
   </footer>
 
