@@ -1,42 +1,84 @@
 <!DOCTYPE html>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
-
-<style>
-	body {background-color: white;font-family: 'Nanum Gothic Coding', monospace;}
-	#header { display: table; margin: 0 auto; border: 0px solid black; text-align: center; }
-	#post { border: 1px solid black; margin-left: 25vw; margin-right: 25vw;padding: 1em;margin-top: 1.25em;box-shadow: 10px 10px;}
-	#post h3 {margin-top: 0;}
-	a:link { color: black; }
-	a:visited { color: black; }
-</style>
-
-<script>
-	var body = document.getElementsByTagName('body')[0];
-
-
-</script>
-
+<html lang="en">
 <head>
-	<title>Blog</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog — Brennen Green</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/stylesheet.css" />
+  <link rel="stylesheet" href="../css/archive.css" />
 </head>
-
 <body>
-	<div id="header">
-		<h1>Brennen Green</h1>
-		<p>Research, Projects, and Probably Nothing Else (under construction)</p>
-	</div>
+  <header class="site-header">
+    <div class="wrapper nav">
+      <div style="display:flex; align-items:center; gap:.85rem;">
+        <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#2a1a41,#110a1d);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
+          <img src="../media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:grayscale(60%) contrast(1.15);"/>
+        </div>
+        <a href="../index.html" style="text-decoration:none;"><strong style="font-size:1rem;letter-spacing:.5px;font-weight:600;color:#fff;">Brennen&nbsp;Green</strong></a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <nav class="links">
+        <a href="../index.html#experience">Experience</a>
+        <a href="../index.html#credits">Credits</a>
+        <a href="../index.html#systems">Systems</a>
+        <a href="../graphics/index.html">Archive</a>
+        <a href="../index.html#portfolio">Portfolio</a>
+        <a href="../index.html#contact" class="cta">Connect</a>
+      </nav>
+    </div>
+  </header>
 
-	<hr>
+  <main>
+    <section class="section archive-hero">
+      <div class="wrapper">
+        <span class="section-num">Blog</span>
+        <h1>Writing & Notes</h1>
+        <p>Technical write-ups, tutorials, and the occasional deep dive into graphics programming.</p>
+      </div>
+    </section>
 
-	<div id="posts">
-		<!-- Load our React component. -->
-		<script type="module" src="./gen_posts.js"></script>
-	</div>
+    <div class="section-divider"></div>
 
+    <section class="section">
+      <div class="wrapper">
+        <div class="archive-grid">
 
-	<div id="post">
-		<h3>Mandelbrot Fractals In OpenGL</h3>
-		<p>A Mandelbrot Fractal is a fractal from the Mandelbrot Set, in this article we'll discuss rendering the fractals in version 330 of the OpenGL Core Profile</p>
-		<a href="posts/1" id="read">Read More >></a>
-	</div>
+          <div class="archive-card">
+            <h3>Mandelbrot Fractals in OpenGL</h3>
+            <p>Rendering Mandelbrot fractals using the OpenGL Core Profile — covering the math, the shader implementation, and the GPU-accelerated results.</p>
+            <div class="archive-tech">
+              <span>OpenGL</span><span>C++</span><span>GLSL</span><span>Math</span>
+            </div>
+            <a href="posts/1/">Read article →</a>
+          </div>
+
+          <div class="archive-card">
+            <h3>Software Internship Interview Guide</h3>
+            <p>A practical review of each stage of the software internship interview process.</p>
+            <div class="archive-tech">
+              <span>Interviews</span><span>Career</span>
+            </div>
+            <a href="posts/2/">Read article →</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper footer-inner">
+      <span class="footer-copy">© <script>document.write(new Date().getFullYear())</script> Brennen Green</span>
+      <div class="footer-links">
+        <a href="https://github.com/brennengreen" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:brennengreen@outlook.com">Email</a>
+        <a href="../index.html">Home</a>
+      </div>
+      <span class="footer-copy">Custom static build · No trackers</span>
+    </div>
+  </footer>
 </body>
+</html>

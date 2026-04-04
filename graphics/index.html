@@ -1,261 +1,195 @@
 <!DOCTYPE html>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
-
-<style>
-	body {background-color: white;font-family: 'Nanum Gothic Coding', monospace;}
-	#header { display: table; margin: 0 auto; border: 0px solid black; text-align: center; }
-	#post { border: 1px solid black; margin-left: 10vw; margin-right: 10vw;padding: 1em;margin-top: 1.25em;box-shadow: 10px 10px;}
-	#post h3 {margin-top: 0;}
-	a:link { color: black; }
-	a:visited { color: black; }
-	.fav { margin-left: 25vw; margin-right: 25vw;padding: 1em;margin-top: 1.25em;}
-	#row {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 4px;
-  	}
-  
-	/* Create four equal columns that sits next to each other */
-	#column {
-	flex: 24%;
-	max-width: 24%;
-	padding: 0 4px;
-	}
-
-	#column img {
-	margin-top: 8px;
-	vertical-align: middle;
-	width: 100%;
-	}
-
-	/* Responsive layout - makes a two column-layout instead of four columns */
-	@media screen and (max-width: 800px) {
-	#column {
-		flex: 45%;
-		max-width: 45%;
-	}
-	}
-
-	/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-	@media screen and (max-width: 600px) {
-	#column {
-		flex: 45%;
-		max-width: 45%;
-	}
-	}
-</style>
-
-<script>
-	var body = document.getElementsByTagName('body')[0];
-
-
-</script>
-
+<html lang="en">
 <head>
-	<title>Graphics Blog</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Graphics Archive — Brennen Green</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/stylesheet.css" />
+  <link rel="stylesheet" href="../css/archive.css" />
 </head>
-
 <body>
-	<div id="header">
-		<h1>Brennen Green</h1>
-		<p>An assortment of cool computer graphics related projects I have worked on and pictures</p>
-	</div>
+  <header class="site-header">
+    <div class="wrapper nav">
+      <div style="display:flex; align-items:center; gap:.85rem;">
+        <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#2a1a41,#110a1d);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
+          <img src="../media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:grayscale(60%) contrast(1.15);"/>
+        </div>
+        <a href="../index.html" style="text-decoration:none;"><strong style="font-size:1rem;letter-spacing:.5px;font-weight:600;color:#fff;">Brennen&nbsp;Green</strong></a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <nav class="links">
+        <a href="../index.html#experience">Experience</a>
+        <a href="../index.html#credits">Credits</a>
+        <a href="../index.html#systems">Systems</a>
+        <a href="./index.html" class="nav-active">Archive</a>
+        <a href="../index.html#portfolio">Portfolio</a>
+        <a href="../index.html#contact" class="cta">Connect</a>
+      </nav>
+    </div>
+  </header>
 
-	<hr>
+  <main>
+    <section class="section archive-hero">
+      <div class="wrapper">
+        <span class="section-num">Graphics Archive</span>
+        <h1>Projects & Experiments</h1>
+        <p>A collection of graphics projects, rendering experiments, and engine work from over the years.</p>
+      </div>
+    </section>
 
-	<div id="posts">
-		<!-- Load our React component. -->
-		<script type="module" src="./gen_posts.js"></script>
-	</div>
+    <div class="section-divider"></div>
 
-	<div id="post">
-		<h3>Feature Film - The Wild Robot</h3>
-		<p> I was credited for two roles on The Wild Robot, I started out
-			on the show as the first Lighting TD on production, tasked with
-			building the shows custom tooling. Upon completion of development,
-			I was promoted to lighting tools engineer for all shows across the studio.
-		</p>
-		<p><b>Key Technologies:</b> Houdini, Nuke, Python, PyQT5, USD, VEX</p>
-		<p><a href="https://www.universalpictures.com/movies/trolls-band-together">Link</a></p>
-	</div>
+    <section class="section">
+      <div class="wrapper">
 
-	<div id="post">
-		<h3>Feature Film - Trolls Band Together</h3>
-		<p> As a Lighting TD on Trolls Band Together I was responsible for manintaining lighting department
-			tools, both studio wide, and show specific. I was focused primarily on optimizing rendering
-			pipelines for the department and assisting artists with day-to-day shot support and optimization.
-		</p>
-		<p><b>Key Technologies:</b> Houdini, Nuke, Python, PyQT5, USD, VEX</p>
-		<p><a href="https://www.universalpictures.com/movies/trolls-band-together">Link</a></p>
-	</div>
+        <div class="archive-grid">
 
-	<div id="post">
-		<h3>World of Warcraft - Dragonflight</h3>
-		<p>As in intern I was a credited contributor to the titled World of Warcraft: Dragonflight expansion pack.
-			I was a member of the game engine team, focused on contributing to graphics systems within both the
-			engine and DCC platform. Mainly, I did work contributing to a innovative particle system powered
-			by compute shaders on the GPU allowing artists to create aesthetic, high fidelity effects, while being
-			less limited to performance constraints.
-		</p>
-		<p><b>Key Technologies:</b> DirectX 11/12 API, HLSL, Modern C++, Dear ImGui, RenderDoc, SVN, Perforce</p>
-		<p><a href="https://worldofwarcraft.com/en-us/">Link</a></p>
-	</div>
+          <div class="archive-card">
+            <h3>The Wild Robot — Feature Film</h3>
+            <p>Credited for two roles: started as the first Lighting TD on production, building the show's custom tooling, then promoted to lighting tools engineer across the studio.</p>
+            <div class="archive-tech">
+              <span>Houdini</span><span>Nuke</span><span>Python</span><span>PyQT5</span><span>USD</span><span>VEX</span>
+            </div>
+          </div>
 
-	<div id="post">
-		<h3>Physically Based Raytracer</h3>
-		<p>Physically Based Raytracer written from scratch in C++. The raytracer implements a monte carlo rendering algorithm presented by Dr. Peter Shirley [NVIDIA].
-			The raytracer uses an abstract implementation of materials and surfaces to represent just about any sort of object, medium, etc. that could come to mind.
+          <div class="archive-card">
+            <h3>Trolls Band Together — Feature Film</h3>
+            <p>Lighting TD responsible for maintaining department tools studio-wide and show-specific. Focused on optimizing rendering pipelines and day-to-day artist shot support.</p>
+            <div class="archive-tech">
+              <span>Houdini</span><span>Nuke</span><span>Python</span><span>PyQT5</span><span>USD</span><span>VEX</span>
+            </div>
+          </div>
 
-			Additionally, I used multithreading to create an accumulating buffer to render the image in parallel, allowing for ~30-50% better rendering times depending
-			on scene complexity.
-		</p>
-		<p><b>Key Technologies:</b> Modern C++, Multithreading, Physically Based Rendering, STB_IMAGE Library</p>
-		<p><a href="https://github.com/brennengreen/Physically-Based-Raytracer">Source</a></p>
-		<div id="row">
-			<div id="column">
-				<img src="../media/portfolio/cornell.jpg" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/moon.jpg" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/rtow.jpg" style="width:100%"/>
-			</div>
-		</div>
-	</div>
+          <div class="archive-card">
+            <h3>World of Warcraft — Dragonflight</h3>
+            <p>Contributed to graphics systems on the game engine team, including an innovative GPU compute particle system enabling artists to create high-fidelity VFX with fewer performance constraints.</p>
+            <div class="archive-tech">
+              <span>DirectX 11/12</span><span>HLSL</span><span>Modern C++</span><span>Dear ImGui</span><span>RenderDoc</span>
+            </div>
+            <a href="https://worldofwarcraft.com/en-us/" target="_blank" rel="noopener">World of Warcraft →</a>
+          </div>
 
-	<div id="post">
-		<h3>Teapot Graphics Engine</h3>
-		<p>A work in progress, minimal graphics engine. A expansion and improvement on both my toy engines.
-			This project is being developed for the purpose of fully understanding a game engines lifecycle. 
-			Features include: Physically based rendering material pipeline, HDR w/ ACES tonemapping, gltf model support,
-			omnidirectional shadow mapping.
-		</p>
-		<p><b>Key Technologies:</b> Modern C++, OpenGL Core Profile, RenderDoc, GLSL, ASSIMP, USD, GLFW, Cmake</p>
-		<p><a href="https://github.com/brennengreen/Teapot-Engine">Source</a></p>
-		<div id="row">
-			<div id="column">
-				<img src="../media/portfolio/hdr-exposure.gif" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/pbr.gif" style="width:100%"/>
-			</div>
-		</div>
-	</div>
+          <div class="archive-card">
+            <h3>Physically Based Raytracer</h3>
+            <p>Path tracer written from scratch in C++ implementing a Monte Carlo rendering algorithm. Uses multithreaded accumulation buffers for ~30–50% faster render times.</p>
+            <div class="archive-tech">
+              <span>Modern C++</span><span>Multithreading</span><span>PBR</span>
+            </div>
+            <a href="https://github.com/brennengreen/Physically-Based-Raytracer" target="_blank" rel="noopener">Source →</a>
+            <div class="archive-images">
+              <img src="../media/portfolio/cornell.jpg" alt="Cornell Box render" loading="lazy" />
+              <img src="../media/portfolio/moon.jpg" alt="Moon render" loading="lazy" />
+              <img src="../media/portfolio/rtow.jpg" alt="Raytracing in One Weekend render" loading="lazy" />
+            </div>
+          </div>
 
-	<div id="post">
-		<h3>Voxel Engine</h3>
-		<p>
-			A voxel engine based on my foundational graphics engine, Maxwell. The engine is written in C++ and implemmented in
-			OpenGL and supports the interactive rendering of 16.7 million plus voxels. Along with that, utilizing the FastNoise2
-			library there is customizable noise-based terrain generation. To improve the realism of the terrain, I also implemented
-			a physically-based hydrological erosion simulation using particles and classical mechanics, I also use C++ Multithreading to
-			spawn a worker thread and compute the simulation step, allowing for a realtime, interactive, visualization.
+          <div class="archive-card">
+            <h3>Teapot Graphics Engine</h3>
+            <p>Minimal graphics engine featuring a PBR material pipeline, HDR with ACES tonemapping, glTF model support, and omnidirectional shadow mapping.</p>
+            <div class="archive-tech">
+              <span>Modern C++</span><span>OpenGL</span><span>GLSL</span><span>ASSIMP</span><span>USD</span>
+            </div>
+            <a href="https://github.com/brennengreen/Teapot-Engine" target="_blank" rel="noopener">Source →</a>
+            <div class="archive-images">
+              <img src="../media/portfolio/hdr-exposure.gif" alt="HDR exposure mapping demo" loading="lazy" />
+              <img src="../media/portfolio/pbr.gif" alt="PBR rendering demo" loading="lazy" />
+            </div>
+          </div>
 
-			On the left below, you can see an example terrain rendered with no simulation, and 150k particles simulated on the right.
+          <div class="archive-card">
+            <h3>Voxel Engine</h3>
+            <p>Interactive voxel engine supporting 16.7M+ voxels with noise-based terrain generation and a real-time hydrological erosion simulation using particle dynamics and multithreading.</p>
+            <div class="archive-tech">
+              <span>Modern C++</span><span>OpenGL</span><span>GLSL</span><span>FastNoise2</span><span>Multithreading</span>
+            </div>
+            <a href="https://github.com/brennengreen/mwVoxelEngine" target="_blank" rel="noopener">Source →</a>
+            <div class="archive-images">
+              <img src="../media/portfolio/nosim.png" alt="Terrain without erosion" loading="lazy" />
+              <img src="../media/portfolio/sim.png" alt="Terrain with erosion" loading="lazy" />
+              <img src="../media/portfolio/erosionfast.gif" alt="Erosion simulation" loading="lazy" />
+            </div>
+          </div>
 
-			
-		</p>
-		<p><b>Key Technologies:</b> Modern C++, OpenGL Core Profile, RenderDoc, GLSL, GLFW, Cmake, FastNoise2, Multithreading, Physically based animation, Particle Dynamics</p>
-		<p><a href="https://github.com/brennengreen/mwVoxelEngine">Source</a></p>
-		<div id="row">
-			<div id="column">
-				<img src="../media/portfolio/nosim.png" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/sim.png" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/erosionfast.gif" style="width:100%"/>
-			</div>
-		</div>
-	</div>
-	<div id="post">
-		<h3>Unity Point Cloud Renderer</h3>
-		<p>
-			A simple point cloud renderer I built as a weekend project in Unity. The rendered was built with
-			Unity's Universal Rendering Pipeline, and I utilized a mix between native shader-graph code and custom
-			function built in HLSL to support geometry instancing. The entire render is driven by a single draw call
-			to geometry instanced out naively along the vertices of an input mesh. It uses the diffuse textures and
-			normals provided along with the model to calculate emission and direction.
+          <div class="archive-card">
+            <h3>Unity Point Cloud Renderer</h3>
+            <p>Point cloud renderer built with Unity's Universal Render Pipeline, using shader graph and custom HLSL for geometry instancing — driven by a single draw call.</p>
+            <div class="archive-tech">
+              <span>Unity</span><span>C#</span><span>HLSL</span><span>URP</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/portfolio/points-fin.jpg" alt="Point cloud render" loading="lazy" />
+              <img src="../media/portfolio/points-statue.jpg" alt="Point cloud statue" loading="lazy" />
+              <img src="../media/portfolio/points.jpg" alt="Point cloud detail" loading="lazy" />
+            </div>
+          </div>
 
-		</p>
-		<p><b>Key Technologies:</b> Unity, C#, HLSL</p>
-		<div id="row">
-			<div id="column">
-				<img src="../media/portfolio/points-fin.jpg" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/points-statue.jpg" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/points.jpg" style="width:100%"/>
-			</div>
-		</div>
-	</div>
-	<div id="post">
-		<h3>OpenGL Toy Rendering Engine</h3>
-		<p>A toy rendering engine written in the OpenGL Core Profile.  Includes support for the ASSIMP library as well as
-			2D and 3D rendering. Pictures include shader implementations and cool things.</p>
-		<p><b>Key Technologies:</b> Modern C++, OpenGL Core Profile, RenderDoc, NVIDIA Nsight, GLSL, ASSIMP</p>
-		<p><a href="https://github.com/brennengreen/OpenGL-Toy-Renderer">Source</a></p>
-		<div id="row">
-			<div id="column">
-				<img src="../media/portfolio/walrus.gif" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/mandel.gif" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/planet.gif" style="width:100%"/>
-			</div>
-			</div>
-		</div>
-	</div>
+          <div class="archive-card">
+            <h3>OpenGL Toy Rendering Engine</h3>
+            <p>A toy rendering engine in the OpenGL Core Profile with ASSIMP model loading and support for 2D and 3D rendering, including various shader experiments.</p>
+            <div class="archive-tech">
+              <span>Modern C++</span><span>OpenGL</span><span>GLSL</span><span>ASSIMP</span>
+            </div>
+            <a href="https://github.com/brennengreen/OpenGL-Toy-Renderer" target="_blank" rel="noopener">Source →</a>
+            <div class="archive-images">
+              <img src="../media/portfolio/walrus.gif" alt="Walrus animation" loading="lazy" />
+              <img src="../media/portfolio/mandel.gif" alt="Mandelbrot fractal" loading="lazy" />
+              <img src="../media/portfolio/planet.gif" alt="Planet shader" loading="lazy" />
+            </div>
+          </div>
 
-	<div id="post">
-		<h3>Vulkan Toy Rendering Engine</h3>
-		<p>A reimplementation of my OpenGL Toy Rendering engine, a delve into understanding of the Vulkan side of things.
-			With a specific focus on better understanding the graphics pipeline and how Vulkan exposes that to the advantage of the
-			programmer.
-		</p>
-		<p><b>Key Technologies:</b> Vulkan API, Vulkan Memory Allocator (AMD),Modern C++, Dear ImGui, SDL, RenderDoc</p>
-		<p><a href="https://github.com/brennengreen/VkGuide-Vulkan-Renderer">Source</a></p>
-	</div>
+          <div class="archive-card">
+            <h3>Vulkan Toy Rendering Engine</h3>
+            <p>A reimplementation of the OpenGL toy engine in Vulkan, focused on understanding the graphics pipeline and how Vulkan exposes lower-level control to the programmer.</p>
+            <div class="archive-tech">
+              <span>Vulkan</span><span>VMA</span><span>Modern C++</span><span>Dear ImGui</span><span>SDL</span>
+            </div>
+            <a href="https://github.com/brennengreen/VkGuide-Vulkan-Renderer" target="_blank" rel="noopener">Source →</a>
+          </div>
 
-	<div id="post">
-		<h3>Geometry Processor</h3>
-		<p>
-			While working through Dr. Keenan Crane's [CMU] course on Discrete Differential Geometry, I implemented several additions to his labs Geometry Processor provided 
-			for the course. Here's a collection of cool features and my though process on the assignments!
-		</p>
-		<p><b>Key Technologies:</b> Modern C++, OpenGL Core Profile, GLSL, Differential Geometry Numerical Methods, Dear ImGui</p>
-		<p><a href="https://github.com/brennengreen/Geometry-Processor">Source</a></p>
-		<div id="row">
-			<div id="column">
-				<img src="../media/portfolio/bunny.gif" style="width:100%"/>
-			</div>
-		</div>
-	</div>
+          <div class="archive-card">
+            <h3>Geometry Processor</h3>
+            <p>Implementations from Dr. Keenan Crane's Discrete Differential Geometry course at CMU — additions to the provided geometry processor for the course labs.</p>
+            <div class="archive-tech">
+              <span>Modern C++</span><span>OpenGL</span><span>GLSL</span><span>Differential Geometry</span><span>Dear ImGui</span>
+            </div>
+            <a href="https://github.com/brennengreen/Geometry-Processor" target="_blank" rel="noopener">Source →</a>
+            <div class="archive-images">
+              <img src="../media/portfolio/bunny.gif" alt="Bunny geometry processing" loading="lazy" />
+            </div>
+          </div>
 
-	<div id="post">
-		<h3>Raymarcher</h3>
-		<p>A Unity Engine Raymarcher implemented entirely in HLSL. The entire engine is contained within a single shader and can support any signed distance function
-			or field thrown at it.
-		</p>
-		<p><b>Key Technologies:</b> Unity Game Engine, Compute Shaders, HLSL, CSG Algorithms</p>
-		<p><a href="https://github.com/brennengreen/Unity-Raymarcher">Source</a></p>
-		<div id="row">
-			<div id="column">
-				<img src="../media/portfolio/explode.gif" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/csg.gif" style="width:100%"/>
-			</div>
-			<div id="column">
-				<img src="../media/portfolio/random.gif" style="width:100%"/>
-			</div>
-			</div>
-		</div>
-	</div>
+          <div class="archive-card">
+            <h3>Raymarcher</h3>
+            <p>A Unity raymarcher implemented entirely in HLSL. The engine is contained within a single shader and supports arbitrary signed distance functions and CSG operations.</p>
+            <div class="archive-tech">
+              <span>Unity</span><span>HLSL</span><span>Compute Shaders</span><span>CSG</span>
+            </div>
+            <a href="https://github.com/brennengreen/Unity-Raymarcher" target="_blank" rel="noopener">Source →</a>
+            <div class="archive-images">
+              <img src="../media/portfolio/explode.gif" alt="Raymarcher explosion" loading="lazy" />
+              <img src="../media/portfolio/csg.gif" alt="CSG operations" loading="lazy" />
+              <img src="../media/portfolio/random.gif" alt="SDF raymarching" loading="lazy" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper footer-inner">
+      <span class="footer-copy">© <script>document.write(new Date().getFullYear())</script> Brennen Green</span>
+      <div class="footer-links">
+        <a href="https://github.com/brennengreen" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:brennengreen@outlook.com">Email</a>
+        <a href="../index.html">Home</a>
+      </div>
+      <span class="footer-copy">Custom static build · No trackers</span>
+    </div>
+  </footer>
 </body>
+</html>
