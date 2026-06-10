@@ -68,6 +68,9 @@
             <div class="archive-tech">
               <span>Houdini</span><span>Nuke</span><span>Python</span><span>PyQT5</span><span>USD</span><span>VEX</span>
             </div>
+            <div class="archive-images">
+              <img src="../media/credits/wild-robot.jpg" alt="The Wild Robot promotional artwork" loading="lazy" />
+            </div>
           </div>
 
           <div class="archive-card">
@@ -75,6 +78,9 @@
             <p>Lighting TD responsible for maintaining department tools studio-wide and show-specific. Focused on optimizing rendering pipelines and day-to-day artist shot support.</p>
             <div class="archive-tech">
               <span>Houdini</span><span>Nuke</span><span>Python</span><span>PyQT5</span><span>USD</span><span>VEX</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/credits/trolls-3.jpg" alt="Trolls 3 (Band Together) poster" loading="lazy" />
             </div>
           </div>
 
@@ -84,6 +90,9 @@
             <div class="archive-tech">
               <span>Houdini</span><span>Nuke</span><span>Python</span><span>PyQT5</span><span>USD</span><span>VEX</span>
             </div>
+            <div class="archive-images">
+              <img src="../media/credits/bad-guys-2.jpg" alt="The Bad Guys 2 promotional artwork" loading="lazy" />
+            </div>
           </div>
 
           <div class="archive-card">
@@ -91,6 +100,9 @@
             <p>Lighting tools engineer supporting production pipeline and tooling needs. Built and maintained lighting department tools, focusing on pipeline reliability and workflow improvements for the show's lighting and LookDev teams.</p>
             <div class="archive-tech">
               <span>Houdini</span><span>Nuke</span><span>Python</span><span>PyQT5</span><span>USD</span><span>VEX</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/credits/forgotten-island.png" alt="Forgotten Island promotional artwork" loading="lazy" />
             </div>
           </div>
 
@@ -101,6 +113,122 @@
               <span>DirectX 11/12</span><span>HLSL</span><span>Modern C++</span><span>Dear ImGui</span><span>RenderDoc</span>
             </div>
             <a href="https://worldofwarcraft.com/en-us/" target="_blank" rel="noopener">World of Warcraft →</a>
+          </div>
+
+          <div class="archive-card">
+            <h3>Tense — Tension Systems & Procedural Skin</h3>
+            <p>A trio of Godot 4 GPU experiments in tension and skin: a compute-shader mass-spring cloth solver, a raymarched signed-distance-field arm whose muscle bellies are real volumes that bulge on activation, and a fully procedural photorealistic skin shader — pores, veins, subdermal mottling, screen-space subsurface scattering, and real per-strand hair geometry.</p>
+            <div class="archive-tech">
+              <span>Godot 4</span><span>Compute Shaders</span><span>GLSL</span><span>SDF Raymarching</span><span>Subsurface Scattering</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/portfolio/tense-skin-sss.jpg" alt="Procedural skin with screen-space subsurface scattering" loading="lazy" />
+              <img src="../media/portfolio/tense-skin-detail.jpg" alt="Procedural skin pore, vein, and hair detail" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Splatty — Gaussian Splat Viewer</h3>
+            <p>A real-time 3D Gaussian Splatting viewer built from scratch in C++ and DirectX 12. Implements a full DX12 compute pipeline, a PLY loader for standard and SuperSplat-compressed formats with chunk-based dequantization, spherical-harmonic evaluation up to degree 3, and an auto-positioning FPS camera — loading reconstructed scenes of 200k+ Gaussians.</p>
+            <div class="archive-tech">
+              <span>DirectX 12</span><span>HLSL</span><span>Modern C++</span><span>Compute Shaders</span><span>Gaussian Splatting</span><span>Dear ImGui</span>
+            </div>
+            <a href="https://github.com/brennengreen/splatty" target="_blank" rel="noopener">Source →</a>
+            <div class="archive-images">
+              <img src="../media/portfolio/splatty-observatory.jpg" alt="Real-time Gaussian splat reconstruction of an observatory" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>PrintSim — FDM Printer Simulator</h3>
+            <p>A browser-based, physically based FDM/FFF 3D-printer simulator. Loads real Marlin <code>.gcode</code> and simulates extrusion end-to-end: trapezoidal motion planning with junction-deviation cornering, voxel deposition, thermal diffusion, polymer bond healing, and corner-lift warping — with G-code parsing and motion planning offloaded to Web Workers.</p>
+            <div class="archive-tech">
+              <span>TypeScript</span><span>Three.js</span><span>WebGL2</span><span>Web Workers</span><span>Vite</span><span>Physical Simulation</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/portfolio/printsim-thermal.jpg" alt="Physically based FDM 3D printer simulator with live thermal model" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>mapz — Urban Design Simulation</h3>
+            <p>A CAD-like urban-design game played on real-world streets. Loads real map geometry from the Overpass API, then runs a living city simulation — zone blocks and watch them grow and fill over months, with RCI demand, a treasury/economy, happiness, and emergent problems. Part Cities: Skylines, part SimCity, part GeoGuessr.</p>
+            <div class="archive-tech">
+              <span>TypeScript</span><span>WebGL</span><span>Overpass API</span><span>Simulation</span><span>Procedural</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/portfolio/mapz-tokyo.jpg" alt="Urban design simulation rendered on real Tokyo streets" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Lineage — Medieval RPG Simulation</h3>
+            <p>A simulation prototype for a grounded medieval fantasy RPG. Procedurally generates settlements from hamlets to walled capitals, then drives them with deeply interlocking systems — economy, factions, NPCs, social standing, skills, weather, and multi-generational lineage — all wired together over an event-bus architecture in Godot 4.</p>
+            <div class="archive-tech">
+              <span>Godot 4</span><span>GDScript</span><span>Procedural Generation</span><span>Simulation</span><span>Event-Driven</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/portfolio/lineage-town.jpg" alt="Procedurally generated medieval town with walls and hills" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Iso-Tactics — Cyberpunk Deckbuilder</h3>
+            <p>A prototype for a cyberpunk isometric turn-based tactics deckbuilder — think Hitman by way of Baldur's Gate 3. Sneak, lure, barter, talk, bribe, or kill your way through assassination encounters on a verticality-aware isometric grid, with card-driven actions resolving on a turn-based combat layer.</p>
+            <div class="archive-tech">
+              <span>Godot 4</span><span>GDScript</span><span>Turn-Based</span><span>Deckbuilder</span><span>Isometric</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/portfolio/iso-tactics-dialogue.jpg" alt="Cyberpunk tactics dialogue and encounter screen" loading="lazy" />
+              <img src="../media/portfolio/iso-tactics-grid.jpg" alt="Isometric tactics grid with card hand" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Polygen — Low-Poly Studio</h3>
+            <p>A focused, Aseprite-spirited 3D modeling tool for stylized low-poly game art. A real editor shell with object/edit modes, mesh ops (extrude, inset, subdivide, paint) on a serializable mesh core, multi-object scenes, an asset kanban board, visual version history, and Yjs-backed live collaboration — native-fast via Tauri and browser-shareable from one codebase.</p>
+            <div class="archive-tech">
+              <span>TypeScript</span><span>Three.js</span><span>Tauri</span><span>Yjs</span><span>WebGL</span><span>glTF</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/portfolio/polygen-generated.jpg" alt="Low-poly 3D modeling studio with generated mesh" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Green CRT Terminal Shader</h3>
+            <p>A drop-in Godot 4 <code>canvas_item</code> post-process shader that makes any scene look like an old green-phosphor CRT terminal: barrel distortion with a bezel mask, a fast 9-tap phosphor glow, scanlines and an RGB aperture-grille shadow mask, per-line jitter, a rolling bar, whole-screen flicker, film grain, and luminance-to-phosphor recoloring.</p>
+            <div class="archive-tech">
+              <span>Godot 4</span><span>GLSL</span><span>Post-Processing</span><span>CRT Emulation</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/portfolio/crt-terminal.jpg" alt="Green-phosphor CRT terminal post-process shader" loading="lazy" />
+              <img src="../media/portfolio/crt-roguelike.jpg" alt="CRT shader applied over a roguelike scene" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Slang Cross-Platform Shader Pipeline</h3>
+            <p>A production-style build pipeline showing how studios compile shaders for many platforms from one Slang source — targeting XBOX (DXIL, Shader Model 6.6) first, with cross-compilation to PC, Vulkan, and Metal. Includes a Cook-Torrance PBR pipeline, compute-based auto-exposure and ACES tonemapping, multi-pass bloom, and a declarative JSON shader manifest over CMake.</p>
+            <div class="archive-tech">
+              <span>Slang</span><span>HLSL</span><span>DXIL</span><span>CMake</span><span>Shader Model 6.6</span><span>XBOX</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Low Poly Toolkit — Blender Add-on</h3>
+            <p>A Blender 4.x add-on that automates the tedious parts of low-poly game art: a live, editable swatch palette with a colour-theory harmony generator, the gradient palette-atlas workflow (collapse every face's UVs onto a single shared-texture pixel for one-draw-call meshes), and ambient-occlusion vertex baking without a render engine.</p>
+            <div class="archive-tech">
+              <span>Python</span><span>Blender 4.x</span><span>bpy</span><span>UV Atlas</span><span>Game Art Pipeline</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>SkinBridge — Blender Skin Weighting</h3>
+            <p>A robust automatic skin-weighting add-on for Blender — a drop-in replacement for Automatic Weights that holds up where bone-heat fails: dense meshes, disconnected components, overlapping limbs, and narrow gaps that normally bleed weight onto the wrong bone. Built on a geometry-aware, segment-distance NumPy pipeline.</p>
+            <div class="archive-tech">
+              <span>Python</span><span>Blender</span><span>NumPy</span><span>Rigging</span><span>Skin Weighting</span>
+            </div>
           </div>
 
           <div class="archive-card">
