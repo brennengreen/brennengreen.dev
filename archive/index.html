@@ -116,6 +116,84 @@
           </div>
 
           <div class="archive-card">
+            <h3>aircoder — Local Agentic Coding Agent</h3>
+            <p>A nine-crate Rust workspace that drives a local LLM through hour-long coding tasks by externalizing all working memory to a content-addressed ledger on disk. Every observation becomes typed evidence — file reads, diagnostics, test results, decisions — queried by predicate instead of re-read from the prompt, so the context window stays nearly empty. Every step is a checkpoint: a <code>SIGINT</code> or <code>kill -9</code> mid-task resumes byte-for-byte. Closes a real local-model loop against <code>mlx_lm.server</code>, with 94 tests passing.</p>
+            <div class="archive-tech">
+              <span>Rust</span><span>Local LLM</span><span>MLX</span><span>Agentic Systems</span><span>Content-Addressed Storage</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>metalstream — MLX Weight-Streaming Substrate</h3>
+            <p>A drop-in MLX add-on that streams model weights off NVMe so a 31B-parameter Q4 model (18.4&nbsp;GB on disk) produces tokens on a 16&nbsp;GB M4 MacBook Air for the first time — beneath a 10.67&nbsp;GiB Metal working-set cap that is half the model's size. The GPU only ever sees the layer it needs; peak Metal pool holds around 22% of the cap, with bit-identical numerical equivalence to the non-streaming baseline. A persistent buffer pool eliminates the substrate's eviction-path overhead.</p>
+            <div class="archive-tech">
+              <span>Python</span><span>MLX</span><span>Apple Metal</span><span>Systems</span><span>LLM Inference</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>edgecortex — Local-LLM Intelligence Proxy</h3>
+            <p>An OpenAI-compatible reverse proxy — a six-crate Rust workspace — that sits between any client and any local model server and transparently makes small models reliably agentic. Per-model profiles repair known quirks (missing braces, bare JSON, token doubling, premature stop, runaway repetition) through sampling injection, GBNF grammar enforcement, conversation compaction, structured-output retry, and streaming dedup, with hardware-tier budget adaptation. The idea: fix the model, not the client.</p>
+            <div class="archive-tech">
+              <span>Rust</span><span>OpenAI API</span><span>GBNF Grammars</span><span>Local LLM</span><span>Middleware</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Iris — Automotive Digital Twin</h3>
+            <p>A real-time 3D digital-twin viewer for a vehicle-sensor concept, built in React-Three-Fiber. Renders live 3D Gaussian-splat scenes with tile streaming and frustum culling, a neural ONNX post-processing pass, a procedural city, lidar halos, tracked objects and twins, and a driving ego vehicle — targeting WebGPU with Metal and Vulkan back-ends. Built over comma.ai's openpilot as the sensor substrate.</p>
+            <div class="archive-tech">
+              <span>React Three Fiber</span><span>WebGPU</span><span>Gaussian Splatting</span><span>ONNX</span><span>Three.js</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/portfolio/iris-twin.jpg" alt="Real-time 3D Gaussian-splat reconstruction of a city street in the Iris twin view" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Jobwright — Autonomous Job-Search Agent</h3>
+            <p>A local, human-supervised job-search agent: feed it your resume PDF and it mines real job sources (Greenhouse, Lever, Remotive, HN), qualitatively scores fit with an LLM, and pre-builds an Opus-tailored resume and cover letter for every strong match into a review queue — then fills applications across ATS platforms in a real browser. A structural grounding validator rejects any tailored bullet that invents a metric or technology, reverting to your real text. Review-mode by default with hard safety caps, driven from a realtime web panel or the CLI.</p>
+            <div class="archive-tech">
+              <span>Python</span><span>Playwright</span><span>Claude Opus 4.8</span><span>Flask</span><span>SQLite</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>GridLock — City Traffic &amp; Transit Sim</h3>
+            <p>A 2.5D isometric city-flow game in Godot 4 — no zoning or services, only moving people through a city. Roughly 3,900 lines of GDScript across sandbox, puzzle, and real-time dispatch modes. Placement happens on a tile grid, but the simulation runs on a derived graph — intersections and stops as nodes, lanes, tracks, and sidewalks as edges — rebuilt incrementally on every edit. A fixed 20&nbsp;Hz tick drives pooled car, pedestrian, bus, train, and cyclist agents over congestion-reactive multi-modal A*.</p>
+            <div class="archive-tech">
+              <span>Godot 4</span><span>GDScript</span><span>Simulation</span><span>Multi-Modal A*</span><span>Isometric</span>
+            </div>
+            <div class="archive-images">
+              <img src="../media/portfolio/gridlock-city.jpg" alt="Isometric city with road grid, colored districts, and transit HUD in GridLock" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Photogram — Image-to-3D Compositing</h3>
+            <p>An FX/lighting compositing prototype that reconstructs any RGB plate metrically with Apple SHARP (3D Gaussian splatting), then comps 3D assets into the scene with accurate scale, depth-correct occlusion, and transferred lighting. Assets are dreamed from a reference image or from the plate itself via SAM&nbsp;2 segmentation and TripoSR, fit against an ambient-plus-directional lighting solve. A three-tab Gradio UI exports a camera-matched preview and a combined GLB; runs on Apple Silicon MPS.</p>
+            <div class="archive-tech">
+              <span>Python</span><span>PyTorch</span><span>Gaussian Splatting</span><span>SAM 2</span><span>TripoSR</span><span>Gradio</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Bonsai NPCs — In-Process LLM Agents</h3>
+            <p>A Godot 4.6 sandbox where 7–10 NPCs are driven by a local 1-bit LLM (PrismML's Bonsai) running entirely in-process through a custom GDExtension that vendors a llama.cpp fork. NPCs hold long-term memory, form bonds and grudges, and gossip when they cross paths — a Hitman-style level where you exploit the emergent NPC reasoning to pull off an objective.</p>
+            <div class="archive-tech">
+              <span>Godot 4.6</span><span>GDExtension</span><span>llama.cpp</span><span>Modern C++</span><span>Local LLM</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Elk Valley — Local AI Song Pipeline</h3>
+            <p>An end-to-end local song-generation pipeline: MusicGen writes an Appalachian-psychedelic-folk instrumental in crossfaded segments, Bark synthesizes a weathered vocal from the lyrics, optional RVC converts its timbre, a Pedalboard FX chain and <code>tanh</code> tape saturation shape both stems, and a final peak-limited stereo mix is written at 44.1&nbsp;kHz / 24-bit. Every stage is independently re-runnable; the pipeline auto-selects MLX/MPS, CUDA, or CPU.</p>
+            <div class="archive-tech">
+              <span>Python</span><span>MusicGen</span><span>Bark</span><span>RVC</span><span>Pedalboard</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
             <h3>Tense — Tension Systems & Procedural Skin</h3>
             <p>A trio of Godot 4 GPU experiments in tension and skin: a compute-shader mass-spring cloth solver, a raymarched signed-distance-field arm whose muscle bellies are real volumes that bulge on activation, and a fully procedural photorealistic skin shader — pores, veins, subdermal mottling, screen-space subsurface scattering, and real per-strand hair geometry.</p>
             <div class="archive-tech">
