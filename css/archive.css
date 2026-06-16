@@ -10,6 +10,11 @@
 /* --- ARCHIVE CARD GRID --- */
 .archive-grid {display:grid; gap:2rem; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); margin-top:2rem;}
 
+/* Full-width section labels that group cards by category */
+.archive-group-label {grid-column:1 / -1; margin:1.9rem 0 0; padding-bottom:.55rem; border-bottom:1px solid rgba(232,164,69,.16); font-family:var(--serif); font-weight:700; font-size:1.3rem; color:#fff; letter-spacing:.2px;}
+.archive-group-label:first-child {margin-top:.2rem;}
+.archive-group-label span {display:block; margin-top:.32rem; font-family:var(--sans); font-size:.74rem; font-weight:400; color:var(--text-dim); letter-spacing:.3px;}
+
 .archive-card {background:linear-gradient(145deg,var(--panel) 0%,var(--panel-accent) 100%); border:1px solid rgba(255,255,255,.04); border-radius:var(--radius-lg); padding:1.65rem 1.75rem; position:relative; box-shadow:var(--shadow-1); overflow:hidden; transition:transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s ease, border-color .35s ease;}
 .archive-card::before {content:""; position:absolute; inset:0; background:radial-gradient(circle at 85% -10%,rgba(232,164,69,.06),transparent 60%); opacity:.6; pointer-events:none; transition:opacity .4s ease;}
 .archive-card:nth-child(odd)::before {background:radial-gradient(circle at 15% 90%,rgba(200,84,42,.08),transparent 55%);}
