@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>edgecortex: an intelligence proxy that makes any small local model reliably agentic — Brennen Green</title>
+  <meta name="description" content="A transparent OpenAI-compatible reverse proxy that sits between any client and any local model server, repairing quirks and enforcing structure so small models become reliably agentic." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../../css/stylesheet.css" />
+  <link rel="stylesheet" href="../../../css/archive.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrapper nav">
+      <div style="display:flex; align-items:center; gap:.85rem;">
+        <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#2a1f12,#110a06);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
+          <img src="../../../media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:grayscale(60%) contrast(1.15);"/>
+        </div>
+        <a href="../../../index.html" style="text-decoration:none;"><strong style="font-size:1rem;letter-spacing:.5px;font-weight:600;color:#fff;">Brennen&nbsp;Green</strong></a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <nav class="links">
+        <a href="../../../index.html#experience">Experience</a>
+        <a href="../../../index.html#credits">Credits</a>
+        <a href="../../../index.html#systems">Systems</a>
+        <a href="../../../archive/index.html">Archive</a>
+        <a href="../../../blog/index.html">Blog</a>
+        <a href="../../../index.html#portfolio">Portfolio</a>
+        <a href="../../../index.html#contact" class="cta">Connect</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="article-wrapper">
+      <div class="article-header">
+        <a href="../../index.html" class="back-link">Back to blog</a>
+        <h1>edgecortex: an intelligence proxy that makes any small local model reliably agentic</h1>
+        <p class="article-subtitle">A transparent, OpenAI-compatible reverse proxy that sits between any client and any local model server — and quietly fixes the model instead of the client.</p>
+        <div class="article-meta">
+          <span><strong>Published</strong> May 6, 2026</span>
+          <span><strong>By</strong> Brennen Green</span>
+          <span><strong>Read</strong> ~11 min</span>
+        </div>
+        <div class="article-tags">
+          <span>Rust</span><span>Local LLM</span><span>OpenAI API</span><span>Middleware</span><span>GBNF</span>
+        </div>
+      </div>
+
+      <div class="article-body">
+
+        <p class="lede">Every local model has quirks. Bonsai&nbsp;8B drops opening braces. Qwen3&nbsp;0.5B emits bare JSON with no XML tags. SmolLM2 repeats itself into a loop. Gemma&nbsp;4 stops "thinking" too early. And every agentic harness in the world rebuilds the same brittle workarounds for these, badly, from scratch. edgecortex is the other approach: a smarter pipe that repairs the model's output transparently, so every client that points at it gets a more reliable model for free.</p>
+
+        <h3>Fix the model, not the client</h3>
+
+        <p>The usual way to make a small model behave is to bury the workarounds inside your agent: regex to rescue malformed JSON, a retry loop here, a repetition guard there, a per-model sampling table somewhere else. It works until you switch models or build a second client, and then you do it all again. The insight behind edgecortex is that <strong>all of these fixes belong in one place — between the client and the backend — where they're written once and benefit everything.</strong></p>
+
+        <p>It speaks the OpenAI chat-completions API on both sides. Point any OpenAI-compatible client (Continue, a custom agent, plain <code>curl</code>) at edgecortex instead of the backend, point edgecortex at any local server (ollama, llama.cpp, vLLM), and small-model reliability improves with zero changes on either end.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 220" role="img" aria-label="edgecortex sits between any OpenAI-compatible client and any local model backend, applying an intelligence layer to requests and responses.">
+            <rect x="30" y="80" width="170" height="64" rx="10" fill="#17120c" stroke="rgba(255,255,255,.12)"/>
+            <text x="115" y="108" text-anchor="middle" fill="#ece6da" font-family="Poppins, sans-serif" font-size="13" font-weight="600">Any client</text>
+            <text x="115" y="127" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">Continue · agent · curl</text>
+
+            <rect x="305" y="56" width="210" height="112" rx="12" fill="#1a140d" stroke="#e8a445"/>
+            <text x="410" y="82" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="14" font-weight="700">edgecortex&nbsp;:8080</text>
+            <text x="410" y="103" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">profile · sampling · grammar</text>
+            <text x="410" y="120" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">compaction · retry · stream-fix</text>
+            <text x="410" y="146" text-anchor="middle" fill="#f0a35e" font-family="Poppins, sans-serif" font-size="10" font-style="italic">the intelligence layer</text>
+
+            <rect x="620" y="80" width="170" height="64" rx="10" fill="#17120c" stroke="rgba(255,255,255,.12)"/>
+            <text x="705" y="108" text-anchor="middle" fill="#ece6da" font-family="Poppins, sans-serif" font-size="13" font-weight="600">Any backend</text>
+            <text x="705" y="127" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">ollama · llama.cpp · vLLM</text>
+
+            <g font-family="monospace" font-size="9" fill="#8d857a" text-anchor="middle">
+              <path d="M200 104 L300 104" stroke="#c8542a" stroke-width="1.5" marker-end="url(#ec1)"/>
+              <text x="250" y="96">OpenAI API</text>
+              <path d="M515 120 L616 120" stroke="#c8542a" stroke-width="1.5" marker-end="url(#ec1)"/>
+              <text x="565" y="112">OpenAI API</text>
+            </g>
+            <text x="410" y="200" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="11">No model coupling, no vendor lock-in — just a smarter pipe.</text>
+            <defs><marker id="ec1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c8542a"/></marker></defs>
+          </svg>
+          <figcaption>edgecortex is a drop-in reverse proxy. Both seams are the OpenAI chat API, so it slots into an existing setup by changing a single base URL.</figcaption>
+        </figure>
+
+        <h3>The intelligence pipeline</h3>
+
+        <p>A request doesn't just get forwarded — it passes through a pipeline that shapes it on the way in and repairs it on the way out. Each stage activates conditionally, based on the request and the detected model, so a well-behaved strong model pays almost nothing while a quirky tiny one gets the full treatment.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 300" role="img" aria-label="The request lifecycle through edgecortex: classify, apply model profile and sampling, enforce grammar, compact context, forward to backend, then dedup tokens, detect runaway repetition, normalize JSON and retry on failure.">
+            <text x="120" y="36" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="12" font-weight="600">inbound shaping</text>
+            <text x="700" y="36" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="12" font-weight="600">outbound repair</text>
+            <g font-family="Poppins, sans-serif" font-size="11" fill="#ece6da" text-anchor="middle">
+              <rect x="40"  y="50" width="160" height="34" rx="7" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="120" y="72">① classify task</text>
+              <rect x="40"  y="94" width="160" height="34" rx="7" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="120" y="116">② profile + sampling</text>
+              <rect x="40"  y="138" width="160" height="34" rx="7" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="120" y="160">③ grammar (GBNF)</text>
+              <rect x="40"  y="182" width="160" height="34" rx="7" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="120" y="204">④ compact context</text>
+
+              <rect x="330" y="116" width="160" height="70" rx="10" fill="#1a140d" stroke="#c8542a" stroke-opacity=".6"/><text x="410" y="148" fill="#f0a35e" font-weight="600">backend model</text><text x="410" y="167" fill="#b8b0a4" font-size="9">ollama / llama.cpp / vLLM</text>
+
+              <rect x="620" y="50" width="160" height="34" rx="7" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="700" y="72">⑤ token dedup</text>
+              <rect x="620" y="94" width="160" height="34" rx="7" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="700" y="116">⑥ degenerate guard</text>
+              <rect x="620" y="138" width="160" height="34" rx="7" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="700" y="160">⑦ JSON normalize</text>
+              <rect x="620" y="182" width="160" height="34" rx="7" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="700" y="204">⑧ validate + retry ×2</text>
+            </g>
+            <g stroke="#c8542a" stroke-width="1.4" fill="none" opacity=".8">
+              <path d="M200 200 C 260 200, 280 160, 328 155" marker-end="url(#ec2)"/>
+              <path d="M490 150 C 540 150, 560 70, 618 67" marker-end="url(#ec2)"/>
+            </g>
+            <path d="M120 84 L120 92" stroke="#7d756a"/><path d="M120 128 L120 136" stroke="#7d756a"/><path d="M120 172 L120 180" stroke="#7d756a"/>
+            <path d="M700 84 L700 92" stroke="#7d756a"/><path d="M700 128 L700 136" stroke="#7d756a"/><path d="M700 172 L700 180" stroke="#7d756a"/>
+            <text x="410" y="250" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">Each stage is conditional: a strong, well-behaved model skips most of them; a quirky 0.5B model gets the full pipeline.</text>
+            <text x="410" y="276" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">Hardware auto-detection at startup sets the budgets these stages spend.</text>
+            <defs><marker id="ec2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c8542a"/></marker></defs>
+          </svg>
+          <figcaption>The request lifecycle. Inbound, edgecortex classifies the task, applies a model-specific profile, enforces a grammar, and compacts long histories. Outbound, it de-duplicates streamed tokens, aborts runaway repetition, normalizes JSON, and retries structured outputs that fail to parse.</figcaption>
+        </figure>
+
+        <h3>Model profiles: a quirk database</h3>
+
+        <p>The heart of edgecortex is a registry of per-model profiles. Each profile encodes a model's optimal sampling parameters and — critically — the specific failure modes it's known to exhibit, so the right repairs activate automatically the moment a known model name shows up in a request.</p>
+
+        <table>
+          <thead><tr><th>Model</th><th>Size</th><th>Quirks handled</th></tr></thead>
+          <tbody>
+            <tr><td>Gemma 4 E2B / E4B</td><td>1.5–3.0 GB</td><td>—</td></tr>
+            <tr><td>Qwen3 0.5B</td><td>0.5 GB</td><td><code>bare_json</code>, <code>premature_think</code>, <code>repetition</code></td></tr>
+            <tr><td>SmolLM2 1.7B</td><td>1.0 GB</td><td><code>bare_json</code>, <code>premature_think</code>, <code>repetition</code></td></tr>
+            <tr><td>Bonsai 8B</td><td>1.2 GB</td><td><code>missing_brace</code>, <code>token_doubling</code>, <code>premature_think</code>, <code>repetition</code></td></tr>
+            <tr><td>Qwen3 Coder 8B</td><td>5.0 GB</td><td>— (strong)</td></tr>
+          </tbody>
+        </table>
+
+        <p>A profile is the difference between "this model is broken" and "this model needs its braces fixed and its sampling pinned." When Bonsai&nbsp;8B is detected, edgecortex knows to expect dropped opening braces and doubled tokens — and turns on exactly the repairs that address them.</p>
+
+        <h3>Making structure non-negotiable</h3>
+
+        <p>Agentic work lives or dies on structured output. edgecortex enforces it with three layers of defense, in increasing order of cost:</p>
+
+        <ul>
+          <li><strong>Grammar enforcement.</strong> For tool-calling and structured requests, edgecortex hands the backend a GBNF grammar that constrains generation to valid shapes — the model literally cannot emit a token that breaks the structure.</li>
+          <li><strong>JSON normalization.</strong> For models or backends where grammar isn't available, a normalizer repairs the common pathologies after the fact: a missing opening brace, bare JSON the model forgot to wrap, trailing commentary.</li>
+          <li><strong>Structured retry.</strong> If a response that's <em>supposed</em> to be JSON still fails to parse, edgecortex validates and automatically retries up to twice before giving up — turning a transient malformation into a non-event for the client.</li>
+        </ul>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 180" role="img" aria-label="Before and after: a raw model response missing its opening brace and trailing prose is normalized into valid JSON.">
+            <rect x="30" y="40" width="350" height="110" rx="10" fill="#1c1410" stroke="#c8542a" stroke-opacity=".5"/>
+            <text x="48" y="64" fill="#e0623a" font-family="Poppins, sans-serif" font-size="11" font-weight="600">raw · Bonsai 8B</text>
+            <text x="48" y="90" fill="#b8a98f" font-family="monospace" font-size="12">"action": "edit",</text>
+            <text x="48" y="110" fill="#b8a98f" font-family="monospace" font-size="12">"path": "main.rs"}</text>
+            <text x="48" y="132" fill="#7d756a" font-family="monospace" font-size="11">Sure! Here's the change…</text>
+
+            <path d="M392 95 L450 95" stroke="#e8a445" stroke-width="2" marker-end="url(#ec3)"/>
+            <text x="421" y="84" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="9">normalize</text>
+
+            <rect x="462" y="40" width="328" height="110" rx="10" fill="#141c12" stroke="#5e8b3a" stroke-opacity=".6"/>
+            <text x="480" y="64" fill="#9cc46a" font-family="Poppins, sans-serif" font-size="11" font-weight="600">valid JSON → client</text>
+            <text x="480" y="90" fill="#cbd9b4" font-family="monospace" font-size="12">{"action": "edit",</text>
+            <text x="480" y="110" fill="#cbd9b4" font-family="monospace" font-size="12"> "path": "main.rs"}</text>
+            <text x="480" y="132" fill="#7d8f6a" font-family="monospace" font-size="11">(brace restored, prose stripped)</text>
+            <defs><marker id="ec3" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e8a445"/></marker></defs>
+          </svg>
+          <figcaption>The <code>missing_brace</code> + trailing-prose pathology, repaired transparently. The client receives clean JSON and never knows the model fumbled it.</figcaption>
+        </figure>
+
+        <p>On the streaming path, two more guards run continuously: a <strong>token de-duplicator</strong> removes the doubled tokens that models with the <code>token_doubling</code> quirk emit, and a <strong>degenerate-output detector</strong> aborts a response the moment it detects runaway repetition — so a model that falls into a loop doesn't burn your battery generating the same sentence 400 times.</p>
+
+        <h3>Adapting to the hardware</h3>
+
+        <p>The same proxy runs on a Raspberry-Pi-class box and a workstation, so it auto-detects the machine at startup and picks a device tier that sets how aggressively it scaffolds and how large a token budget it spends:</p>
+
+        <table>
+          <thead><tr><th>Tier</th><th>RAM</th><th>Behavior</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>≤ 2 GB</td><td>Maximum scaffolding, 512-token budget, aggressive compaction</td></tr>
+            <tr><td>2</td><td>2–4 GB</td><td>Heavy scaffolding, 2048-token budget</td></tr>
+            <tr><td>3</td><td>4–8 GB</td><td>Moderate scaffolding, 4096-token budget</td></tr>
+            <tr><td>4</td><td>8 GB+</td><td>Light touch, 8192-token budget</td></tr>
+          </tbody>
+        </table>
+
+        <p>Conversation compaction is the lever that makes the small tiers viable: when a history grows past the model-aware threshold, edgecortex compresses older turns into summaries so the working context stays inside the budget — the same "don't let the prompt grow unbounded" principle that <a href="../3/">aircoder</a> takes to its logical extreme.</p>
+
+        <h3>An optional richer API</h3>
+
+        <p>Standard clients just see a better OpenAI endpoint. Smarter clients can opt into the <code>/v1/cortex/*</code> surface, which exposes the proxy's reasoning as first-class endpoints — classify a task's complexity, get an execution plan, or read the full pipeline status:</p>
+
+        <pre class="language-bash"><code class="language-bash"># Point any OpenAI client at the proxy — quirks are repaired transparently
+curl http://localhost:8080/v1/chat/completions \
+  -d '{"model":"gemma-4-e2b","messages":[{"role":"user","content":"hello"}]}'
+
+# Or use the enhanced Cortex endpoints for richer interaction
+curl -X POST http://localhost:8080/v1/cortex/classify \
+  -d '{"messages":[{"role":"user","content":"Build a REST API"}],"model":"gemma-4-e2b"}'
+
+curl http://localhost:8080/v1/cortex/status   # full intelligence-pipeline state</code></pre>
+
+        <p>Under the hood it's a six-crate Rust workspace — a protocol crate of shared types, an OpenAI HTTP/SSE client, a tools layer, an agent runtime, the original CLI, and the proxy itself, where the profiles, classifier, compaction, retry, and stream-filter modules live.</p>
+
+        <h3>Why a proxy is the right shape</h3>
+
+        <div class="callout key">
+          <p><strong>edgecortex is "picks and shovels" for the local-AI gold rush.</strong> Instead of building yet another CLI that competes with Claude Code or Copilot, it builds the infrastructure layer that makes <em>every</em> local model better — decoupled from any one model, usable by any client, written once.</p>
+        </div>
+
+        <p>The mission is concrete: make it possible for anyone, on any hardware, to use a fully local LLM for serious agentic coding — and remove the dependence on massive cloud providers to do it. A frontier model doesn't need an intelligence layer wrapped around it. A 1.2&nbsp;GB model that drops braces and loops on itself absolutely does, and that's exactly the model most people can actually run on the hardware they own. edgecortex meets the model where it is and hands the client something it can trust.</p>
+
+        <p style="margin-top:2rem; color:var(--text-dim); font-size:.82rem;">edgecortex is an MIT-licensed, six-crate Rust workspace. It's the middleware companion to <a href="../3/">aircoder</a> (the agent) and <a href="../4/">metalstream</a> (the runtime) — three angles on the same goal: frontier-quality agentic coding, fully local, on the machine you already own.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper footer-inner">
+      <span class="footer-copy">© <script>document.write(new Date().getFullYear())</script> Brennen Green</span>
+      <div class="footer-links">
+        <a href="https://github.com/brennengreen" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:brennengreen@outlook.com">Email</a>
+        <a href="../../../index.html">Home</a>
+      </div>
+      <span class="footer-copy">Custom static build · No trackers</span>
+    </div>
+  </footer>
+  <script src="../../assets/prism.js"></script>
+</body>
+</html>

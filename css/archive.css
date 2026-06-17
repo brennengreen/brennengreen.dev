@@ -128,3 +128,27 @@
   .archive-images {grid-template-columns:repeat(2,1fr);}
   .article-wrapper {padding:0 5vw;}
 }
+
+/* --- ARTICLE EXTRAS — technical write-ups (figures, callouts, stats, tables) --- */
+.article-body .lede {font-size:1.04rem; line-height:1.7; color:var(--text); border-left:2px solid var(--brand-accent); padding-left:1.1rem; margin:0 0 1.7rem;}
+
+.article-figure {margin:1.9rem 0; text-align:center;}
+.article-figure svg {max-width:100%; height:auto; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.06); background:linear-gradient(160deg,#100c08,#0b0907); box-shadow:var(--shadow-1);}
+.article-figure figcaption {margin-top:.75rem; font-size:.74rem; color:var(--text-dim); letter-spacing:.2px; font-style:italic; max-width:90%; margin-left:auto; margin-right:auto;}
+
+.callout {margin:1.6rem 0; padding:1rem 1.25rem; border-radius:var(--radius-md); background:rgba(232,164,69,.05); border:1px solid rgba(232,164,69,.14); border-left:3px solid var(--brand-accent);}
+.callout p {margin:0; font-size:.86rem; color:var(--text); line-height:1.65;}
+.callout strong {color:var(--accent-warm);}
+.callout.key {background:rgba(200,84,42,.07); border-left-color:var(--accent-warm);}
+
+.stat-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem; margin:1.7rem 0;}
+.stat {background:linear-gradient(145deg,var(--panel),var(--panel-accent)); border:1px solid rgba(255,255,255,.05); border-radius:var(--radius-md); padding:1.1rem 1rem; text-align:center;}
+.stat b {display:block; font-family:var(--serif); font-size:1.7rem; font-weight:700; color:var(--accent-warm); line-height:1.05;}
+.stat span {display:block; margin-top:.45rem; font-size:.66rem; color:var(--text-dim); letter-spacing:.5px; text-transform:uppercase;}
+
+.article-body table {width:100%; border-collapse:collapse; margin:1.3rem 0 1.6rem; font-size:.8rem;}
+.article-body th, .article-body td {text-align:left; padding:.6rem .7rem; border-bottom:1px solid rgba(255,255,255,.07); vertical-align:top;}
+.article-body th {color:var(--accent-warm); font-weight:600; font-size:.7rem; letter-spacing:.5px; text-transform:uppercase; border-bottom-color:rgba(232,164,69,.22);}
+.article-body td {color:var(--text-dim);}
+.article-body td code {font-size:.74rem;}
+.article-body tbody tr:last-child td {border-bottom:none;}

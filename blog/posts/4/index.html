@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>metalstream: running a 31B model on a 16GB laptop by streaming weights off NVMe — Brennen Green</title>
+  <meta name="description" content="A drop-in MLX add-on that streams model weights off NVMe so an 18.4GB model produces tokens on a 16GB M4 MacBook Air — and the phase-by-phase investigation that got there." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../../css/stylesheet.css" />
+  <link rel="stylesheet" href="../../../css/archive.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrapper nav">
+      <div style="display:flex; align-items:center; gap:.85rem;">
+        <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#2a1f12,#110a06);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
+          <img src="../../../media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:grayscale(60%) contrast(1.15);"/>
+        </div>
+        <a href="../../../index.html" style="text-decoration:none;"><strong style="font-size:1rem;letter-spacing:.5px;font-weight:600;color:#fff;">Brennen&nbsp;Green</strong></a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <nav class="links">
+        <a href="../../../index.html#experience">Experience</a>
+        <a href="../../../index.html#credits">Credits</a>
+        <a href="../../../index.html#systems">Systems</a>
+        <a href="../../../archive/index.html">Archive</a>
+        <a href="../../../blog/index.html">Blog</a>
+        <a href="../../../index.html#portfolio">Portfolio</a>
+        <a href="../../../index.html#contact" class="cta">Connect</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="article-wrapper">
+      <div class="article-header">
+        <a href="../../index.html" class="back-link">Back to blog</a>
+        <h1>metalstream: running a 31B model on a 16&nbsp;GB laptop by streaming weights off NVMe</h1>
+        <p class="article-subtitle">A drop-in MLX add-on that trades the out-of-memory wall for an SSD-bandwidth wall — and the disciplined, phase-by-phase investigation that proved every step before taking it.</p>
+        <div class="article-meta">
+          <span><strong>Published</strong> May 5, 2026</span>
+          <span><strong>By</strong> Brennen Green</span>
+          <span><strong>Read</strong> ~13 min</span>
+        </div>
+        <div class="article-tags">
+          <span>Python</span><span>MLX</span><span>Apple Metal</span><span>Systems</span><span>LLM Inference</span>
+        </div>
+      </div>
+
+      <div class="article-body">
+
+        <p class="lede">The premise is simple and a little absurd: take Gemma&nbsp;4 31B — a quantized model that is <strong>18.44&nbsp;GB on disk</strong> — and make it produce tokens on a 16&nbsp;GB M4 MacBook Air, a machine whose GPU will only let one process wire down <strong>10.67&nbsp;GB</strong> at a time. The model is nearly twice the size of the hole it has to fit through. metalstream is the substrate that makes it run anyway, by never holding the whole model in memory at once.</p>
+
+        <h3>The wall: a ceiling you cannot configure away</h3>
+
+        <p>I did not start by writing a streaming engine. I started by trying the cheap things and proving they fail, because a substrate this invasive needs to be <em>justified</em>, not assumed. Phase 0 asked the most basic question — does a bare <code>lazy=True</code> memory-mapped load just work? The validation model (Gemma&nbsp;4 E4B, 5.25&nbsp;GB) ran cleanly at ~33&nbsp;tok/s, confirming the harness and loader were sound. The 31B hero model OOM'd at the Metal command buffer on first use.</p>
+
+        <p>Phase 1 asked whether MLX's memory-tier knobs — <code>set_wired_limit</code>, <code>set_memory_limit</code>, <code>set_cache_limit</code> — could keep it resident. They cannot. The Metal driver on this M4 exposes a hard <code>max_recommended_working_set_size</code> of 10.67&nbsp;GB; any wired limit above that is <em>silently rejected</em>. A dense 18.44&nbsp;GB model cannot fit in a 10.67&nbsp;GB working set no matter how you set the dials. Even a Q3 re-quant would land around 13&nbsp;GB — still over the cap. Streaming wasn't a nice-to-have; it was the only door left.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 330" role="img" aria-label="Bar chart of on-disk model size versus the 10.67 GB Metal working-set cap. The E4B model at 5.25 GB fits under the cap; the 31B model at 18.44 GB towers over it.">
+            <line x1="120" y1="40" x2="120" y2="270" stroke="rgba(255,255,255,.15)"/>
+            <line x1="120" y1="270" x2="760" y2="270" stroke="rgba(255,255,255,.15)"/>
+            <g font-family="Poppins, sans-serif" font-size="10" fill="#8d857a" text-anchor="end">
+              <text x="112" y="274">0</text>
+              <text x="112" y="213">5</text>
+              <text x="112" y="151">10</text>
+              <text x="112" y="90">15</text>
+              <text x="112" y="44">GB</text>
+            </g>
+            <!-- scale: 12.3 px per GB, baseline y=270 -->
+            <!-- cap line at 10.67 GB -> y = 270 - 10.67*12.3 = 138.8 -->
+            <line x1="120" y1="139" x2="760" y2="139" stroke="#e0623a" stroke-width="2" stroke-dasharray="6 5"/>
+            <text x="752" y="131" text-anchor="end" fill="#e0623a" font-family="Poppins, sans-serif" font-size="12" font-weight="600">Metal working-set cap · 10.67 GB</text>
+
+            <!-- E4B 5.25 GB -> h=64.6, y=205.4 -->
+            <rect x="220" y="205" width="120" height="65" rx="5" fill="#2f5a2a" stroke="#5e8b3a"/>
+            <text x="280" y="195" text-anchor="middle" fill="#9cc46a" font-family="Poppins, sans-serif" font-size="13" font-weight="600">5.25 GB</text>
+            <text x="280" y="290" text-anchor="middle" fill="#ece6da" font-family="Poppins, sans-serif" font-size="12">Gemma 4 E4B</text>
+            <text x="280" y="307" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">fits · 32.9 tok/s</text>
+
+            <!-- 31B 18.44 GB -> h=226.8, y=43.2 -->
+            <rect x="520" y="43" width="120" height="227" rx="5" fill="#5a241a" stroke="#c8542a"/>
+            <text x="580" y="33" text-anchor="middle" fill="#e0623a" font-family="Poppins, sans-serif" font-size="13" font-weight="600">18.44 GB</text>
+            <text x="580" y="290" text-anchor="middle" fill="#ece6da" font-family="Poppins, sans-serif" font-size="12">Gemma 4 31B (Q4)</text>
+            <text x="580" y="307" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">1.7× the cap · OOMs unstreamed</text>
+          </svg>
+          <figcaption>The dominant fact of the whole project. The 31B model on disk is 1.7× the GPU's single-process working-set ceiling, so no combination of memory-tier knobs can make it resident. The validation model fits comfortably and anchors every benchmark.</figcaption>
+        </figure>
+
+        <h3>The idea: "LLM in a Flash," on Metal</h3>
+
+        <p>A transformer doesn't need every layer's weights at the same instant. During a forward pass it visits decoder layers in order — layer 0, then 1, then 2, all the way to 59 — and once it has left a layer, those weights are dead weight until the next token. metalstream exploits exactly this: <strong>load the weights for layer <em>i</em> when the pass enters it, evict them when the pass leaves, and prefetch layer <em>i+1</em> in the background while layer <em>i</em> computes.</strong> The GPU only ever holds a couple of layers at a time, so the resident footprint is tiny even though the model on disk is enormous.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 250" role="img" aria-label="The streaming substrate: weights live on NVMe; the active layer i is materialized into a small GPU working set, computed, then evicted, while layer i+1 is prefetched in the background.">
+            <rect x="40" y="95" width="150" height="80" rx="10" fill="#120f0a" stroke="#e8a445" stroke-opacity=".4"/>
+            <text x="115" y="128" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="13" font-weight="600">NVMe SSD</text>
+            <text x="115" y="148" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">all 60 layers</text>
+            <text x="115" y="163" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">18.44 GB</text>
+
+            <g font-family="monospace" font-size="10" fill="#7d756a" text-anchor="middle">
+              <rect x="250" y="60" width="44" height="26" rx="4" fill="#1a1610"/><text x="272" y="77">L i-1</text>
+              <rect x="250" y="150" width="44" height="26" rx="4" fill="#1a1610"/><text x="272" y="167">L i+2</text>
+            </g>
+
+            <rect x="330" y="92" width="170" height="86" rx="10" fill="#1a140d" stroke="#e8a445"/>
+            <text x="415" y="84" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="11" font-weight="600">GPU working set (≤ 10.67 GB)</text>
+            <rect x="346" y="106" width="66" height="56" rx="6" fill="#3d2c1c" stroke="#e8a445"/><text x="379" y="138" text-anchor="middle" fill="#f0a35e" font-family="monospace" font-size="12">layer i</text>
+            <rect x="420" y="106" width="66" height="56" rx="6" fill="#241c12" stroke="#8d6a3a" stroke-dasharray="3 3"/><text x="453" y="132" text-anchor="middle" fill="#b8a98f" font-family="monospace" font-size="11">i+1</text>
+            <text x="453" y="150" text-anchor="middle" fill="#8d756a" font-family="Poppins, sans-serif" font-size="8">prefetch</text>
+
+            <rect x="600" y="95" width="170" height="80" rx="10" fill="#17120c" stroke="rgba(255,255,255,.12)"/>
+            <text x="685" y="128" text-anchor="middle" fill="#ece6da" font-family="Poppins, sans-serif" font-size="13" font-weight="600">compute layer i</text>
+            <text x="685" y="148" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">matmuls → activations</text>
+
+            <g stroke-width="1.5" fill="none">
+              <path d="M190 125 L326 130" stroke="#e8a445" marker-end="url(#ms1)"/>
+              <path d="M500 135 L596 135" stroke="#c8542a" marker-end="url(#ms2)"/>
+              <path d="M685 175 C 685 215, 379 215, 379 180" stroke="#7d756a" stroke-dasharray="4 4" marker-end="url(#ms3)"/>
+            </g>
+            <text x="530" y="232" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">evict layer i after compute → slot is reused for i+2</text>
+            <defs>
+              <marker id="ms1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e8a445"/></marker>
+              <marker id="ms2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c8542a"/></marker>
+              <marker id="ms3" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7d756a"/></marker>
+            </defs>
+          </svg>
+          <figcaption>Per-layer streaming: the active layer is materialized into a small GPU working set, the next layer is prefetched while it computes, and the spent layer is evicted so its slot can be reused. Peak residency is a couple of layers, not the whole model.</figcaption>
+        </figure>
+
+        <p>With <code>resident_blocks=2</code> and <code>prefetch_distance=1</code>, the 31B model that categorically OOM'd in Phases 0 and 1 <strong>produces tokens end-to-end</strong>. And its resident GPU footprint is almost comically small relative to the cap that was blocking it — a peak Metal pool of 2.35&nbsp;GB, roughly one-fifth of the 10.67&nbsp;GB ceiling, with peak RSS of 1.85&nbsp;GB.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 170" role="img" aria-label="A horizontal bar showing the streamed 31B model's peak Metal pool of 2.35 GB occupying only 22 percent of the 10.67 GB working-set cap.">
+            <text x="40" y="40" fill="#ece6da" font-family="Poppins, sans-serif" font-size="13" font-weight="600">Resident GPU footprint, streamed 31B</text>
+            <rect x="40" y="60" width="720" height="44" rx="8" fill="#17120c" stroke="rgba(255,255,255,.12)"/>
+            <!-- cap = 720px = 10.67GB; 2.35GB -> 158.6px -->
+            <rect x="40" y="60" width="159" height="44" rx="8" fill="#2f5a2a" stroke="#5e8b3a"/>
+            <text x="210" y="87" fill="#9cc46a" font-family="Poppins, sans-serif" font-size="13" font-weight="600">2.35 GB peak pool</text>
+            <text x="752" y="51" text-anchor="end" fill="#e0623a" font-family="Poppins, sans-serif" font-size="11">10.67 GB cap →</text>
+            <text x="40" y="132" fill="#8d857a" font-family="Poppins, sans-serif" font-size="11">Only ~22% of the ceiling is used at peak. The model is on the SSD; the GPU just borrows two layers at a time.</text>
+          </svg>
+          <figcaption>The streamed hero leaves ~78% of the working-set budget on the table. That headroom is what Phase 3 went hunting in — and what turned out not to be the bottleneck at all.</figcaption>
+        </figure>
+
+        <h3>It runs — but the wall just moved</h3>
+
+        <p>Honesty time: streaming doesn't make the 31B <em>fast</em>. It makes it <em>possible</em>. The measured decode rate is 0.13&nbsp;tok/s. That's "your overnight job finishes while you sleep," not "you type and it answers." Streaming traded the OOM wall for an SSD-bandwidth-and-layer-load wall — exactly what the "LLM in a Flash" framing predicts. The contrast with the resident validation model is the real story:</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 250" role="img" aria-label="Throughput comparison. The resident E4B model decodes at 32.94 tokens per second; the streamed 31B model decodes at 0.13 tokens per second, roughly 250 times slower.">
+            <line x1="60" y1="40" x2="60" y2="190" stroke="rgba(255,255,255,.15)"/>
+            <line x1="60" y1="190" x2="780" y2="190" stroke="rgba(255,255,255,.15)"/>
+            <!-- scale: 32.94 -> 140px tall; 4.25 px per tok/s; baseline 190 -->
+            <rect x="150" y="50" width="150" height="140" rx="5" fill="#2f5a2a" stroke="#5e8b3a"/>
+            <text x="225" y="40" text-anchor="middle" fill="#9cc46a" font-family="Poppins, sans-serif" font-size="15" font-weight="700">32.94 tok/s</text>
+            <text x="225" y="210" text-anchor="middle" fill="#ece6da" font-family="Poppins, sans-serif" font-size="12">E4B · resident</text>
+            <text x="225" y="228" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">interactive</text>
+
+            <rect x="540" y="188" width="150" height="2.5" rx="1" fill="#c8542a" stroke="#e0623a"/>
+            <text x="615" y="178" text-anchor="middle" fill="#e0623a" font-family="Poppins, sans-serif" font-size="15" font-weight="700">0.13 tok/s</text>
+            <text x="615" y="210" text-anchor="middle" fill="#ece6da" font-family="Poppins, sans-serif" font-size="12">31B · streamed</text>
+            <text x="615" y="228" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">overnight</text>
+
+            <path d="M310 120 C 410 120, 440 189, 535 189" fill="none" stroke="#8d756a" stroke-width="1.3" stroke-dasharray="5 4"/>
+            <text x="420" y="110" text-anchor="middle" fill="#e0623a" font-family="Poppins, sans-serif" font-size="13" font-weight="600">~250× slower</text>
+          </svg>
+          <figcaption>The throughput cliff. Fitting in RAM buys interactive speed; streaming off NVMe buys feasibility at roughly 250× the per-token cost. The honest headline is "it runs at all," not "it runs fast."</figcaption>
+        </figure>
+
+        <h3>Why a bigger cache doesn't help</h3>
+
+        <p>With 8&nbsp;GB of unused pool budget sitting on the table, the obvious next move is: grow <code>resident_blocks</code> from 2 to a real LRU cache and let layer reuse amortize the load cost. Phase 3 swept <code>N ∈ {2, 4, 8, 16}</code> and the result was a flat line — decode stayed at 0.12–0.13&nbsp;tok/s, with <code>layer_loads = 23,520</code> reproduced byte-for-byte at every residency budget.</p>
+
+        <div class="callout key">
+          <p><strong>The pathology:</strong> a forward pass visits 60 decoder layers <em>in order</em>. An LRU cache of size N&nbsp;&lt;&nbsp;60 always evicts each layer just before its next entry point comes back around — so the cache hit rate is <strong>0% regardless of N</strong>. Buying more residency for a strictly sequential access pattern buys nothing. The throughput floor here is on-GPU compute, not storage I/O.</p>
+        </div>
+
+        <p>That's the kind of finding that only falls out of measuring instead of guessing. It also reframes the remaining work: the path forward isn't "tune the cache," it's architectural — KV streaming, quantization tier-mixing, a smarter-than-LRU policy that respects the sequential structure.</p>
+
+        <h3>Killing the eviction overhead</h3>
+
+        <p>Phase 3's instrumentation surfaced an embarrassing dominator. Of the hero run's wall time, ~910&nbsp;s was spent in <code>_evict()</code> — <em>2.7× the actual load path</em> — almost all of it in a <code>refresh-cache → clear-cache → gc.collect</code> round-trip that MLX needed in order to hand its GPU buffer back to the pool after every single layer eviction. We were paying a garbage-collection tax 23,520 times.</p>
+
+        <p>Phase 4 replaced it with a persistent <code>LayerBufferPool</code>: K slots, each owning the canonical array references for one resident layer. <strong>Slot reuse <em>is</em> the eviction</strong> — no cache refresh, no <code>clear_cache</code>, no <code>gc.collect</code> — and the old-layer rebind is batched with the new-layer install into a single weight-load call.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 250" role="img" aria-label="Phase 4 results. The persistent buffer pool halves mx.load round-trips from about 55,000 to 27,830 and cuts MLX-side wall time from 1245 to 1008 seconds, a 19.5 percent reduction.">
+            <text x="210" y="34" text-anchor="middle" fill="#ece6da" font-family="Poppins, sans-serif" font-size="12" font-weight="600">mx.load round-trips</text>
+            <text x="610" y="34" text-anchor="middle" fill="#ece6da" font-family="Poppins, sans-serif" font-size="12" font-weight="600">MLX-side wall time</text>
+            <line x1="60" y1="200" x2="780" y2="200" stroke="rgba(255,255,255,.15)"/>
+
+            <!-- load calls: 55000 ref full(150px@110), 27830 -> 75.9 -->
+            <rect x="110" y="62" width="80" height="138" rx="5" fill="#5a241a" stroke="#c8542a"/>
+            <text x="150" y="52" text-anchor="middle" fill="#e0623a" font-family="Poppins, sans-serif" font-size="12" font-weight="600">≈55,000</text>
+            <text x="150" y="218" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">Phase 3</text>
+            <rect x="240" y="130" width="80" height="70" rx="5" fill="#2f5a2a" stroke="#5e8b3a"/>
+            <text x="280" y="120" text-anchor="middle" fill="#9cc46a" font-family="Poppins, sans-serif" font-size="12" font-weight="600">27,830</text>
+            <text x="280" y="218" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">Phase 4 pool</text>
+            <text x="215" y="240" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="11" font-weight="600">2× fewer</text>
+
+            <!-- wall: 1245 ref 138px, 1008 -> 111.7 -->
+            <rect x="510" y="62" width="80" height="138" rx="5" fill="#5a241a" stroke="#c8542a"/>
+            <text x="550" y="52" text-anchor="middle" fill="#e0623a" font-family="Poppins, sans-serif" font-size="12" font-weight="600">1,245 s</text>
+            <text x="550" y="218" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">Phase 3</text>
+            <rect x="640" y="88" width="80" height="112" rx="5" fill="#2f5a2a" stroke="#5e8b3a"/>
+            <text x="680" y="78" text-anchor="middle" fill="#9cc46a" font-family="Poppins, sans-serif" font-size="12" font-weight="600">1,008 s</text>
+            <text x="680" y="218" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="10">Phase 4 pool</text>
+            <text x="615" y="240" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="11" font-weight="600">−19.5% MLX work</text>
+          </svg>
+          <figcaption>The buffer pool eliminates the eviction-path overhead by construction: 2× fewer <code>mx.load</code> round-trips and a 19.5% cut in MLX-side wall time, with bit-identical numerical output on the validation model and the K=2 residency bound enforced by the pool itself.</figcaption>
+        </figure>
+
+        <p>And here is the honest punchline: the bench wall only dropped 5.9%, and decode stayed flat at 0.12&nbsp;tok/s. We deleted the substrate's biggest self-inflicted cost and confirmed what Phase 3 already suspected — <strong>the remaining wall is on-GPU compute.</strong> The dominator we attacked is gone; the next one is the matmuls themselves.</p>
+
+        <h3>A worked-backwards investigation</h3>
+
+        <p>What I'm proudest of here isn't the streaming engine — it's the method. Every phase poses one falsifiable question, runs it on the same fingerprinted machine, and commits the JSON for every published number. Negative results are first-class: "tier knobs don't work" and "a bigger cache does nothing" are load-bearing findings, not failures to hide.</p>
+
+        <table>
+          <thead><tr><th>Phase</th><th>Question</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td><strong>0</strong></td><td>Does bare lazy-mmap run the 31B?</td><td>No — OOMs. E4B validates the harness at 32.9 tok/s.</td></tr>
+            <tr><td><strong>1</strong></td><td>Can memory-tier knobs keep it resident?</td><td>No — the 10.67 GB working-set cap is hard; the model is 18.44 GB.</td></tr>
+            <tr><td><strong>2</strong></td><td>Can per-layer streaming host it?</td><td><strong>Yes</strong> — 0.13 tok/s, 2.35 GB pool. OOM wall → I/O wall.</td></tr>
+            <tr><td><strong>3</strong></td><td>Does a bigger residency cache help?</td><td>No — LRU vs sequential access = 0% hits. Compute-bound.</td></tr>
+            <tr><td><strong>4</strong></td><td>Can a buffer pool kill the evict tax?</td><td><strong>Yes</strong> — −19.5% MLX work; the compute floor remains.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="stat-grid">
+          <div class="stat"><b>18.44 GB</b><span>model on disk</span></div>
+          <div class="stat"><b>10.67 GB</b><span>Metal cap</span></div>
+          <div class="stat"><b>2.35 GB</b><span>peak pool, streamed</span></div>
+          <div class="stat"><b>16 GB</b><span>M4 Air it runs on</span></div>
+        </div>
+
+        <h3>What it proves</h3>
+
+        <p>metalstream is a Python library — a drop-in MLX add-on, not a fork — and the headline finding is narrow and real: <strong>a 31B Q4 model now produces tokens on a 16&nbsp;GB Air at all</strong>, slowly and honestly, with bit-identical numerical equivalence to the non-streaming baseline. More importantly, the project maps the terrain: the ceiling is a fixed Metal working-set cap, streaming clears it, the residual cost is GPU compute rather than storage, and the eviction overhead is an implementation tax you can delete.</p>
+
+        <p>It is not fast, and it is structurally Apple-only — Metal is the whole point. But it's the substrate that lets a model whose reasoning ceiling used to require a $4k laptop run on the MacBook Air you already own. Paired with <a href="../3/">aircoder</a> — which is small-context-by-design — you get the two halves of one bet: an agent that survives long tasks, and a runtime that survives oversized models.</p>
+
+        <p style="margin-top:2rem; color:var(--text-dim); font-size:.82rem;">metalstream is an MIT-licensed Python package with a reproducible benchmark harness; every published number ships with its result JSON. Test bed: Apple M4 (10c/10c), 16&nbsp;GB unified memory, macOS&nbsp;15.7, MLX&nbsp;0.31.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper footer-inner">
+      <span class="footer-copy">© <script>document.write(new Date().getFullYear())</script> Brennen Green</span>
+      <div class="footer-links">
+        <a href="https://github.com/brennengreen" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:brennengreen@outlook.com">Email</a>
+        <a href="../../../index.html">Home</a>
+      </div>
+      <span class="footer-copy">Custom static build · No trackers</span>
+    </div>
+  </footer>
+  <script src="../../assets/prism.js"></script>
+</body>
+</html>

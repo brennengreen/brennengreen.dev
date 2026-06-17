@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>aircoder: a local coding agent that externalizes its memory to disk — Brennen Green</title>
+  <meta name="description" content="How a nine-crate Rust agent drives a small local LLM through hour-long coding tasks by treating the model as stateless and a content-addressed ledger as its working memory." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../../css/stylesheet.css" />
+  <link rel="stylesheet" href="../../../css/archive.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrapper nav">
+      <div style="display:flex; align-items:center; gap:.85rem;">
+        <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#2a1f12,#110a06);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
+          <img src="../../../media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:grayscale(60%) contrast(1.15);"/>
+        </div>
+        <a href="../../../index.html" style="text-decoration:none;"><strong style="font-size:1rem;letter-spacing:.5px;font-weight:600;color:#fff;">Brennen&nbsp;Green</strong></a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <nav class="links">
+        <a href="../../../index.html#experience">Experience</a>
+        <a href="../../../index.html#credits">Credits</a>
+        <a href="../../../index.html#systems">Systems</a>
+        <a href="../../../archive/index.html">Archive</a>
+        <a href="../../../blog/index.html">Blog</a>
+        <a href="../../../index.html#portfolio">Portfolio</a>
+        <a href="../../../index.html#contact" class="cta">Connect</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="article-wrapper">
+      <div class="article-header">
+        <a href="../../index.html" class="back-link">Back to blog</a>
+        <h1>aircoder: a local coding agent that externalizes its memory to disk</h1>
+        <p class="article-subtitle">How a nine-crate Rust agent drives a small, local LLM through hour-long coding tasks by treating the model as stateless — and a content-addressed ledger on disk as its real working memory.</p>
+        <div class="article-meta">
+          <span><strong>Published</strong> May 5, 2026</span>
+          <span><strong>By</strong> Brennen Green</span>
+          <span><strong>Read</strong> ~12 min</span>
+        </div>
+        <div class="article-tags">
+          <span>Rust</span><span>Local LLM</span><span>Agents</span><span>Systems</span><span>SQLite</span>
+        </div>
+      </div>
+
+      <div class="article-body">
+
+        <p class="lede">Every local-LLM user has hit the same wall. A coding task is going fine for fifteen turns, then the agent forgets which file it was editing, hallucinates an import, loops on evidence it already gathered, or just runs out of memory when its KV cache outgrows your RAM. The model isn't dumb. <strong>It is forgetting.</strong> aircoder is my attempt to fix that — not with a bigger model, but with a different architecture.</p>
+
+        <h3>The problem: the prompt is a terrible place to keep state</h3>
+
+        <p>Cloud agents paper over the forgetting problem with frontier models and 200k-token context windows. Run locally on a laptop and there is no escape hatch: a 7B model with an 8k effective context cannot hold a twelve-step task, all the files it has read, and every test result in its head at once. As the conversation grows, three things happen — all bad:</p>
+
+        <ul>
+          <li><strong>Dilution.</strong> The instruction that mattered on turn 2 is now buried under ten turns of tool output the model has to re-read every step.</li>
+          <li><strong>Drift.</strong> Re-reading a long, noisy history each turn, a small model loses the thread — it re-opens files it already saw, or contradicts a decision it made earlier.</li>
+          <li><strong>Death.</strong> The KV cache grows with the context until the process OOMs. On a 16&nbsp;GB machine that can happen well before the task is done.</li>
+        </ul>
+
+        <p>The conventional answer is "summarize the history when it gets long." That helps with dilution but not drift, and it is lossy in exactly the way that bites you later. aircoder takes the harder position: <em>the prompt should never be the system of record in the first place.</em></p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 300" role="img" aria-label="Comparison of a naive agent whose context window grows until it forgets or OOMs, versus aircoder whose context stays small because evidence lives in a ledger on disk.">
+            <text x="205" y="30" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="16" font-weight="700">Naive agent</text>
+            <text x="205" y="50" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="11">history = working memory</text>
+            <rect x="70" y="70" width="270" height="200" rx="10" fill="#17120c" stroke="rgba(255,255,255,.1)"/>
+            <text x="205" y="92" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">context window</text>
+            <rect x="86" y="104" width="238" height="20" rx="4" fill="#2a2118"/><text x="96" y="118" fill="#9c93ad" font-family="monospace" font-size="10">turn 1 · system + task</text>
+            <rect x="86" y="128" width="238" height="20" rx="4" fill="#33271a"/><text x="96" y="142" fill="#b8a98f" font-family="monospace" font-size="10">turn 2 · file_read (4k tok)</text>
+            <rect x="86" y="152" width="238" height="20" rx="4" fill="#3d2c1c"/><text x="96" y="166" fill="#c8542a" font-family="monospace" font-size="10">turn 3 · test output (6k tok)</text>
+            <rect x="86" y="176" width="238" height="20" rx="4" fill="#472f1d"/><text x="96" y="190" fill="#c8542a" font-family="monospace" font-size="10">turn 4 · diff + logs …</text>
+            <rect x="86" y="200" width="238" height="20" rx="4" fill="#52331e"/><text x="96" y="214" fill="#e0623a" font-family="monospace" font-size="10">turn 5 · re-reads it all again</text>
+            <text x="205" y="248" text-anchor="middle" fill="#e0623a" font-family="Poppins, sans-serif" font-size="12" font-weight="600">⚠ dilutes → drifts → OOMs</text>
+
+            <line x1="392" y1="80" x2="392" y2="260" stroke="rgba(255,255,255,.08)" stroke-dasharray="4 4"/>
+
+            <text x="615" y="30" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="16" font-weight="700">aircoder</text>
+            <text x="615" y="50" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="11">ledger = working memory</text>
+            <rect x="480" y="70" width="270" height="80" rx="10" fill="#17120c" stroke="#e8a445" stroke-opacity=".5"/>
+            <text x="615" y="92" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">context window (stays small)</text>
+            <rect x="496" y="104" width="238" height="16" rx="4" fill="#2a2118"/><text x="506" y="116" fill="#9c93ad" font-family="monospace" font-size="9">system + task header</text>
+            <rect x="496" y="124" width="238" height="16" rx="4" fill="#2a2118"/><text x="506" y="136" fill="#9c93ad" font-family="monospace" font-size="9">curated evidence (just what's relevant)</text>
+            <rect x="480" y="178" width="270" height="82" rx="10" fill="#120f0a" stroke="#e8a445" stroke-opacity=".35"/>
+            <text x="615" y="200" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="11" font-weight="600">ledger.sqlite — on disk</text>
+            <text x="615" y="222" text-anchor="middle" fill="#b8b0a4" font-family="monospace" font-size="9">file_read · diagnostic · test_result</text>
+            <text x="615" y="238" text-anchor="middle" fill="#b8b0a4" font-family="monospace" font-size="9">decision · plan tree · cursor</text>
+            <path d="M615 150 L615 178" stroke="#e8a445" stroke-width="1.5" marker-end="url(#ar)"/>
+            <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e8a445"/></marker></defs>
+          </svg>
+          <figcaption>Left: the conventional loop, where every observation lands back in the prompt and is re-read forever. Right: aircoder keeps the context window nearly empty by writing every observation to a ledger and pulling back only what the next step needs.</figcaption>
+        </figure>
+
+        <h3>The idea: state lives on disk, not in the prompt</h3>
+
+        <p>aircoder decomposes every observation the agent makes into a typed <em>evidence</em> row in a SQLite ledger. Reading a file produces a <code>file_read</code> row. Running the tests produces a <code>test_result</code> row. Forming a hunch produces a <code>decision</code> row. The model never re-reads raw history — instead, each step assembles a fresh, compact prompt by <em>querying</em> the ledger for the handful of evidence rows that matter right now.</p>
+
+        <p>The supervisor recognizes seven kinds of evidence:</p>
+
+        <table>
+          <thead><tr><th>Evidence kind</th><th>Produced when…</th></tr></thead>
+          <tbody>
+            <tr><td><code>file_read</code></td><td>the agent opens a file or a span of one</td></tr>
+            <tr><td><code>diagnostic</code></td><td>a compiler/linter message — or an internal parser/inference failure — is captured</td></tr>
+            <tr><td><code>test_result</code></td><td>a test run reports pass/fail</td></tr>
+            <tr><td><code>edit_applied</code></td><td>a change is written to the working tree</td></tr>
+            <tr><td><code>decision</code></td><td>the model commits to a hypothesis or a fix</td></tr>
+            <tr><td><code>shell_output</code></td><td>an arbitrary command's output is recorded</td></tr>
+            <tr><td><code>symbol_lookup</code></td><td>a symbol is resolved against the repo index</td></tr>
+          </tbody>
+        </table>
+
+        <p>Because every row carries a stable id, a short summary, and the verbatim payload, future steps can reference evidence <em>by predicate</em> ("the last failing test", "the decision about <code>token_utils.py</code>") rather than by scrolling back through a transcript. The model's context window stays nearly empty no matter how long the task runs.</p>
+
+        <h3>The agent loop</h3>
+
+        <p>One step of aircoder is a tight, four-beat cycle. The supervisor assembles a compact episode, the model answers with exactly one structured action, the supervisor commits the consequences to the ledger as a single transaction, and the next step queries the freshly-updated ledger. There is no growing transcript — every step starts from the durable state, not from a chat log.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 340" role="img" aria-label="The aircoder agent loop: assemble episode, model emits one JSON action, supervisor commits a single SQLite transaction, curate next evidence, repeat.">
+            <defs><marker id="ar2" markerWidth="10" markerHeight="10" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#c8542a"/></marker></defs>
+
+            <rect x="60" y="40" width="200" height="74" rx="10" fill="#17120c" stroke="#e8a445" stroke-opacity=".45"/>
+            <text x="160" y="68" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="13" font-weight="600">1 · Assemble episode</text>
+            <text x="160" y="88" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">system + task + hypothesis</text>
+            <text x="160" y="103" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">ladder + curated evidence</text>
+
+            <rect x="560" y="40" width="200" height="74" rx="10" fill="#17120c" stroke="#e8a445" stroke-opacity=".45"/>
+            <text x="660" y="68" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="13" font-weight="600">2 · Model decides</text>
+            <text x="660" y="88" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">local LLM emits exactly</text>
+            <text x="660" y="103" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">one JSON action</text>
+
+            <rect x="560" y="226" width="200" height="74" rx="10" fill="#17120c" stroke="#e8a445" stroke-opacity=".45"/>
+            <text x="660" y="254" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="13" font-weight="600">3 · Commit step</text>
+            <text x="660" y="274" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">one SQLite transaction:</text>
+            <text x="660" y="289" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">evidence + plan + cursor</text>
+
+            <rect x="60" y="226" width="200" height="74" rx="10" fill="#17120c" stroke="#e8a445" stroke-opacity=".45"/>
+            <text x="160" y="254" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="13" font-weight="600">4 · Curate evidence</text>
+            <text x="160" y="274" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">query ledger for what the</text>
+            <text x="160" y="289" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">next step needs</text>
+
+            <path d="M260 77 L556 77" stroke="#c8542a" stroke-width="1.5" marker-end="url(#ar2)"/>
+            <path d="M660 114 L660 222" stroke="#c8542a" stroke-width="1.5" marker-end="url(#ar2)"/>
+            <path d="M560 263 L264 263" stroke="#c8542a" stroke-width="1.5" marker-end="url(#ar2)"/>
+            <path d="M160 226 L160 118" stroke="#c8542a" stroke-width="1.5" marker-end="url(#ar2)"/>
+
+            <ellipse cx="410" cy="170" rx="92" ry="40" fill="#120f0a" stroke="#e8a445" stroke-opacity=".3"/>
+            <text x="410" y="166" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="11" font-weight="600">ledger.sqlite</text>
+            <text x="410" y="184" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9">the only system of record</text>
+          </svg>
+          <figcaption>The loop never carries a transcript forward. Each cycle reads durable state, asks the model for one decision, and writes the result back — so a crash between any two steps loses nothing.</figcaption>
+        </figure>
+
+        <p>The model's whole job each turn is to emit <strong>one JSON object on one line</strong> — no prose, no markdown fences, no commentary — picked from a small set of action shapes:</p>
+
+        <pre class="language-json"><code class="language-json">{"action":"record_evidence",
+ "kind":"file_read|diagnostic|test_result|edit_applied|decision|shell_output|symbol_lookup",
+ "subject":"&lt;short identifier — a path, command, or symbol&gt;",
+ "summary":"&lt;one or two lines the next step will read&gt;",
+ "content":"&lt;verbatim payload bytes&gt;"}
+
+{"action":"spawn_child",
+ "hypothesis":"&lt;one line: what this sub-investigation should explore&gt;"}
+
+{"action":"resolve",
+ "cites":["&lt;evidence-id&gt;", "..."],
+ "summary":"&lt;why the task (or sub-task) is now done&gt;"}</code></pre>
+
+        <p>That structured-action contract is what makes the loop legible. The agent isn't free-forming a conversation; it's appending rows to a database and walking a plan tree. <code>spawn_child</code> opens a sub-hypothesis (depth-first investigation); <code>resolve</code> closes one and <em>must</em> cite the evidence ids that justify the conclusion — so every resolution is traceable back to the rows that earned it.</p>
+
+        <h3>Every step is a checkpoint</h3>
+
+        <p>A long-horizon agent has to survive <code>SIGINT</code> and <code>kill -9</code>. If your laptop sleeps, the model server hiccups, or you simply <kbd>Ctrl-C</kbd> a twenty-minute run, you should be able to resume without redoing work — and without a corrupt half-step poisoning the ledger.</p>
+
+        <p>aircoder gets this from a single design rule: <strong>everything a step mutates is committed in one SQLite transaction.</strong> The episode row, every evidence row it recorded, the plan-tree mutation, and the cursor bump all land inside one <code>BEGIN … COMMIT</code>:</p>
+
+        <pre class="language-rust"><code class="language-rust">// crates/aircoder-supervisor/src/supervisor.rs
+let tx = conn.unchecked_transaction()?;          // BEGIN DEFERRED
+
+self.write_episode_row(&amp;tx, &amp;task, episode)?;    // the model's prompt + action
+match action {
+    Action::RecordEvidence(ev) =&gt; insert_evidence(&amp;tx, ev)?,
+    Action::SpawnChild { .. }   =&gt; insert_plan_node(&amp;tx, ...)?,
+    Action::Resolve { .. }      =&gt; mark_node_resolved(&amp;tx, ...)?,
+}
+maybe_insert_plan_revision(&amp;tx, action, ...)?;   // structural change + its narrative, atomically
+self.cursor.bump_in_tx(&amp;tx, task, step_index)?;  // advance the resume cursor
+
+tx.commit()?;                                    // COMMIT — all of it, or none of it</code></pre>
+
+        <p>If the OS kills the process anywhere inside that block, SQLite's write-ahead log rolls the partial work back. The ledger is therefore <em>always</em> at a clean boundary: either "step N is fully committed" or "step N never happened." Resuming just reads the cursor and starts at <code>N+1</code>.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 210" role="img" aria-label="A timeline of committed steps. A kill -9 lands between two commits; on resume the agent continues at the next step, and the final ledger is byte-equivalent to an uninterrupted run.">
+            <line x1="40" y1="96" x2="780" y2="96" stroke="rgba(255,255,255,.12)"/>
+            <g font-family="monospace" font-size="11" fill="#ece6da" text-anchor="middle">
+              <rect x="60"  y="80" width="80" height="32" rx="6" fill="#1d2a16" stroke="#5e8b3a" stroke-opacity=".6"/><text x="100" y="100">step 1 ✓</text>
+              <rect x="160" y="80" width="80" height="32" rx="6" fill="#1d2a16" stroke="#5e8b3a" stroke-opacity=".6"/><text x="200" y="100">step 2 ✓</text>
+              <rect x="260" y="80" width="80" height="32" rx="6" fill="#1d2a16" stroke="#5e8b3a" stroke-opacity=".6"/><text x="300" y="100">step 3 ✓</text>
+              <rect x="430" y="80" width="80" height="32" rx="6" fill="#1d2a16" stroke="#5e8b3a" stroke-opacity=".6"/><text x="470" y="100">step 4 ✓</text>
+              <rect x="530" y="80" width="80" height="32" rx="6" fill="#1d2a16" stroke="#5e8b3a" stroke-opacity=".6"/><text x="570" y="100">step 5 ✓</text>
+              <rect x="630" y="80" width="80" height="32" rx="6" fill="#1d2a16" stroke="#5e8b3a" stroke-opacity=".6"/><text x="670" y="100">step 6 ✓</text>
+            </g>
+            <g font-family="Poppins, sans-serif">
+              <line x1="385" y1="56" x2="385" y2="136" stroke="#e0623a" stroke-width="2" stroke-dasharray="5 4"/>
+              <text x="385" y="48" text-anchor="middle" fill="#e0623a" font-size="12" font-weight="600">kill -9</text>
+              <text x="385" y="156" text-anchor="middle" fill="#b8b0a4" font-size="10">rolled back: no torn write</text>
+              <path d="M345 172 C 380 190, 432 190, 468 138" fill="none" stroke="#e8a445" stroke-width="1.5" marker-end="url(#ar3)"/>
+              <text x="408" y="200" text-anchor="middle" fill="#e8a445" font-size="10">resume → continues at step 4</text>
+            </g>
+            <text x="40" y="26" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="11">A 50-step run interrupted at five adversarial points ends byte-equivalent to an uninterrupted run.</text>
+            <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e8a445"/></marker></defs>
+          </svg>
+          <figcaption>The resumability property test drives a 50-step run, kills it at five adversarially-chosen moments, and asserts the final ledger is byte-equivalent (modulo random ids and wall-clocks) to the same run with no interruptions.</figcaption>
+        </figure>
+
+        <div class="callout key">
+          <p><strong>The guarantee, in three invariants:</strong> <strong>(1) No torn writes</strong> — a step is all-or-nothing. <strong>(2) Zero rework on resume</strong> — the model is never re-asked for a step that already committed. <strong>(3) Convergent final state</strong> — a run interrupted any number of times produces the same logical ledger as an uninterrupted one. All three are checked by a property test, not just asserted in prose.</p>
+        </div>
+
+        <h3>When the model misbehaves</h3>
+
+        <p>Small local models are <em>unreliable narrators</em>. They wrap JSON in markdown fences, emit a chatty preamble before the object, or fail to close a brace. A brittle agent crashes on the first malformed turn. aircoder's inference layer is built to expect this:</p>
+
+        <ul>
+          <li>The parser <strong>strips markdown fences</strong> and takes the <em>last</em> balanced JSON object if the model emits a preamble.</li>
+          <li>It accepts <code>cites</code> as either a string or a list-of-strings — the kind of schema flex small models constantly need.</li>
+          <li>When parsing fails — or the inference HTTP call itself fails — the supervisor doesn't panic. It <strong>synthesizes a <code>diagnostic</code> evidence row</strong> (<code>mlx_decider/parser_error</code> or <code>mlx_decider/inference_error</code>) and keeps the loop moving. The failure becomes a grep-able fact in the ledger instead of a dead process.</li>
+        </ul>
+
+        <p>The agent talks to any OpenAI-compatible chat endpoint — by default a local <code>mlx_lm.server</code> on <code>127.0.0.1:8765</code> — so it runs against whatever small model you can fit, with no cloud dependency.</p>
+
+        <h3>The architecture: nine small crates</h3>
+
+        <p>aircoder is a Rust workspace split into nine focused crates. The split isn't ceremony — it keeps the model-facing seam (<code>inference</code>), the durable seam (<code>ledger</code>), and the decision logic (<code>supervisor</code>) independently testable.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 820 290" role="img" aria-label="aircoder's nine crates: the CLI drives the supervisor, which orchestrates the planner, prompt-asm, inference, repo-index, verifier and core, all persisting through the ledger.">
+            <rect x="40" y="120" width="120" height="50" rx="9" fill="#17120c" stroke="#e8a445" stroke-opacity=".5"/>
+            <text x="100" y="142" text-anchor="middle" fill="#e8a445" font-family="monospace" font-size="12">cli</text>
+            <text x="100" y="158" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9">run / resume</text>
+
+            <rect x="210" y="115" width="150" height="60" rx="9" fill="#1a140d" stroke="#c8542a" stroke-opacity=".6"/>
+            <text x="285" y="140" text-anchor="middle" fill="#f0a35e" font-family="monospace" font-size="13" font-weight="600">supervisor</text>
+            <text x="285" y="158" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9">the step loop</text>
+
+            <g font-family="monospace" font-size="11" fill="#ece6da" text-anchor="middle">
+              <rect x="420" y="30"  width="150" height="40" rx="8" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="495" y="55">planner</text>
+              <rect x="420" y="78"  width="150" height="40" rx="8" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="495" y="103">prompt-asm</text>
+              <rect x="420" y="126" width="150" height="40" rx="8" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="495" y="151">inference</text>
+              <rect x="420" y="174" width="150" height="40" rx="8" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="495" y="199">repo-index</text>
+              <rect x="420" y="222" width="150" height="40" rx="8" fill="#17120c" stroke="rgba(255,255,255,.1)"/><text x="495" y="247">verifier</text>
+            </g>
+
+            <rect x="630" y="78" width="150" height="40" rx="8" fill="#120f0a" stroke="#e8a445" stroke-opacity=".4"/>
+            <text x="705" y="103" text-anchor="middle" fill="#e8a445" font-family="monospace" font-size="12">ledger</text>
+            <rect x="630" y="150" width="150" height="40" rx="8" fill="#17120c" stroke="rgba(255,255,255,.1)"/>
+            <text x="705" y="175" text-anchor="middle" fill="#ece6da" font-family="monospace" font-size="11">core</text>
+
+            <g stroke="#c8542a" stroke-width="1.4" fill="none" opacity=".7">
+              <path d="M160 145 L208 145" marker-end="url(#ar4)"/>
+              <path d="M360 140 L418 50"  marker-end="url(#ar4)"/>
+              <path d="M360 143 L418 98"  marker-end="url(#ar4)"/>
+              <path d="M360 146 L418 146" marker-end="url(#ar4)"/>
+              <path d="M360 150 L418 194" marker-end="url(#ar4)"/>
+              <path d="M360 156 L418 242" marker-end="url(#ar4)"/>
+            </g>
+            <g stroke="#e8a445" stroke-width="1.4" fill="none" opacity=".6">
+              <path d="M570 146 L628 104" marker-end="url(#ar5)"/>
+            </g>
+            <defs>
+              <marker id="ar4" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c8542a"/></marker>
+              <marker id="ar5" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e8a445"/></marker>
+            </defs>
+            <text x="410" y="285" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10">core = shared types · planner = the hypothesis tree · prompt-asm = builds each episode · verifier = checks resolutions</text>
+          </svg>
+          <figcaption>Nine crates, one job each. The supervisor is the only place the loop lives; the ledger is the only place state lives. <code>cargo test --workspace</code> is green at 94 tests, and clippy runs clean with <code>-D warnings</code>.</figcaption>
+        </figure>
+
+        <h3>Does it actually work?</h3>
+
+        <p>Yes — and the honest version of "yes" matters here. The deterministic, script-mode demo (a recorded action stream) proves the loop end-to-end on any machine with <code>cargo</code>, no model required. But the interesting question is whether a <em>real</em> small local model can drive it. The first time I pointed it at a live <code>mlx_lm.server</code>, a 3B quantized coder model diagnosed a real bug — a JWT helper missing its base64 padding before <code>urlsafe_b64decode</code> — and resolved the task cleanly:</p>
+
+        <div class="stat-grid">
+          <div class="stat"><b>2</b><span>episodes to resolve</span></div>
+          <div class="stat"><b>0</b><span>parser errors</span></div>
+          <div class="stat"><b>~5s</b><span>wall after warm-up</span></div>
+          <div class="stat"><b>3B</b><span>Q4 local model</span></div>
+        </div>
+
+        <p>Step one emitted a <code>decision</code> evidence row naming the file and the one-line fix; step two emitted a <code>resolve</code> whose <code>cites</code> array correctly referenced that decision's id. The entire run is a five-row ledger you can inspect after the fact — <code>2</code> episodes, <code>2</code> evidence rows, a single plan node, <code>9,644</code> bytes of inline payload. That is the whole point: the agent's reasoning is a queryable artifact, not a vanished chat log.</p>
+
+        <div class="callout">
+          <p>The model used was <code>Qwen2.5-Coder-3B-Instruct-4bit</code>, and getting there took four iterations on the task description — small models are sensitive to how the job is framed. That's a real limitation, honestly reported: aircoder makes a small model <em>survive</em> a long task; it doesn't make a small model as smart as a frontier one.</p>
+        </div>
+
+        <h3>What it is — and what it isn't</h3>
+
+        <p>aircoder is an argument that the path to capable local agents isn't only "a better model." It's <strong>a better memory architecture around the model</strong>. By treating the LLM as a stateless decision function and the disk as the system of record, you get three things a longer context window can't buy you: bounded memory, crash-resumability, and a fully auditable trace of why the agent did what it did.</p>
+
+        <p>It is <em>not</em> a frontier-coding replacement for tasks where raw reasoning is the bottleneck — it is architecturally different, not architecturally smarter. But for the world where you want an agent that survives a long task on the laptop you already own, externalizing memory to disk turns out to be most of the battle.</p>
+
+        <p style="margin-top:2rem; color:var(--text-dim); font-size:.82rem;">aircoder is a nine-crate Rust workspace (Apache-2.0). It pairs naturally with <a href="../4/">metalstream</a>, a substrate that streams oversized model weights off NVMe — the two are small-context-by-design and small-memory-by-design, respectively.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper footer-inner">
+      <span class="footer-copy">© <script>document.write(new Date().getFullYear())</script> Brennen Green</span>
+      <div class="footer-links">
+        <a href="https://github.com/brennengreen" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:brennengreen@outlook.com">Email</a>
+        <a href="../../../index.html">Home</a>
+      </div>
+      <span class="footer-copy">Custom static build · No trackers</span>
+    </div>
+  </footer>
+  <script src="../../assets/prism.js"></script>
+</body>
+</html>
