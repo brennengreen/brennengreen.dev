@@ -47,6 +47,15 @@
         <div class="archive-grid">
 
           <div class="archive-card">
+            <h3>neural deferred shading: shading Sponza at 64&nbsp;FPS with an 11k-parameter network, in Metal</h3>
+            <p>A from-scratch Apple Metal path tracer becomes a data factory for neural rendering: cast one primary ray per pixel, keep the cheap G-buffer, and let a tiny MLP — compiled into a Metal compute kernel — synthesize the fully globally-illuminated frame at frame rate. Plus a screen-space U-Net, temporal reprojection, and a directly-measured "one ray ≈ 68 samples" amplifier.</p>
+            <div class="archive-tech">
+              <span>Apple Metal</span><span>Neural Rendering</span><span>Path Tracing</span><span>Swift</span>
+            </div>
+            <a href="posts/6/">Read article →</a>
+          </div>
+
+          <div class="archive-card">
             <h3>aircoder: a local coding agent that externalizes its memory to disk</h3>
             <p>How a nine-crate Rust agent drives a small local LLM through hour-long coding tasks by treating the model as stateless and a content-addressed SQLite ledger as its working memory — bounded context, crash-resumable, fully auditable.</p>
             <div class="archive-tech">
