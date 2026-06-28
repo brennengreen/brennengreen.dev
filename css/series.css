@@ -1,0 +1,197 @@
+/* =============================================================================
+   series.css - Brand system for "The Programmers Who Make Us Smile"
+   A 3-part series on the invisible engineers behind the entertainment that
+   delights us: the movies (1), games (2), rides & animatronics (3).
+
+   BRAND STRATEGY
+   --------------
+   • Core metaphor: every render begins as NOISE and resolves into a SMILE.
+     The signature mark is a glowing, upturned "light-arc" (the smile) with
+     Monte-Carlo sample dots converging onto it - the denoise idea, made visual.
+   • Constant spine: a warm gold smile-arc + the wordmark, on a cinematic dark
+     field. This stays identical across all three parts so the series reads as
+     one thing.
+   • Per-part identity: each part keeps the gold spine but gets its own POP
+     colour and EDGE MOTIF, set purely by the [data-part] attribute:
+        part 1 · the movies      → film-strip sprocket holes (.sx-edge--film)
+        part 2 · games           → pixel blocks              (.sx-edge--pixel)
+        part 3 · rides           → festoon ride bulbs        (.sx-edge--bulb)
+   • To ship Part 2 or 3: copy the masthead, set <... data-part="2">, swap the
+     numeral / part label / edge-motif class, and the theme follows.
+
+   Extends css/stylesheet.css + css/archive.css. Everything here is namespaced
+   under .series-post (body) / .series-* / .sx-* so it never leaks into the
+   other posts.
+   ========================================================================== */
+
+/* --- Per-part theme tokens ------------------------------------------------ */
+.series-post,
+.series-card {
+  --sx-accent:#e8a445;   /* the constant gold smile - shared by every part   */
+  --sx-accent-2:#f5c66e;
+  --sx-pop:#ffe1a6;      /* per-part highlight (overridden below)            */
+  --sx-deep:#c8542a;     /* per-part depth / second arc colour               */
+  --sx-ink:#f4ecdd;
+  --sx-field:#0a0807;    /* masthead background floor                        */
+}
+[data-part="1"] { --sx-pop:#ffe6b3; --sx-deep:#c8542a; }              /* movies - projector warm */
+[data-part="2"] { --sx-pop:#ff4d8d; --sx-deep:#36e0ff; }              /* games - arcade neon     */
+[data-part="3"] { --sx-pop:#ff7a4d; --sx-deep:#ffd24d; }              /* rides - sunset / bulbs   */
+
+/* =============================================================================
+   MASTHEAD - the branded, animated hero that opens each post
+   ========================================================================== */
+.series-hero {
+  position:relative; overflow:hidden;
+  background:
+    radial-gradient(120% 90% at 78% -10%, color-mix(in srgb, var(--sx-accent) 16%, transparent) 0%, transparent 60%),
+    radial-gradient(90% 80% at 8% 120%, color-mix(in srgb, var(--sx-deep) 16%, transparent) 0%, transparent 55%),
+    linear-gradient(180deg, #100b07 0%, var(--sx-field) 70%, #08070c 100%);
+  border-bottom:1px solid rgba(232,164,69,.16);
+}
+.series-hero-art {position:absolute; inset:0; width:100%; height:100%; pointer-events:none;}
+/* left-weighted scrim so the headline column always stays legible over the art */
+.series-hero::after {
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(90deg, rgba(8,7,6,.92) 0%, rgba(8,7,6,.62) 38%, rgba(8,7,6,.20) 70%, transparent 100%),
+             linear-gradient(0deg, rgba(8,7,12,.85) 0%, transparent 34%);
+}
+.series-hero-inner {
+  position:relative; z-index:2;
+  max-width:980px; margin:0 auto; padding:5.6rem 4vw 2.6rem;
+}
+
+/* back link sits at the very top of the masthead */
+.series-hero .back-link {color:rgba(244,236,221,.62);}
+.series-hero .back-link:hover {color:var(--sx-accent);}
+
+/* kicker / wordmark */
+.series-kicker {display:flex; align-items:center; gap:.6rem; margin:.4rem 0 1.4rem; flex-wrap:wrap;}
+.series-kicker .smile-mark {width:30px; height:18px; flex:none; filter:drop-shadow(0 0 6px color-mix(in srgb,var(--sx-accent) 55%, transparent));}
+.series-kicker .smile-mark path {stroke:var(--sx-accent); stroke-width:6; fill:none; stroke-linecap:round;}
+.series-kicker b {
+  font-family:var(--mono); font-size:.7rem; font-weight:600; letter-spacing:3px; text-transform:uppercase;
+  background:linear-gradient(100deg, var(--sx-ink), var(--sx-accent-2) 55%, var(--sx-ink));
+  background-size:220% 100%; -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation:sx-drift 9s ease-in-out infinite;
+}
+.series-kicker em {font-style:normal; font-size:.64rem; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim);}
+.series-kicker .dot {width:4px; height:4px; border-radius:50%; background:var(--sx-accent); opacity:.5;}
+
+/* giant part badge: numeral + label */
+.series-badge {display:flex; align-items:center; gap:.95rem; margin-bottom:1.1rem;}
+.series-badge .num {
+  font-family:var(--serif); font-weight:700; font-size:clamp(2.6rem,8vw,4.6rem); line-height:.8;
+  letter-spacing:-2px; color:transparent;
+  background:linear-gradient(160deg, var(--sx-pop) 0%, var(--sx-accent) 48%, var(--sx-deep) 100%);
+  -webkit-background-clip:text; background-clip:text;
+  filter:drop-shadow(0 4px 18px color-mix(in srgb,var(--sx-accent) 30%, transparent));
+}
+.series-badge .lbl {display:flex; flex-direction:column; gap:.18rem;}
+.series-badge .lbl span {font-family:var(--mono); font-size:.62rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-dim);}
+.series-badge .lbl strong {font-family:var(--serif); font-size:1.05rem; font-weight:700; color:var(--sx-pop); letter-spacing:.3px;}
+
+.series-hero h1 {
+  font-family:var(--serif); font-weight:700; font-size:clamp(2rem,5.4vw,3.05rem); line-height:1.08; letter-spacing:-.6px;
+  color:#fff; margin:0 0 .85rem; max-width:18ch; text-shadow:0 3px 22px rgba(0,0,0,.5);
+}
+.series-hero .series-sub {font-size:clamp(.92rem,1.3vw,1.08rem); color:#cbbfa9; line-height:1.6; max-width:60ch; margin:0 0 1.5rem;}
+
+.series-hero .article-meta {color:#b6a890;}
+.series-hero .article-meta strong {color:var(--sx-accent);}
+.series-hero .article-tags {margin-top:.9rem;}
+.series-hero .article-tags span {background:color-mix(in srgb,var(--sx-accent) 10%, transparent); border-color:color-mix(in srgb,var(--sx-accent) 22%, transparent); color:var(--sx-accent-2);}
+
+/* --- masthead art animations --------------------------------------------- */
+.sx-smile {stroke:var(--sx-accent); fill:none; stroke-linecap:round; filter:drop-shadow(0 0 10px color-mix(in srgb,var(--sx-accent) 55%, transparent));}
+.sx-smile--draw {stroke-dasharray:100; stroke-dashoffset:100; animation:sx-draw 1.9s .3s var(--ease-out-expo) forwards;}
+.sx-smile--ghost {stroke:var(--sx-deep); opacity:.35;}
+.sx-numeral {font-family:var(--serif); font-weight:700; fill:var(--sx-accent); opacity:.07;}
+.sx-spark {fill:var(--sx-pop); filter:drop-shadow(0 0 8px var(--sx-pop));}
+.sx-sample {fill:var(--sx-accent); animation:sx-twinkle 3.4s ease-in-out infinite;}
+.sx-sample--pop {fill:var(--sx-pop);}
+/* edge motif (film sprockets / pixels / bulbs) tints from the part accent via currentColor */
+.sx-edge {color:color-mix(in srgb,var(--sx-accent) 32%, #0b0907);}
+
+@keyframes sx-draw    {to {stroke-dashoffset:0;}}
+@keyframes sx-twinkle {0%,100%{opacity:.14;} 50%{opacity:.85;}}
+@keyframes sx-drift   {0%,100%{background-position:0% 50%;} 50%{background-position:100% 50%;}}
+
+/* =============================================================================
+   IN-BODY BRAND COMPONENTS
+   ========================================================================== */
+/* Branded pull-quote - for the one-line thesis statements */
+.series-post .sx-quote {
+  margin:2.2rem 0; padding:.2rem 0 .2rem 1.4rem; border-left:3px solid var(--sx-accent);
+  font-family:var(--serif); font-style:italic; font-weight:400;
+  font-size:clamp(1.15rem,2.4vw,1.5rem); line-height:1.4; color:#f4ecdd;
+}
+.series-post .sx-quote b {font-style:normal; font-weight:700; color:var(--sx-accent);}
+
+/* Branded section divider - a faint rule with the smile glyph at its centre */
+.series-post .sx-divider {display:flex; align-items:center; gap:1rem; margin:2.6rem 0 1.4rem; opacity:.9;}
+.series-post .sx-divider::before, .series-post .sx-divider::after {content:""; height:1px; flex:1; background:linear-gradient(90deg,transparent,rgba(232,164,69,.28),transparent);}
+.series-post .sx-divider svg {width:26px; height:15px;}
+.series-post .sx-divider svg path {stroke:var(--sx-accent); stroke-width:6; fill:none; stroke-linecap:round;}
+
+/* =============================================================================
+   SERIES PROGRESS RAIL - the 3-part footer index
+   ========================================================================== */
+.series-rail {display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem; margin:2.6rem 0 .5rem; counter-reset:sr;}
+.series-rail .sr {
+  position:relative; padding:1.05rem 1.05rem 1.1rem; border-radius:var(--radius-md);
+  border:1px solid rgba(255,255,255,.06); background:linear-gradient(150deg,var(--panel),var(--panel-accent)); overflow:hidden;
+}
+.series-rail .sr::before {counter-increment:sr; content:"0" counter(sr); position:absolute; right:.7rem; top:.45rem; font-family:var(--serif); font-weight:700; font-size:1.5rem; color:#fff; opacity:.06;}
+.series-rail .sr b {display:block; font-family:var(--mono); font-size:.58rem; letter-spacing:1.6px; text-transform:uppercase; color:var(--text-dim); margin-bottom:.34rem;}
+.series-rail .sr span {font-size:.82rem; color:var(--text-dim); line-height:1.5;}
+.series-rail .sr.active {border-color:color-mix(in srgb,var(--sx-accent) 38%, transparent); background:linear-gradient(150deg, color-mix(in srgb,var(--sx-accent) 9%, var(--panel)), var(--panel-accent)); box-shadow:0 0 0 1px color-mix(in srgb,var(--sx-accent) 14%, transparent), 0 0 30px -10px color-mix(in srgb,var(--sx-accent) 40%, transparent);}
+.series-rail .sr.active::before {color:var(--sx-accent); opacity:.5;}
+.series-rail .sr.active b {color:var(--sx-accent);}
+.series-rail .sr.active span {color:var(--text);}
+
+/* =============================================================================
+   FEATURED SERIES CARD - bold, full-width banner on the blog index
+   ========================================================================== */
+.series-card[hidden] {display:none;}
+.series-card {
+  display:grid; grid-template-columns:minmax(0,1fr) 230px; gap:1.5rem; align-items:center;
+  padding:1.9rem 2rem; border-radius:var(--radius-lg);
+  border:1px solid color-mix(in srgb,var(--sx-accent) 24%, transparent);
+  background:
+    radial-gradient(120% 140% at 88% -20%, color-mix(in srgb,var(--sx-accent) 14%, transparent), transparent 60%),
+    linear-gradient(150deg, #140e09 0%, #0c0a08 100%);
+  box-shadow:0 18px 50px -18px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.05);
+  transition:transform .4s var(--ease-out-expo), box-shadow .4s ease, border-color .35s ease;
+}
+.series-card:hover {transform:translateY(-4px); border-color:color-mix(in srgb,var(--sx-accent) 42%, transparent); box-shadow:0 26px 64px -20px rgba(0,0,0,.78), 0 0 40px -14px color-mix(in srgb,var(--sx-accent) 40%, transparent);}
+.series-card .ribbon {display:inline-flex; align-items:center; gap:.5rem; margin-bottom:.8rem;}
+.series-card .ribbon svg {width:26px; height:15px;}
+.series-card .ribbon svg path {stroke:var(--sx-accent); stroke-width:6; fill:none; stroke-linecap:round;}
+.series-card .ribbon b {font-family:var(--mono); font-size:.6rem; font-weight:600; letter-spacing:2.4px; text-transform:uppercase; color:var(--sx-accent);}
+.series-card h3 {margin:0 0 .55rem; font-family:var(--serif); font-size:clamp(1.2rem,2.4vw,1.6rem); font-weight:700; color:#fff; letter-spacing:.2px; line-height:1.18;}
+.series-card p {margin:0 0 1rem; font-size:.85rem; color:var(--text-dim); line-height:1.6; max-width:60ch;}
+.series-card .start {display:inline-flex; align-items:center; gap:.45rem; font-size:.82rem; font-weight:600; color:var(--sx-accent);}
+.series-card .start:hover {color:#fff;}
+.series-card .parts {display:flex; gap:.4rem; margin-top:.9rem; flex-wrap:wrap;}
+.series-card .parts span {font-family:var(--mono); font-size:.56rem; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); border:1px solid rgba(255,255,255,.08); padding:.32rem .5rem; border-radius:var(--radius-pill);}
+.series-card .parts span.on {color:var(--sx-accent); border-color:color-mix(in srgb,var(--sx-accent) 34%, transparent); background:color-mix(in srgb,var(--sx-accent) 8%, transparent);}
+/* the card's own little smile-art panel */
+.series-card .card-art {position:relative; align-self:stretch; min-height:130px; border-radius:var(--radius-md); overflow:hidden; border:1px solid rgba(255,255,255,.05); background:linear-gradient(160deg,#0e0a07,#060505);}
+.series-card .card-art svg {position:absolute; inset:0; width:100%; height:100%;}
+
+@media (max-width:640px){
+  .series-card {grid-template-columns:1fr;}
+  .series-card .card-art {min-height:96px; order:-1;}
+  .series-rail {grid-template-columns:1fr;}
+  .series-hero-inner {padding-top:5rem;}
+}
+
+/* =============================================================================
+   MOTION SAFETY
+   ========================================================================== */
+@media (prefers-reduced-motion:reduce){
+  .sx-smile--draw {animation:none; stroke-dashoffset:0;}
+  .sx-sample {animation:none; opacity:.5;}
+  .series-kicker b {animation:none;}
+}

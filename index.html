@@ -16,7 +16,7 @@
     <div class="wrapper nav">
       <div style="display:flex; align-items:center; gap:.85rem;">
         <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#2a1f12,#110a06);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
-          <img src="media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:grayscale(60%) contrast(1.15);"/>
+          <img src="media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.04);"/>
         </div>
         <strong style="font-size:1rem;letter-spacing:.5px;font-weight:600;color:#fff;">Brennen&nbsp;Green</strong>
       </div>
@@ -24,7 +24,6 @@
       <nav class="links">
         <a href="#experience">Experience</a>
         <a href="#credits">Credits</a>
-        <a href="#systems">Systems</a>
         <a href="./archive/index.html">Archive</a>
         <a href="./blog/index.html">Blog</a>
         <a href="#portfolio">Portfolio</a>
@@ -40,14 +39,13 @@
         <div class="hero-glow" aria-hidden="true"></div>
         <h1>Building the tools behind the things you love</h1>
         <p class="hero-sub">
-          Platform engineer and graphics programmer who's shipped tools and systems across DreamWorks, Blizzard, and XBOX — spanning film lighting pipelines, AAA engine graphics, and platform developer tooling. Most at home in rendering, engine, and developer-tools work.
+          Platform engineer and graphics programmer who's shipped tools and systems across DreamWorks, Blizzard, and XBOX - spanning film lighting pipelines, AAA engine graphics, and platform developer tooling. Most at home in rendering, engine, and developer-tools work.
         </p>
         <div class="inline-stats signal-chips">
           <span><strong>Platform</strong> Developer tools & partner workflows</span>
           <span><strong>Film</strong> Lighting & rendering pipelines</span>
           <span><strong>Game</strong> Engine systems & GPU compute</span>
         </div>
-        <div class="hero-filament" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -56,42 +54,33 @@
     <!-- EXPERIENCE -->
     <section class="section" id="experience">
       <div class="wrapper">
-        <span class="section-num reveal">01 — Experience</span>
+        <span class="section-num reveal">01 - Experience</span>
         <h2 class="reveal">Experience</h2>
-        <p class="reveal">From hands-on rendering and pipeline work to platform-level systems design and partner engineering — each role built on the last.</p>
+        <p class="reveal">From hands-on rendering and pipeline work to platform-level systems design and partner engineering - each role built on the last.</p>
         <div class="experience-wrapper">
           <div class="experience-timeline">
 
             <div class="xp-node reveal" data-range="Now">
               <div class="xp-card">
-                <h3>Microsoft — XBOX</h3>
-                <div class="xp-role">Partner Solutions Engineer</div>
+                <h3>Microsoft - XBOX</h3>
+                <div class="xp-role">Developer Relations</div>
                 <div class="xp-narrative">
                   <div class="xp-line"><span class="key">Scope</span> Owning partner technical strategy for the development and live service of major AAA games on XBOX, including multiple shipped titles.</div>
-                  <div class="xp-line"><span class="key">Platform</span> Designing partner platform solutions across the company — Azure, DirectX 12, PlayFab, the GDK, and third-party engines like Unreal Engine 5 — built around each studio's needs.</div>
-                  <div class="xp-line"><span class="key">Hands-on</span> I write production code: the official XBOX GDK + PlayFab port of Godot (C++, DirectX 12, GDScript) and public samples covering ~85% of the XBOX SDK surface for the community.</div>
+                  <div class="xp-line"><span class="key">Platform</span> Designing partner platform solutions across the company - Azure, DirectX 12, PlayFab, the GDK, and third-party engines like Unreal Engine 5 - built around each studio's needs.</div>
+                  <div class="xp-line"><span class="key">Hands-on</span> Built the official XBOX GDK + PlayFab port of Godot (C++, DirectX 12, GDScript) plus public samples covering ~85% of the XBOX SDK surface for the community.</div>
                 </div>
                 <div class="xp-metrics">
                   <div class="xp-metric"><strong>Systems</strong> Secure production workflow automation and agentic AI systems with C#, TypeScript, Azure, Dynamics, and MS Graph.</div>
                   <div class="xp-metric"><strong>Tooling</strong> A novel Adversarial Documentation Testing CI/CD workflow for continuous documentation improvement.</div>
                   <div class="xp-metric"><strong>Support</strong> Debugging partner hardware and software issues with Fiddler, Sentry, and proprietary network tooling.</div>
                 </div>
-                <div class="xp-pill-row">
-                  <span class="pill" data-type="stack">XBOX GDK</span>
-                  <span class="pill" data-type="stack">PlayFab</span>
-                  <span class="pill" data-type="stack">DirectX 12</span>
-                  <span class="pill" data-type="stack">Azure</span>
-                  <span class="pill" data-type="theme">Partner Solutions</span>
-                  <span class="pill" data-type="theme">Platform Engineering</span>
-                </div>
-                <div class="xp-footer">Partner Platform Solutions · Live-Service Support · Engine Integration</div>
               </div>
             </div>
 
             <div class="xp-node reveal" data-range="Prev">
               <div class="xp-card">
                 <h3>DreamWorks Animation</h3>
-                <div class="xp-role">Graphics &amp; Simulation Tools Engineer</div>
+                <div class="xp-role">Lighting and LookDev Tools</div>
                 <div class="xp-narrative">
                   <div class="xp-line"><span class="key">Scope</span> Houdini ecosystem extensions, OpenUSD workflows, surfacing & lighting automation.</div>
                   <div class="xp-line"><span class="key">Leverage</span> Prior Lighting TD experience to target real friction points in shot iteration and look development.</div>
@@ -99,24 +88,17 @@
                 <div class="xp-metrics">
                   <div class="xp-metric"><strong>Stability</strong> Built 30+ Python pipeline tools and services with CI/CD across production systems, reducing tool failures and improving artist confidence.</div>
                   <div class="xp-metric"><strong>Latency</strong> Refactored the USD Asset Resolver into a multithreaded C++/ZeroMQ client-server architecture, cutting path-resolution and scene-composition latency 30%+ studio-wide.</div>
-                  <div class="xp-metric"><strong>Adoption</strong> Drove internal OpenUSD initiatives — pipeline integration, hdMoonray, and systems improvements.</div>
+                  <div class="xp-metric"><strong>Adoption</strong> Drove internal OpenUSD initiatives - pipeline integration, hdMoonray, and systems improvements.</div>
                 </div>
-                <div class="xp-pill-row">
-                  <span class="pill" data-type="stack">USD</span>
-                  <span class="pill" data-type="stack">Houdini</span>
-                  <span class="pill" data-type="stack">Python</span>
-                  <span class="pill" data-type="stack">C++</span>
-                </div>
-                <div class="xp-footer">Tooling · Data Flow · Non‑Destructive Pipelines</div>
               </div>
             </div>
 
             <div class="xp-node reveal" data-range="2022">
               <div class="xp-card">
                 <h3>Blizzard Entertainment</h3>
-                <div class="xp-role">Graphics &amp; Simulation Tools Engineer Intern</div>
+                <div class="xp-role">World of Warcraft Engine</div>
                 <div class="xp-narrative">
-                  <div class="xp-line"><span class="key">Focus</span> GPU-driven particle system for World of Warcraft — compute shaders, mesh emission, and VFX tooling.</div>
+                  <div class="xp-line"><span class="key">Focus</span> GPU-driven particle system for World of Warcraft - compute shaders, mesh emission, and VFX tooling.</div>
                   <div class="xp-line"><span class="key">Constraint</span> Performance targets across a wide hardware range, including legacy GPU support.</div>
                 </div>
                 <div class="xp-metrics">
@@ -124,21 +106,13 @@
                   <div class="xp-metric"><strong>Features</strong> Force fields, noise functions, and shape emitters for the compute particle system.</div>
                   <div class="xp-metric"><strong>Profiling</strong> GPU profiling and frame budget optimization using RenderDoc and internal tools.</div>
                 </div>
-                <div class="xp-pill-row">
-                  <span class="pill" data-type="stack">DirectX 11/12</span>
-                  <span class="pill" data-type="stack">HLSL Compute</span>
-                  <span class="pill" data-type="stack">Modern C++</span>
-                  <span class="pill" data-type="theme">Particles</span>
-                  <span class="pill" data-type="theme">Optimization</span>
-                </div>
-                <div class="xp-footer">Compute Shaders · GPU Particles · Engine Graphics</div>
               </div>
             </div>
 
             <div class="xp-node reveal" data-range="2021">
               <div class="xp-card">
                 <h3>Twitch Interactive</h3>
-                <div class="xp-role">Graphics Programmer Intern</div>
+                <div class="xp-role">Android Mobile Gaming</div>
                 <div class="xp-narrative">
                   <div class="xp-line"><span class="key">Goal</span> Build a performant overlay rendering system for the Twitch Android creator tools.</div>
                   <div class="xp-line"><span class="key">Result</span> Improved stream overlay performance on mobile, directly supporting creator workflows.</div>
@@ -148,23 +122,15 @@
                   <div class="xp-metric"><strong>Architecture</strong> RxJava reactive data flows with careful lifecycle and memory management.</div>
                   <div class="xp-metric"><strong>Quality</strong> Comprehensive JUnit and integration test coverage for the rendering layer.</div>
                 </div>
-                <div class="xp-pill-row">
-                  <span class="pill" data-type="stack">Kotlin</span>
-                  <span class="pill" data-type="stack">OpenGL ES</span>
-                  <span class="pill" data-type="stack">GLSL</span>
-                  <span class="pill" data-type="theme">Creator Tools</span>
-                  <span class="pill" data-type="theme">Mobile Perf</span>
-                </div>
-                <div class="xp-footer">Mobile Graphics · Creator Tools · Reactive Architecture</div>
               </div>
             </div>
 
             <div class="xp-node xp-collapsed reveal" data-range="20-21" >
               <details class="xp-collapse">
-                <summary><span>Intel Corporation – Software Engineer Intern</span></summary>
+                <summary><span>Intel Corporation - Firmware Security</span></summary>
                 <div class="xp-card">
                   <h3>Intel Corporation</h3>
-                  <div class="xp-role">Software Engineer Intern</div>
+                  <div class="xp-role">Firmware Security</div>
                   <div class="xp-narrative">
                     <div class="xp-line"><span class="key">Objective</span> Increase early detection of configuration regressions in simulated SoC.</div>
                     <div class="xp-line"><span class="key">Method</span> Large-scale simulation of firmware configs on FPGA + automated C/Python harnesses.</div>
@@ -173,24 +139,16 @@
                     <div class="xp-metric"><strong>Coverage</strong> Firmware initialization & microcode interaction pathways.</div>
                     <div class="xp-metric"><strong>Automation</strong> Bash scripts shortening repetitive validation loops.</div>
                   </div>
-                  <div class="xp-pill-row">
-                    <span class="pill" data-type="stack">C</span>
-                    <span class="pill" data-type="stack">Python</span>
-                    <span class="pill" data-type="stack">FPGA</span>
-                    <span class="pill" data-type="theme">Validation</span>
-                    <span class="pill" data-type="theme">Architecture</span>
-                  </div>
-                  <div class="xp-footer">Deterministic Test Surfaces · Early Regression Surfacing</div>
                 </div>
               </details>
             </div>
 
             <div class="xp-node xp-collapsed reveal" data-range="20‑22">
               <details class="xp-collapse">
-                <summary><span>University of Kentucky – Machine Learning Research Assistant</span></summary>
+                <summary><span>University of Kentucky - Computer Vision</span></summary>
                 <div class="xp-card">
                   <h3>University of Kentucky</h3>
-                  <div class="xp-role">Machine Learning Research Assistant · Mar 2020 – May 2022</div>
+                  <div class="xp-role">Computer Vision</div>
                   <div class="xp-narrative">
                     <div class="xp-line"><span class="key">Publications</span> 2 peer‑reviewed papers on GPU‑accelerated biomedical imaging; conference presentations.</div>
                     <div class="xp-line"><span class="key">Enablement</span> Trained researchers on optimized visualization workflows for biomedical datasets.</div>
@@ -199,24 +157,16 @@
                     <div class="xp-metric"><strong>Acceleration</strong> CUDA / shader pipelines reduced imaging preprocessing latency.</div>
                     <div class="xp-metric"><strong>Workflow</strong> Standardized data prep & visualization scripts adopted across lab.</div>
                   </div>
-                  <div class="xp-pill-row">
-                    <span class="pill" data-type="stack">Python</span>
-                    <span class="pill" data-type="stack">CUDA</span>
-                    <span class="pill" data-type="stack">PyTorch</span>
-                    <span class="pill" data-type="theme">Imaging</span>
-                    <span class="pill" data-type="theme">GPU</span>
-                  </div>
-                  <div class="xp-footer">Biomedical Imaging · GPU Acceleration · Research Tooling</div>
                 </div>
               </details>
             </div>
 
             <div class="xp-node xp-collapsed reveal" data-range="19‑20">
               <details class="xp-collapse">
-                <summary><span>University of Kentucky – Jr. Cloud Systems Developer</span></summary>
+                <summary><span>University of Kentucky - Cloud Infrastructure</span></summary>
                 <div class="xp-card">
                   <h3>University of Kentucky</h3>
-                  <div class="xp-role">Jr. Cloud Systems Developer · May 2019 – Sept 2020</div>
+                  <div class="xp-role">Cloud Infrastructure</div>
                   <div class="xp-narrative">
                     <div class="xp-line"><span class="key">Scope</span> Department software deployment & internal application process automation.</div>
                     <div class="xp-line"><span class="key">Shift</span> Transitioned from ad‑hoc servers to reproducible containerized delivery.</div>
@@ -226,14 +176,6 @@
                     <div class="xp-metric"><strong>Containerization</strong> Re‑packaged legacy services into Docker images for portability.</div>
                     <div class="xp-metric"><strong>Portal</strong> Maintained faculty data portal (JavaScript / PHP) with iterative enhancements.</div>
                   </div>
-                  <div class="xp-pill-row">
-                    <span class="pill" data-type="stack">Python</span>
-                    <span class="pill" data-type="stack">Bash</span>
-                    <span class="pill" data-type="stack">Docker</span>
-                    <span class="pill" data-type="stack">JavaScript</span>
-                    <span class="pill" data-type="stack">DevOps</span>
-                  </div>
-                  <div class="xp-footer">Deployment Modernization · Internal Process Tooling</div>
                 </div>
               </details>
             </div>
@@ -245,43 +187,42 @@
     <!-- FILM & GAME CREDITS -->
     <section class="section" id="credits">
       <div class="wrapper">
-        <span class="section-num reveal">02 — Credits</span>
+        <span class="section-num reveal">02 - Credits</span>
         <h2 class="reveal">Production Credits</h2>
-        <p class="reveal">Feature films and game-engine work I contributed to directly, plus AAA live-service titles I support as an XBOX platform partner — sustaining their live service and building platform solutions around their needs across the company.</p>
+        <p class="reveal">Feature films and game-engine work I contributed to directly, plus AAA live-service titles I support as an XBOX platform partner - sustaining their live service and building platform solutions around their needs across the company.</p>
 
         <div class="credits-group reveal" aria-labelledby="cg-xbox">
-          <h3 id="cg-xbox" class="credits-label">Microsoft — XBOX (Platform Partner)</h3>
-          <div class="credits-grid">
-          <div class="credit-card" data-kind="app" title="XBOX Platform">
+          <h3 id="cg-xbox" class="credits-label">Microsoft - XBOX (Platform Partner)</h3>
+          <div class="credits-reel">
+          <div class="credit-card" data-kind="app" title="XBOX Platform" tabindex="0" role="button" aria-haspopup="dialog" data-desc="XBOX platform Developer Relations and Technical Account Management - partnering with studios across the company to sustain their live service and build platform solutions around their needs.">
             <img src="media/credits/xbox-platform.jpg" loading="lazy" alt="XBOX platform branding" style="object-fit:contain; object-position:center 42%; background:#000;" />
               <div class="credit-meta">
               <h4>XBOX Platform</h4>
                 <span>Developer Relations / TAM</span>
               </div>
             </div>
-            <div class="credit-card" data-kind="app" title="Godot for XBOX — public source-only sample">
-              <a href="https://aka.ms/XBOXGodotSample" target="_blank" rel="noopener" class="credit-link" aria-label="Godot for XBOX sample on GitHub"></a>
-              <img src="media/credits/godot-xbox.jpg" loading="lazy" alt="Introducing the XBOX Godot Sample — official announcement art" />
+            <div class="credit-card" data-kind="app" title="Godot for XBOX - public source-only sample" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Contributed to the public XBOX Godot sample - a source-only reference showing how to build a Godot GDExtension that integrates the Microsoft GDK, XBOX Services, and PlayFab. It covers platform services, sign-in, PlayFab Core, Multiplayer, and Game Saves, plus a GameInput bridge into Godot's Input/InputMap, so developers can ship to XBOX on PC without leaving the engine." data-archive="archive/index.html#archive-godot-xbox" data-href="https://aka.ms/XBOXGodotSample" data-href-label="View the sample">
+              <img src="media/credits/godot-xbox.jpg" loading="lazy" alt="Introducing the XBOX Godot Sample - official announcement art" />
               <div class="credit-meta">
                 <h4>Godot for XBOX</h4>
                 <span>GDK / PlayFab Integration</span>
               </div>
             </div>
-            <div class="credit-card" data-kind="game" title="Marathon — Bungie">
+            <div class="credit-card" data-kind="game" title="Marathon - Bungie" tabindex="0" role="button" aria-haspopup="dialog" data-desc="An AAA live-service title from Bungie that I support as an XBOX platform partner - sustaining live service and building platform solutions around the title's needs.">
               <img src="media/credits/marathon.jpg" loading="lazy" alt="Marathon by Bungie key art" />
               <div class="credit-meta">
                 <h4>Marathon</h4>
                 <span>Platform Partner</span>
               </div>
             </div>
-            <div class="credit-card" data-kind="game" title="Helldivers 2 — Arrowhead">
+            <div class="credit-card" data-kind="game" title="Helldivers 2 - Arrowhead" tabindex="0" role="button" aria-haspopup="dialog" data-desc="An AAA live-service title from Arrowhead Game Studios that I support as an XBOX platform partner - sustaining live service and building platform solutions around the title's needs.">
               <img src="media/credits/helldivers-2.jpg" loading="lazy" alt="Helldivers 2 key art" />
               <div class="credit-meta">
                 <h4>Helldivers 2</h4>
                 <span>Platform Partner</span>
               </div>
             </div>
-            <div class="credit-card" data-kind="game" title="Destiny 2 — Bungie">
+            <div class="credit-card" data-kind="game" title="Destiny 2 - Bungie" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Bungie's flagship live-service shooter that I support as an XBOX platform partner - sustaining live service and building platform solutions around the title's needs.">
               <img src="media/credits/destiny-2.png" loading="lazy" alt="Destiny 2 key art" />
               <div class="credit-meta">
                 <h4>Destiny 2</h4>
@@ -293,47 +234,54 @@
 
         <div class="credits-group reveal" aria-labelledby="cg-dwa">
           <h3 id="cg-dwa" class="credits-label">DreamWorks Animation (Feature Film)</h3>
-          <div class="credits-grid">
-            <div class="credit-card" data-kind="film" title="The Bad Guys 2">
+          <div class="credits-reel">
+            <div class="credit-card" data-kind="film" title="The Bad Guys 2" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Lighting tools engineer on the sequel, building and extending show-specific tooling for the lighting department. Developed automation for look-development and surfacing workflows to accelerate artist iteration across sequences." data-archive="archive/index.html#archive-bad-guys-2">
               <img src="media/credits/bad-guys-2.jpg" loading="lazy" alt="The Bad Guys 2 promotional artwork" />
               <div class="credit-meta">
                 <h4>The Bad Guys 2</h4>
                 <span>Tools / Lighting, LookDev, FX</span>
               </div>
             </div>
-            <div class="credit-card" data-kind="film" title="The Wild Robot">
+            <div class="credit-card" data-kind="film" title="The Wild Robot" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Credited for two roles: started as the first Lighting TD on production, building the show's custom tooling, then promoted to lighting tools engineer across the studio. Part of that tooling drives the film's signature painterly look - a layered-Cryptomatte deep-data compositing tool that filters precise CG renders into hand-painted brushstrokes." data-archive="archive/index.html#archive-wild-robot">
               <img src="media/credits/wild-robot.jpg" loading="lazy" alt="The Wild Robot promotional artwork" />
               <div class="credit-meta">
                 <h4>The Wild Robot</h4>
                 <span>Pipeline / Lighting, Tools / Lighting, LookDev</span>
               </div>
             </div>
-            <div class="credit-card" data-kind="film" title="Trolls 3 (Band Together)">
+            <div class="credit-card" data-kind="film" title="Trolls 3 (Band Together)" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Lighting TD responsible for maintaining department tools studio-wide and show-specific. Focused on optimizing rendering pipelines and day-to-day artist shot support." data-archive="archive/index.html#archive-trolls">
               <img src="media/credits/trolls-3.jpg" loading="lazy" alt="Trolls 3 (Band Together) poster" />
               <div class="credit-meta">
                 <h4>Trolls 3</h4>
                 <span>Pipeline / Lighting</span>
               </div>
             </div>
-            <div class="credit-card" data-kind="film" title="Dog Man">
+            <div class="credit-card" data-kind="film" title="Dog Man" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Lighting tools and look-development support on the DreamWorks feature, extending the lighting department's tooling for artist iteration.">
               <img src="media/credits/dog-man.jpg" loading="lazy" alt="Dog Man film promotional image" />
               <div class="credit-meta">
                 <h4>Dog Man</h4>
                 <span>Tools / Lighting, LookDev</span>
               </div>
             </div>
-            <div class="credit-card" data-kind="film" title="Kung Fu Panda 4">
+            <div class="credit-card" data-kind="film" title="Kung Fu Panda 4" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Pipeline and lighting support on the DreamWorks feature, maintaining department tooling and rendering workflows through production.">
               <img src="media/credits/kung-fu-panda-4.jpg" loading="lazy" alt="Kung Fu Panda 4 poster" />
               <div class="credit-meta">
                 <h4>Kung Fu Panda 4</h4>
                 <span>Pipeline / Lighting</span>
               </div>
             </div>
-            <div class="credit-card" data-kind="film" title="Forgotten Island">
+            <div class="credit-card" data-kind="film" title="Forgotten Island" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Lighting tools engineer supporting production pipeline and tooling needs. Built and maintained lighting department tools, focusing on pipeline reliability and workflow improvements for the show's lighting and LookDev teams." data-archive="archive/index.html#archive-forgotten-island">
               <img src="media/credits/forgotten-island.png" loading="lazy" alt="Forgotten Island promotional artwork" />
               <div class="credit-meta">
                 <h4>Forgotten Island</h4>
                 <span>Tools / Lighting, LookDev</span>
+              </div>
+            </div>
+            <div class="credit-card" data-kind="film" title="Shrek 5" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Lighting tools engineer on the upcoming fifth Shrek feature, building and maintaining the lighting department's tooling and rendering workflows ahead of the film's 2026 release.">
+              <img src="media/credits/shrek-5.jpg" loading="lazy" alt="Shrek 5 teaser poster" />
+              <div class="credit-meta">
+                <h4>Shrek 5</h4>
+                <span>Tools / Lighting</span>
               </div>
             </div>
           </div>
@@ -341,8 +289,8 @@
 
         <div class="credits-group reveal" aria-labelledby="cg-blizzard">
           <h3 id="cg-blizzard" class="credits-label">Blizzard Entertainment (Game Engine)</h3>
-          <div class="credits-grid">
-            <div class="credit-card" data-kind="game" title="World of Warcraft (Dragonflight Era)">
+          <div class="credits-reel">
+            <div class="credit-card" data-kind="game" title="World of Warcraft (Dragonflight Era)" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Contributed to graphics systems on the game-engine team, including an innovative GPU compute particle system that lets artists create high-fidelity VFX with fewer performance constraints." data-archive="archive/index.html#archive-wow">
               <img src="media/credits/world-of-warcraft.jpg" loading="lazy" alt="World of Warcraft Dragonflight key art" />
               <div class="credit-meta">
                 <h4>World of Warcraft</h4>
@@ -354,8 +302,8 @@
 
         <div class="credits-group reveal" aria-labelledby="cg-twitch">
           <h3 id="cg-twitch" class="credits-label">Twitch Interactive (Mobile Platform)</h3>
-          <div class="credits-grid">
-            <div class="credit-card" data-kind="app" title="Twitch Android Client">
+          <div class="credits-reel">
+            <div class="credit-card" data-kind="app" title="Twitch Android Client" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Built mobile creator tools for the Twitch Android client, helping streamers manage and grow their channels from their phones.">
               <img src="media/credits/twitch.jpg" loading="lazy" alt="Twitch Android client branding" />
               <div class="credit-meta">
                 <h4>Twitch Android App</h4>
@@ -368,114 +316,45 @@
       </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- SYSTEMS & CAPABILITIES -->
-    <section class="section" id="systems">
-      <div class="wrapper">
-        <span class="section-num reveal">03 — Strengths</span>
-        <h2 class="reveal">Core Engineering Strengths</h2>
-        <p class="reveal">Recurring themes across roles — the skills and instincts I bring to every team I join.</p>
-        <div class="systems-layout" style="gap:2.5rem;">
-          <div class="systems-grid reveal-stagger" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
-            <div class="sys-block reveal">
-              <h3>Rendering & GPU</h3>
-              <p>Real-time and offline rendering pipelines — from shaders and lighting to GPU profiling and optimization.</p>
-              <ul class="mini-list">
-                <li>PBR shading & lighting systems</li>
-                <li>Particle & VFX pipelines</li>
-                <li>Shader debugging & GPU profiling</li>
-                <li>Frame budget analysis & optimization</li>
-              </ul>
-            </div>
-            <div class="sys-block reveal">
-              <h3>Procedural & Data Tooling</h3>
-              <p>OpenUSD pipelines, Houdini tooling, and artist-facing tools that respect real production workflows.</p>
-              <ul class="mini-list">
-                <li>USD composition & layer management</li>
-                <li>Caching strategies & dependency graphs</li>
-                <li>Validation & data integrity tooling</li>
-                <li>Artist-friendly interfaces</li>
-              </ul>
-            </div>
-            <div class="sys-block reveal">
-              <h3>Performance & Reliability</h3>
-              <p>Finding bottlenecks, tightening budgets, and building systems that hold up under real-world load.</p>
-              <ul class="mini-list">
-                <li>End-to-end profiling workflows</li>
-                <li>Memory & compute budget enforcement</li>
-                <li>Deterministic testing & CI/CD</li>
-                <li>Feature flagging & safe rollouts</li>
-              </ul>
-            </div>
-            <div class="sys-block reveal">
-              <h3>Iteration & Delivery</h3>
-              <p>Shipping working software on schedule — scoping, prototyping, gating, and following through on adoption.</p>
-              <ul class="mini-list">
-                <li>RFCs & design documentation</li>
-                <li>Vertical slice development</li>
-                <li>Staged rollouts with quality gates</li>
-                <li>Post-ship adoption tracking</li>
-              </ul>
-            </div>
-            <div class="sys-block reveal">
-              <h3>Collaboration & Enablement</h3>
-              <p>Bridging engineering, art, and product — clear communication across disciplines.</p>
-              <ul class="mini-list">
-                <li>Cross-team coordination</li>
-                <li>Documentation that gets read</li>
-                <li>Effective onboarding materials</li>
-                <li>Constructive code review</li>
-              </ul>
-            </div>
-            <div class="sys-block reveal">
-              <h3>Technical Judgment</h3>
-              <p>Knowing when to build, when to buy, and when to push back — with an eye on long-term maintenance.</p>
-              <ul class="mini-list">
-                <li>Trade-off analysis & scoping</li>
-                <li>Pragmatic technology choices</li>
-                <li>Early risk identification</li>
-                <li>Maintenance cost awareness</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- PORTFOLIO / MEDIA GRID -->
     <section class="section" id="portfolio">
       <div class="wrapper">
-        <span class="section-num reveal">04 — Portfolio</span>
+        <span class="section-num reveal">03 - Portfolio</span>
         <h2 class="reveal">Selected Project Media</h2>
-        <p class="reveal">Visual slices from independent engines, simulation experiments, and rendering studies.</p>
+        <p class="reveal">A curated wall of the visuals I care about most - real frames from the DreamWorks features I helped light, shown next to the engines, renderers, and simulations I build on my own time.</p>
         <div class="media-grid reveal-stagger">
-          <button class="media-tile reveal" data-media-tile data-label="Godot for XBOX | GDK + PlayFab Sample" aria-label="Godot for XBOX sample"><img src="media/portfolio/godot-xbox-editor.jpg" alt="Godot editor running the XBOX GDK sample"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="Procedural Skin | Real-Time SSS" aria-label="Procedural skin subsurface scattering shader"><img src="media/portfolio/tense-skin-sss.jpg" alt="Procedural photorealistic skin with subsurface scattering"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="Gaussian Splatting | DirectX 12" aria-label="Gaussian splat viewer"><img src="media/portfolio/splatty-observatory.jpg" alt="Real-time Gaussian splat reconstruction of an observatory"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="Automotive Digital Twin | WebGPU Splats" aria-label="Iris automotive digital twin"><img src="media/portfolio/iris-twin.jpg" alt="Real-time 3D Gaussian-splat city reconstruction in the Iris digital-twin viewer"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="City Flow Sim | Isometric Transit" aria-label="GridLock city traffic and transit simulation"><img src="media/portfolio/gridlock-city.jpg" alt="Isometric city traffic and transit simulation in GridLock"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="Cornell Box | Custom Path Tracer" aria-label="Cornell box"><img src="media/portfolio/cornell.jpg" alt="Cornell"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="PBR Models | Realtime Renderer" aria-label="Physically based rendering"><img src="media/portfolio/pbr.gif" alt="PBR"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="FDM Print Sim | Thermal Physics" aria-label="3D printing simulator"><img src="media/portfolio/printsim-thermal.jpg" alt="Physically based FDM 3D printer simulator"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="Urban Design Sim | Real Streets" aria-label="Urban design simulation game"><img src="media/portfolio/mapz-tokyo.jpg" alt="Urban design simulation on real-world streets"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="SDF Raymarching Engine" aria-label="Raymarch shader"><img src="media/portfolio/random.gif" alt="Random"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="CSG Ops via SDF" aria-label="CSG"><img src="media/portfolio/csg.gif" alt="CSG"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="Medieval Sim | Procedural Towns" aria-label="Procedural settlement simulation"><img src="media/portfolio/lineage-town.jpg" alt="Procedurally generated medieval town"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="Cyberpunk Tactics | Deckbuilder" aria-label="Isometric tactics deckbuilder"><img src="media/portfolio/iso-tactics-dialogue.jpg" alt="Cyberpunk isometric turn-based tactics prototype"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="Low-Poly Studio | 3D Editor" aria-label="Low-poly modeling tool"><img src="media/portfolio/polygen-generated.jpg" alt="Low-poly 3D modeling studio"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="Green CRT | Post-Process Shader" aria-label="CRT terminal shader"><img src="media/portfolio/crt-terminal.jpg" alt="Green-phosphor CRT terminal post-process shader"/></button>
-          <button class="media-tile reveal" data-media-tile data-label="Erosion Sim | Voxel Physical Sim" aria-label="Erosion Simulation"><img src="media/portfolio/erosionfast.gif" alt="Erosion"/></button>
+          <a class="media-tile film feat reveal media-hoverplay" data-gif="media/portfolio/painterly-tool.webp" data-still="media/credits/wild-robot-still.jpg" href="https://www.youtube.com/watch?v=njPNg0A9VpY" target="_blank" rel="noopener"><img src="media/credits/wild-robot-still.jpg" loading="lazy" alt="The Wild Robot - Roz the robot beside a fox in a misty forest. Scene still © DreamWorks Animation / Universal Pictures. Hover to play the painterly look-dev tool I helped build."/><figcaption class="media-cap"><span class="media-cap-tag">Feature Film · DreamWorks</span><span class="media-cap-title">The Wild Robot</span><span class="media-trailer">Watch trailer <span aria-hidden="true">↗</span></span></figcaption></a>
+          <a class="media-tile film reveal" href="https://www.youtube.com/watch?v=SBaPHkCOKBM" target="_blank" rel="noopener"><img src="media/credits/dog-man-still.jpg" loading="lazy" alt="Dog Man - Dog Man on a grassy hill before a city skyline. Scene still © DreamWorks Animation / Universal Pictures"/><figcaption class="media-cap"><span class="media-cap-tag">Feature Film · DreamWorks</span><span class="media-cap-title">Dog Man</span><span class="media-trailer">Watch trailer <span aria-hidden="true">↗</span></span></figcaption></a>
+          <a class="media-tile film reveal" href="https://www.youtube.com/watch?v=j1pCga4Odi0" target="_blank" rel="noopener"><img src="media/credits/trolls-3-still.jpg" loading="lazy" alt="Trolls Band Together - Branch and Poppy on a colorful village path. Scene still © DreamWorks Animation / Universal Pictures"/><figcaption class="media-cap"><span class="media-cap-tag">Feature Film · DreamWorks</span><span class="media-cap-title">Trolls Band Together</span><span class="media-trailer">Watch trailer <span aria-hidden="true">↗</span></span></figcaption></a>
+          <a class="media-tile film feat reveal" href="https://www.youtube.com/watch?v=_inKs4eeHiI" target="_blank" rel="noopener"><img src="media/credits/kung-fu-panda-4-still.jpg" loading="lazy" alt="Kung Fu Panda 4 - Po meditating beneath a cherry-blossom tree on a cliff. Scene still © DreamWorks Animation / Universal Pictures"/><figcaption class="media-cap"><span class="media-cap-tag">Feature Film · DreamWorks</span><span class="media-cap-title">Kung Fu Panda 4</span><span class="media-trailer">Watch trailer <span aria-hidden="true">↗</span></span></figcaption></a>
+          <a class="media-tile film feat reveal" href="https://www.youtube.com/watch?v=TY1lWh20VSw" target="_blank" rel="noopener"><img src="media/credits/bad-guys-2-still.jpg" loading="lazy" alt="The Bad Guys 2 - the crew in suits walking down a lit corridor. Scene still © DreamWorks Animation / Universal Pictures"/><figcaption class="media-cap"><span class="media-cap-tag">Feature Film · DreamWorks</span><span class="media-cap-title">The Bad Guys 2</span><span class="media-trailer">Watch trailer <span aria-hidden="true">↗</span></span></figcaption></a>
+          <figure class="media-tile film reveal"><img src="media/credits/shrek-5-still.jpg" loading="lazy" alt="Shrek 5 - Shrek with Fiona, Donkey and family. Scene still © DreamWorks Animation / Universal Pictures"/><figcaption class="media-cap"><span class="media-cap-tag">Feature Film · DreamWorks</span><span class="media-cap-title">Shrek 5</span><span class="media-status"><span class="dot"></span>In theaters 2026</span></figcaption></figure>
+          <figure class="media-tile film reveal"><img src="media/credits/forgotten-island-still.jpg" loading="lazy" alt="Forgotten Island - characters with sparklers on a beach at dusk. Scene still © DreamWorks Animation / Universal Pictures"/><figcaption class="media-cap"><span class="media-cap-tag">Feature Film · DreamWorks</span><span class="media-cap-title">Forgotten Island</span><span class="media-status"><span class="dot"></span>In theaters 2026</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/cornell.jpg" loading="lazy" alt="Cornell box rendered with a custom path tracer"/><figcaption class="media-cap"><span class="media-cap-tag">Path Tracing</span><span class="media-cap-title">Cornell Box · Path Tracer</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/pbr.gif" loading="lazy" alt="Physically based rendering demo"/><figcaption class="media-cap"><span class="media-cap-tag">Real-Time PBR</span><span class="media-cap-title">Physically-Based Renderer</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/splatty-observatory.jpg" loading="lazy" alt="Real-time Gaussian splat reconstruction of an observatory"/><figcaption class="media-cap"><span class="media-cap-tag">Gaussian Splats</span><span class="media-cap-title">Real-Time Splat Viewer</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/iris-drive.webp" loading="lazy" alt="Real-time 3D Gaussian-splat city reconstruction in the Iris digital-twin viewer, driving through a reconstructed street"/><figcaption class="media-cap"><span class="media-cap-tag">WebGPU Splats</span><span class="media-cap-title">Automotive Digital Twin</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/random.gif" loading="lazy" alt="SDF raymarching shader"/><figcaption class="media-cap"><span class="media-cap-tag">Shaders</span><span class="media-cap-title">SDF Raymarching Engine</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/csg.gif" loading="lazy" alt="Constructive solid geometry via signed distance fields"/><figcaption class="media-cap"><span class="media-cap-tag">Shaders</span><span class="media-cap-title">CSG via SDF</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/erosionfast.gif" loading="lazy" alt="Voxel hydraulic erosion simulation"/><figcaption class="media-cap"><span class="media-cap-tag">Simulation</span><span class="media-cap-title">Hydraulic Erosion · Voxel Sim</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/printsim-thermal.jpg" loading="lazy" alt="Physically based FDM 3D printer simulator"/><figcaption class="media-cap"><span class="media-cap-tag">Thermal Sim</span><span class="media-cap-title">FDM Print Simulator</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/lineage-town.jpg" loading="lazy" alt="Procedurally generated medieval town"/><figcaption class="media-cap"><span class="media-cap-tag">Procedural</span><span class="media-cap-title">Medieval Town Generator</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/mapz-tokyo.jpg" loading="lazy" alt="Urban design simulation on real-world streets"/><figcaption class="media-cap"><span class="media-cap-tag">Simulation</span><span class="media-cap-title">Urban Design · Real Streets</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/gridlock-city.jpg" loading="lazy" alt="Isometric city traffic and transit simulation in GridLock"/><figcaption class="media-cap"><span class="media-cap-tag">Simulation</span><span class="media-cap-title">Isometric City Flow Sim</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/iso-tactics-dialogue.jpg" loading="lazy" alt="Cyberpunk isometric turn-based tactics prototype"/><figcaption class="media-cap"><span class="media-cap-tag">Game</span><span class="media-cap-title">Cyberpunk Tactics Deckbuilder</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/crt-terminal.jpg" loading="lazy" alt="Green-phosphor CRT terminal post-process shader"/><figcaption class="media-cap"><span class="media-cap-tag">Post-FX</span><span class="media-cap-title">Green-Phosphor CRT Shader</span></figcaption></figure>
+          <figure class="media-tile reveal"><img src="media/portfolio/godot-xbox-editor.jpg" loading="lazy" alt="Godot editor running the XBOX GDK sample"/><figcaption class="media-cap"><span class="media-cap-tag">Tooling</span><span class="media-cap-title">Godot for XBOX · GDK Sample</span></figcaption></figure>
         </div>
+        <p class="media-note reveal">Film stills © DreamWorks Animation / Universal Pictures, sourced via TMDB and shown to credit features I contributed to as lighting-tools crew - not personal work product. Trailer links open the studios' official YouTube channels.</p>
       </div>
     </section>
 
     <!-- CONTACT / LIGHT CTA -->
     <section class="section" id="contact" style="padding-bottom:6rem;">
       <div class="wrapper">
-        <span class="section-num reveal">05 — Contact</span>
+        <span class="section-num reveal">04 - Contact</span>
         <h2 class="reveal">Contact / Connect</h2>
-        <p class="reveal">Always happy to connect — feel free to reach out about work, collaboration, or just to say hello.</p>
+        <p class="reveal">Always happy to connect - feel free to reach out about work, collaboration, or just to say hello.</p>
         <div class="grid reveal-stagger" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:1.5rem;">
           <div class="panel reveal">
             <div class="tagline">Direct</div>
@@ -495,7 +374,7 @@
           <div class="panel reveal">
             <div class="tagline">Archive</div>
             <h3>Archive</h3>
-            <p>Older projects, graphics experiments, and blog posts from earlier in my career — preserved for reference.</p>
+            <p>Older projects, graphics experiments, and blog posts from earlier in my career - preserved for reference.</p>
             <p class="muted">Personal project history.</p>
           </div>
         </div>
@@ -516,6 +395,28 @@
       <span class="footer-copy">Custom static build · No trackers</span>
     </div>
   </footer>
+
+  <!-- CREDIT DETAIL MODAL - populated on demand by js/interactive-grid.js -->
+  <div class="credit-modal" id="creditModal" role="dialog" aria-modal="true" aria-labelledby="cmTitle" aria-describedby="cmDesc" hidden>
+    <div class="cm-backdrop" data-cm-close></div>
+    <div class="cm-dialog" role="document">
+      <button type="button" class="cm-close" data-cm-close aria-label="Close detail">&times;</button>
+      <div class="cm-media">
+        <div class="cm-bg" aria-hidden="true"></div>
+        <img class="cm-img" src="" alt="" />
+      </div>
+      <div class="cm-body">
+        <span class="cm-company"></span>
+        <h3 class="cm-title" id="cmTitle"></h3>
+        <div class="cm-badges"></div>
+        <p class="cm-desc" id="cmDesc"></p>
+        <div class="cm-actions">
+          <a class="cm-archive" href="#">Full entry in the archive <span aria-hidden="true">&rarr;</span></a>
+          <a class="cm-ext" href="#" target="_blank" rel="noopener"></a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="js/interactive-grid.js" type="module"></script>
 </body>

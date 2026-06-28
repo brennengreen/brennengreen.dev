@@ -1,4 +1,4 @@
-/* archive.css — Shared styles for blog & graphics archive subpages
+/* archive.css - Shared styles for blog & graphics archive subpages
    Extends the main stylesheet.css design system for content pages. */
 
 /* --- ARCHIVE PAGE LAYOUT --- */
@@ -27,7 +27,7 @@
 
 /* Tech pill row inside archive cards */
 .archive-tech {display:flex; flex-wrap:wrap; gap:.4rem; margin:.65rem 0 .85rem; padding-top:.65rem; border-top:1px solid rgba(255,255,255,.04);}
-.archive-tech span {background:rgba(232,164,69,.06); color:var(--accent-warm); border:1px solid rgba(232,164,69,.08); font-size:.55rem; letter-spacing:.6px; padding:.4rem .6rem; border-radius:999px; font-weight:500; transition:background .2s ease, transform .2s ease;}
+.archive-tech span {background:rgba(232,164,69,.08); color:var(--accent-warm); border:1px solid rgba(232,164,69,.1); font-size:.55rem; letter-spacing:.6px; padding:.4rem .6rem; border-radius:var(--radius-pill); font-weight:500; transition:background .2s ease, transform .2s ease;}
 .archive-tech span:hover {background:rgba(232,164,69,.12); transform:scale(.96);}
 
 /* Image gallery inside archive cards */
@@ -44,7 +44,7 @@
 .article-meta span {display:flex; align-items:center; gap:.35rem;}
 .article-meta strong {color:var(--accent-warm); font-weight:600;}
 .article-tags {display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.5rem;}
-.article-tags span {background:rgba(232,164,69,.06); color:var(--accent-warm); border:1px solid rgba(232,164,69,.08); font-size:.55rem; letter-spacing:.6px; padding:.35rem .55rem; border-radius:999px; font-weight:500;}
+.article-tags span {background:rgba(232,164,69,.08); color:var(--accent-warm); border:1px solid rgba(232,164,69,.1); font-size:.55rem; letter-spacing:.6px; padding:.35rem .55rem; border-radius:var(--radius-pill); font-weight:500;}
 
 /* Article body typography */
 .article-body {padding-bottom:4rem;}
@@ -59,7 +59,7 @@
 .article-body li {font-size:.85rem; color:var(--text-dim); line-height:1.65; margin-bottom:.35rem;}
 .article-body li a {color:var(--brand-accent);}
 
-/* Code blocks — dark theme overrides for Prism */
+/* Code blocks - dark theme overrides for Prism */
 .article-body pre[class*="language-"],
 .article-body code[class*="language-"] {
   color:var(--text); background:var(--bg-alt); text-shadow:none;
@@ -70,12 +70,12 @@
 .article-body code {background:var(--panel); padding:.2rem .45rem; border-radius:var(--radius-sm); font-size:.8rem; color:var(--accent-warm);}
 .article-body pre code {background:transparent; padding:0; border-radius:0; color:var(--text);}
 
-/* Prism syntax token palette — remapped to site brand (amber + purple) */
+/* Prism syntax token palette - remapped to site brand (warm amber) */
 .article-body .token.comment,
 .article-body .token.prolog,
 .article-body .token.doctype,
 .article-body .token.cdata {color:var(--text-dim); font-style:italic;}
-.article-body .token.punctuation {color:#9c93ad;}
+.article-body .token.punctuation {color:var(--text-dim);}
 .article-body .token.namespace {opacity:.7;}
 .article-body .token.property,
 .article-body .token.tag,
@@ -94,7 +94,7 @@
 .article-body .token.entity,
 .article-body .token.url,
 .article-body .language-css .token.string,
-.article-body .style .token.string {color:#c7c0d0;}
+.article-body .style .token.string {color:#c9bda6;}
 .article-body .token.atrule,
 .article-body .token.attr-value,
 .article-body .token.keyword {color:var(--brand-accent);}
@@ -129,7 +129,7 @@
   .article-wrapper {padding:0 5vw;}
 }
 
-/* --- ARTICLE EXTRAS — technical write-ups (figures, callouts, stats, tables) --- */
+/* --- ARTICLE EXTRAS - technical write-ups (figures, callouts, stats, tables) --- */
 .article-body .lede {font-size:1.04rem; line-height:1.7; color:var(--text); border-left:2px solid var(--brand-accent); padding-left:1.1rem; margin:0 0 1.7rem;}
 
 .article-figure {margin:1.9rem 0; text-align:center;}
@@ -152,3 +152,17 @@
 .article-body td {color:var(--text-dim);}
 .article-body td code {font-size:.74rem;}
 .article-body tbody tr:last-child td {border-bottom:none;}
+
+/* --- DEEP-LINK LANDING (arriving from a credit detail modal's "Full entry" link) --- */
+.archive-card {scroll-margin-top:90px;}
+.archive-card:target {animation:archiveTargetGlow 2.4s ease;}
+.archive-card:target::after {content:""; position:absolute; inset:0; border-radius:inherit; border:1px solid rgba(232,164,69,.5); pointer-events:none; animation:archiveTargetFade 2.4s ease forwards;}
+@keyframes archiveTargetGlow {
+  0%   {box-shadow:0 0 0 1px rgba(232,164,69,.7), 0 0 46px -6px rgba(232,164,69,.5);}
+  100% {box-shadow:var(--shadow-1);}
+}
+@keyframes archiveTargetFade {from{opacity:1;} to{opacity:0;}}
+@media (prefers-reduced-motion:reduce){
+  .archive-card:target {animation:none;}
+  .archive-card:target::after {animation:none; opacity:0;}
+}

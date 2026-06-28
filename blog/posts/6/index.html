@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>neural deferred shading: an 11k-parameter network that shades Sponza at 64 FPS, in Metal — Brennen Green</title>
-  <meta name="description" content="Cast one primary ray per pixel, keep the cheap deferred G-buffer, and let a tiny MLP — compiled into a Metal compute kernel — synthesize the fully globally-illuminated frame at frame rate." />
+  <title>neural deferred shading: an 11k-parameter network that shades Sponza at 64 FPS, in Metal - Brennen Green</title>
+  <meta name="description" content="Cast one primary ray per pixel, keep the cheap deferred G-buffer, and let a tiny MLP - compiled into a Metal compute kernel - synthesize the fully globally-illuminated frame at frame rate." />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../../css/stylesheet.css" />
@@ -23,7 +23,6 @@
       <nav class="links">
         <a href="../../../index.html#experience">Experience</a>
         <a href="../../../index.html#credits">Credits</a>
-        <a href="../../../index.html#systems">Systems</a>
         <a href="../../../archive/index.html">Archive</a>
         <a href="../../../blog/index.html">Blog</a>
         <a href="../../../index.html#portfolio">Portfolio</a>
@@ -37,7 +36,7 @@
       <div class="article-header">
         <a href="../../index.html" class="back-link">Back to blog</a>
         <h1>neural deferred shading: an 11k-parameter network that shades Sponza at 64&nbsp;FPS, in Metal</h1>
-        <p class="article-subtitle">Cast one primary ray per pixel, keep the cheap deferred G-buffer a rasteriser already has, and let a tiny MLP — compiled straight into a Metal compute kernel — synthesize the fully globally-illuminated frame at frame rate.</p>
+        <p class="article-subtitle">Cast one primary ray per pixel, keep the cheap deferred G-buffer a rasteriser already has, and let a tiny MLP - compiled straight into a Metal compute kernel - synthesize the fully globally-illuminated frame at frame rate.</p>
         <div class="article-meta">
           <span><strong>Published</strong> June 19, 2026</span>
           <span><strong>By</strong> Brennen Green</span>
@@ -50,18 +49,18 @@
 
       <div class="article-body">
 
-        <p class="lede">A path tracer is honest and slow: to get a clean pixel it casts hundreds of random light paths and averages them, fighting Monte-Carlo noise the whole way. But the <em>geometry</em> a pixel sees — where the ray landed, the surface normal, the albedo — is cheap, recoverable from a single primary ray, the same deferred G-buffer a rasteriser already produces for free. The expensive part is the <em>light transport</em>: bounces, shadows, sky, colour bleed. So here's the bet of this project: can a small neural network learn that light transport as a function of the cheap G-buffer — and can it run fast enough to matter? On the Crytek Sponza atrium, the answer turned out to be an <strong>~11,000-parameter MLP that shades the scene with full global illumination at 64&nbsp;FPS, running entirely on the GPU inside a Metal compute kernel.</strong></p>
+        <p class="lede">A path tracer is honest and slow: to get a clean pixel it casts hundreds of random light paths and averages them, fighting Monte-Carlo noise the whole way. But the <em>geometry</em> a pixel sees - where the ray landed, the surface normal, the albedo - is cheap, recoverable from a single primary ray, the same deferred G-buffer a rasteriser already produces for free. The expensive part is the <em>light transport</em>: bounces, shadows, sky, colour bleed. So here's the bet of this project: can a small neural network learn that light transport as a function of the cheap G-buffer - and can it run fast enough to matter? On the Crytek Sponza atrium, the answer turned out to be an <strong>~11,000-parameter MLP that shades the scene with full global illumination at 64&nbsp;FPS, running entirely on the GPU inside a Metal compute kernel.</strong></p>
 
         <figure class="article-figure">
           <img src="sponza_neural.jpg" alt="Crytek Sponza atrium shaded in realtime by an in-Metal neural network" />
-          <figcaption>Sponza at 1000×640, shaded from <strong>one primary ray per pixel plus a neural network running entirely on the GPU</strong> — no path-traced bounces at render time. The colonnade, coloured banners with gold filigree, plants and contact shadows are all synthesized by the MLP from a position/normal/albedo G-buffer, at 64&nbsp;FPS on an Apple&nbsp;M4.</figcaption>
+          <figcaption>Sponza at 1000×640, shaded from <strong>one primary ray per pixel plus a neural network running entirely on the GPU</strong> - no path-traced bounces at render time. The colonnade, coloured banners with gold filigree, plants and contact shadows are all synthesized by the MLP from a position/normal/albedo G-buffer, at 64&nbsp;FPS on an Apple&nbsp;M4.</figcaption>
         </figure>
 
         <h3>The bet: shading is the expensive part, so learn only the shading</h3>
 
-        <p>Real-time rendering has spent two decades on a clean idea called <strong>deferred shading</strong>: rasterise the scene once into a "G-buffer" of per-pixel surface attributes — position, normal, material — then compute lighting as a screen-space pass over that buffer. The first stage is cheap and the lighting stage is where you spend your budget. Path tracing inverts the economics: there is no cheap stage, because <em>every</em> pixel pays for many stochastic bounces.</p>
+        <p>Real-time rendering has spent two decades on a clean idea called <strong>deferred shading</strong>: rasterise the scene once into a "G-buffer" of per-pixel surface attributes - position, normal, material - then compute lighting as a screen-space pass over that buffer. The first stage is cheap and the lighting stage is where you spend your budget. Path tracing inverts the economics: there is no cheap stage, because <em>every</em> pixel pays for many stochastic bounces.</p>
 
-        <p>Neural rendering offers a third option. Keep the cheap deferred G-buffer — but replace the hand-written lighting pass with a network that has <em>learned</em> what the converged, globally-illuminated result looks like for this scene. The network never has to learn geometry (the G-buffer hands it that); it only has to learn the scene's light transport integral as a function of position, normal and albedo. That is a much smaller thing to learn, and — the part I cared about — it can be small enough to run in the render loop.</p>
+        <p>Neural rendering offers a third option. Keep the cheap deferred G-buffer - but replace the hand-written lighting pass with a network that has <em>learned</em> what the converged, globally-illuminated result looks like for this scene. The network never has to learn geometry (the G-buffer hands it that); it only has to learn the scene's light transport integral as a function of position, normal and albedo. That is a much smaller thing to learn, and - the part I cared about - it can be small enough to run in the render loop.</p>
 
         <figure class="article-figure">
           <svg viewBox="0 0 860 210" role="img" aria-label="Pipeline: one primary ray produces a G-buffer of position, normal and albedo; a small MLP running in a Metal kernel maps it to a fully shaded, globally illuminated frame.">
@@ -90,7 +89,7 @@
               <path d="M418 105 L488 105" marker-end="url(#nd1)"/>
               <path d="M678 105 L748 105" marker-end="url(#nd1)"/>
             </g>
-            <text x="430" y="194" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="11">No bounces at render time. The network <tspan font-style="italic">is</tspan> the light transport — learned per scene, evaluated in one GPU pass.</text>
+            <text x="430" y="194" text-anchor="middle" fill="#8d857a" font-family="Poppins, sans-serif" font-size="11">No bounces at render time. The network <tspan font-style="italic">is</tspan> the light transport - learned per scene, evaluated in one GPU pass.</text>
             <defs><marker id="nd1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c8542a"/></marker></defs>
           </svg>
           <figcaption>The whole pipeline. A single primary ray yields the deferred G-buffer; a per-pixel MLP, compiled into a Metal kernel, maps it to the converged shaded frame. The expensive light-transport integral is replaced by one forward pass.</figcaption>
@@ -98,20 +97,20 @@
 
         <h3>Ground truth first: a from-scratch Metal path tracer</h3>
 
-        <p>You cannot train or honestly measure neural shading without a reference renderer, so the project started as a real <strong>hardware-accelerated path tracer written entirely on Apple Metal</strong> — GGX microfacet BRDFs, next-event estimation with multiple importance sampling, a full bidirectional integrator, all riding the M-series ray-tracing units through <code>MTLAccelerationStructure</code>. It renders Cornell, a PBR material showcase, and the textured 262k-triangle Sponza scene. Crucially, it does double duty as a <strong>data factory</strong>: it can export, for any camera, the per-pixel G-buffer alongside a high-sample converged image. "Held-out" throughout this post means <em>camera views the network never saw during training</em> — the only honest test of whether it learned the scene rather than memorised pixels.</p>
+        <p>You cannot train or honestly measure neural shading without a reference renderer, so the project started as a real <strong>hardware-accelerated path tracer written entirely on Apple Metal</strong> - GGX microfacet BRDFs, next-event estimation with multiple importance sampling, a full bidirectional integrator, all riding the M-series ray-tracing units through <code>MTLAccelerationStructure</code>. It renders Cornell, a PBR material showcase, and the textured 262k-triangle Sponza scene. Crucially, it does double duty as a <strong>data factory</strong>: it can export, for any camera, the per-pixel G-buffer alongside a high-sample converged image. "Held-out" throughout this post means <em>camera views the network never saw during training</em> - the only honest test of whether it learned the scene rather than memorised pixels.</p>
 
-        <h3>Result 1 — a neural shader that runs inside the render loop</h3>
+        <h3>Result 1 - a neural shader that runs inside the render loop</h3>
 
-        <p>The realtime path is a deliberately tiny <strong>per-pixel MLP</strong>. For each shaded pixel it takes nine numbers — the shading normal, the textured albedo, and the scene-normalised hit position — lifts the position with a 4-band Fourier feature encoding (the same trick NeRF uses to let a small network represent high-frequency spatial detail) to 33 inputs, and runs them through <code>33 → 64 → 64 → 64 → 3</code> GELU layers to a log-radiance colour. That is about <strong>11,000 parameters</strong> — small enough to print.</p>
+        <p>The realtime path is a deliberately tiny <strong>per-pixel MLP</strong>. For each shaded pixel it takes nine numbers - the shading normal, the textured albedo, and the scene-normalised hit position - lifts the position with a 4-band Fourier feature encoding (the same trick NeRF uses to let a small network represent high-frequency spatial detail) to 33 inputs, and runs them through <code>33 → 64 → 64 → 64 → 3</code> GELU layers to a log-radiance colour. That is about <strong>11,000 parameters</strong> - small enough to print.</p>
 
-        <p>The reason it is per-pixel and not convolutional is the whole point: a per-pixel function ports <em>directly</em> to a Metal compute kernel with one GPU thread per pixel. Training (in PyTorch, on the Mac's MPS backend) writes the standardisation statistics and weight matrices into a flat <code>shader.bin</code>; the Swift renderer reads it straight into <code>MTLBuffer</code>s, and a kernel called <code>neuralShadeInst</code> evaluates the network in-line during rendering. No PyTorch at render time, no round-trip to the CPU, no path-traced bounces — the shading <em>is</em> the GPU forward pass.</p>
+        <p>The reason it is per-pixel and not convolutional is the whole point: a per-pixel function ports <em>directly</em> to a Metal compute kernel with one GPU thread per pixel. Training (in PyTorch, on the Mac's MPS backend) writes the standardisation statistics and weight matrices into a flat <code>shader.bin</code>; the Swift renderer reads it straight into <code>MTLBuffer</code>s, and a kernel called <code>neuralShadeInst</code> evaluates the network in-line during rendering. No PyTorch at render time, no round-trip to the CPU, no path-traced bounces - the shading <em>is</em> the GPU forward pass.</p>
 
         <figure class="article-figure">
           <img src="neural_comparison.png" alt="Held-out Sponza frame: in-Metal neural shading on the left, path-traced reference on the right" />
           <figcaption>A held-out Sponza frame. <strong>Left:</strong> the in-Metal MLP shading the scene from its G-buffer alone. <strong>Right:</strong> the path-traced reference. The network recovers the warm sky-lit GI, the coloured drapes and the soft contact shadows; it softens the highest-frequency texture detail, the expected failure mode of a network this small.</figcaption>
         </figure>
 
-        <p>On held-out frames of a Sponza camera orbit it reaches <strong>27.0&nbsp;dB</strong> tonemapped PSNR, and it runs at <strong>64&nbsp;FPS — 15.6&nbsp;ms/frame at 1000×640 on an Apple&nbsp;M4</strong>. Reproducing it is three commands: export a dataset, train, then render in Metal.</p>
+        <p>On held-out frames of a Sponza camera orbit it reaches <strong>27.0&nbsp;dB</strong> tonemapped PSNR, and it runs at <strong>64&nbsp;FPS - 15.6&nbsp;ms/frame at 1000×640 on an Apple&nbsp;M4</strong>. Reproducing it is three commands: export a dataset, train, then render in Metal.</p>
 
         <pre class="language-bash"><code class="language-bash"># 1) export a textured G-buffer + converged-target sequence along a camera orbit
 ./.build/release/pathtracer --exportseq --scene sponza --width 480 --height 300 \
@@ -120,31 +119,31 @@
 # 2) train the per-pixel MLP and bake the Metal weights (shader.bin)
 python3 research/neural_shader.py --data research/data_sponza --out research/results_neural
 
-# 3) shade Sponza in realtime, entirely in Metal — interactive window or headless PNG + FPS
+# 3) shade Sponza in realtime, entirely in Metal - interactive window or headless PNG + FPS
 ./.build/release/pathtracer --neural research/results_neural/shader.bin --scene sponza --window</code></pre>
 
-        <h3>Result 2 — a screen-space U-Net for spatial context</h3>
+        <h3>Result 2 - a screen-space U-Net for spatial context</h3>
 
-        <p>A per-pixel network has one structural blind spot: it sees a single hit and nothing around it, so it cannot reason about anything that depends on a <em>neighbourhood</em> — contact shadows that bleed across surfaces, sharp lighting gradients, edges. The convolutional counterpart fixes that. A compact <strong>U-Net</strong> (three down/up levels with skip connections, GroupNorm + GELU, ~845k parameters) reads the G-buffer as a full screen-space image and regresses log-radiance, free to look at spatial context. On held-out views of the material-showcase scene it reaches <strong>32.3&nbsp;dB</strong> — a clear step up in fidelity over the per-pixel model.</p>
+        <p>A per-pixel network has one structural blind spot: it sees a single hit and nothing around it, so it cannot reason about anything that depends on a <em>neighbourhood</em> - contact shadows that bleed across surfaces, sharp lighting gradients, edges. The convolutional counterpart fixes that. A compact <strong>U-Net</strong> (three down/up levels with skip connections, GroupNorm + GELU, ~845k parameters) reads the G-buffer as a full screen-space image and regresses log-radiance, free to look at spatial context. On held-out views of the material-showcase scene it reaches <strong>32.3&nbsp;dB</strong> - a clear step up in fidelity over the per-pixel model.</p>
 
         <figure class="article-figure">
           <img src="deferred_comparison.png" alt="Deferred U-Net results: albedo input, network prediction, path-traced reference, and an error row" />
-          <figcaption>Top row: <code>[ albedo (a G-buffer input) | U-Net prediction | path-traced reference ]</code>. Bottom: the per-pixel error. The U-Net reconstructs convincing global illumination — soft shadows, indirect bounce light, the area-light highlight — from inputs that contain no lighting at all.</figcaption>
+          <figcaption>Top row: <code>[ albedo (a G-buffer input) | U-Net prediction | path-traced reference ]</code>. Bottom: the per-pixel error. The U-Net reconstructs convincing global illumination - soft shadows, indirect bounce light, the area-light highlight - from inputs that contain no lighting at all.</figcaption>
         </figure>
 
-        <p>The trade is the obvious one: a convolutional network does not collapse into a one-thread-per-pixel Metal kernel as cleanly, so for now the U-Net runs in PyTorch/MPS. To still drive it interactively, the Metal renderer can act as a resident <em>G-buffer server</em> (<code>pathtracer --gbufserver</code>): it holds the acceleration structure, streams a fresh primary-ray G-buffer per camera in milliseconds, and a small Python viewer feeds each one to the U-Net. You orbit; the network shades. It is the spatial-context, higher-quality sibling of the in-Metal MLP — and the prerequisite for the next piece.</p>
+        <p>The trade is the obvious one: a convolutional network does not collapse into a one-thread-per-pixel Metal kernel as cleanly, so for now the U-Net runs in PyTorch/MPS. To still drive it interactively, the Metal renderer can act as a resident <em>G-buffer server</em> (<code>pathtracer --gbufserver</code>): it holds the acceleration structure, streams a fresh primary-ray G-buffer per camera in milliseconds, and a small Python viewer feeds each one to the U-Net. You orbit; the network shades. It is the spatial-context, higher-quality sibling of the in-Metal MLP - and the prerequisite for the next piece.</p>
 
-        <h3>Result 3 — temporal stability with motion vectors</h3>
+        <h3>Result 3 - temporal stability with motion vectors</h3>
 
-        <p>Shade each frame independently and the image shimmers under camera motion, because the network makes slightly different errors every frame. The standard cure, borrowed from temporal anti-aliasing and temporal denoisers, is <strong>history</strong>: reproject the previous output into the current frame using per-pixel motion vectors (a backward warp that asks "where was this surface last frame?") and let the network blend that warped history with the current G-buffer. The renderer already exports the motion vectors alongside the G-buffer, so the temporal model is the same U-Net with three extra input channels for the warped previous frame. We score it two ways on a held-out arc of the orbit: PSNR against the reference, and a <em>motion-compensated flicker</em> metric measured against a no-history ablation of the identical network — isolating exactly what the temporal feedback buys.</p>
+        <p>Shade each frame independently and the image shimmers under camera motion, because the network makes slightly different errors every frame. The standard cure, borrowed from temporal anti-aliasing and temporal denoisers, is <strong>history</strong>: reproject the previous output into the current frame using per-pixel motion vectors (a backward warp that asks "where was this surface last frame?") and let the network blend that warped history with the current G-buffer. The renderer already exports the motion vectors alongside the G-buffer, so the temporal model is the same U-Net with three extra input channels for the warped previous frame. We score it two ways on a held-out arc of the orbit: PSNR against the reference, and a <em>motion-compensated flicker</em> metric measured against a no-history ablation of the identical network - isolating exactly what the temporal feedback buys.</p>
 
         <div class="callout">
-          <p>A neat property falls out of measuring honestly: the path-traced reference itself flickers, because it is Monte-Carlo and still has residual noise. So "temporal stability" is graded against a moving target, and the motion-vector history has to beat the no-history version of the <em>same weights</em> — not a strawman.</p>
+          <p>A neat property falls out of measuring honestly: the path-traced reference itself flickers, because it is Monte-Carlo and still has residual noise. So "temporal stability" is graded against a moving target, and the motion-vector history has to beat the no-history version of the <em>same weights</em> - not a strawman.</p>
         </div>
 
         <h3>Where it began: amplifying samples, not replacing them</h3>
 
-        <p>The project actually started from the inverse question. Before "replace shading entirely," I asked the softer version: <strong>can a network amplify a single sample?</strong> Cast one ray, keep its 1-spp (noisy) radiance plus its G-buffer, and have an MLP predict the <em>converged</em> multi-sample radiance — a learned radiance cache, in the spirit of NVIDIA's Neural Radiance Caching. On the Cornell box it lifts a 13.4&nbsp;dB single-sample image to 28.1&nbsp;dB.</p>
+        <p>The project actually started from the inverse question. Before "replace shading entirely," I asked the softer version: <strong>can a network amplify a single sample?</strong> Cast one ray, keep its 1-spp (noisy) radiance plus its G-buffer, and have an MLP predict the <em>converged</em> multi-sample radiance - a learned radiance cache, in the spirit of NVIDIA's Neural Radiance Caching. On the Cornell box it lifts a 13.4&nbsp;dB single-sample image to 28.1&nbsp;dB.</p>
 
         <p>The result I am proudest of there is not the number but how it was measured. Instead of assuming error falls as <code>1/√N</code> and back-solving an "effective sample count," I rendered the held-out view as <strong>256 independent 1-spp images</strong>, prefix-averaged them to trace the <em>true</em> Monte-Carlo convergence curve, and found where path tracing's error actually crosses the network's:</p>
 
@@ -154,10 +153,10 @@ neural (1 cast ray)   relMSE = 0.0111   ->  ~67.6 path-traced samples</code></pr
 
         <figure class="article-figure">
           <img src="convergence.png" alt="Measured Monte-Carlo convergence curve crossing the neural error level at about 68 samples" />
-          <figcaption>The directly-measured convergence curve. The straight <code>1/N</code> line in log–log is the path tracer's real error as samples accumulate; the network's single-ray error lands where ~68 honestly-traced samples would — and the clean line independently validates that the tracer's estimator is unbiased.</figcaption>
+          <figcaption>The directly-measured convergence curve. The straight <code>1/N</code> line in log-log is the path tracer's real error as samples accumulate; the network's single-ray error lands where ~68 honestly-traced samples would - and the clean line independently validates that the tracer's estimator is unbiased.</figcaption>
         </figure>
 
-        <p>So on that unseen view, <strong>one physically cast ray plus inference is worth about 68 path-traced samples</strong>. Same philosophy as the deferred-shading work — exploit the cheap signal a single ray gives you — pointed at a slightly different target.</p>
+        <p>So on that unseen view, <strong>one physically cast ray plus inference is worth about 68 path-traced samples</strong>. Same philosophy as the deferred-shading work - exploit the cheap signal a single ray gives you - pointed at a slightly different target.</p>
 
         <h3>The numbers, side by side</h3>
 
@@ -171,21 +170,21 @@ neural (1 cast ray)   relMSE = 0.0111   ->  ~67.6 path-traced samples</code></pr
             <tr><td>Radiance amplifier</td><td>Cornell</td><td>~288k</td><td><strong>28.1&nbsp;dB</strong></td><td>≈&nbsp;68 path-traced samples / ray</td></tr>
           </tbody>
         </table>
-        <p style="font-size:.75rem; color:var(--text-dim); margin-top:-.6rem;">PSNR is tonemapped, on camera views held out of training. The three rows are different scenes and tasks, so the dB figures are not directly comparable — they each answer a different question.</p>
+        <p style="font-size:.75rem; color:var(--text-dim); margin-top:-.6rem;">PSNR is tonemapped, on camera views held out of training. The three rows are different scenes and tasks, so the dB figures are not directly comparable - they each answer a different question.</p>
 
         <h3>Takeaways</h3>
 
         <div class="callout key">
-          <p><strong>Deferred shading is the natural seam for neural rendering.</strong> Splitting "what the camera sees" (cheap, exact, one ray) from "how it is lit" (expensive, learnable) means the network never wastes capacity on geometry. It learns only the light transport — and that is small enough to be fast.</p>
+          <p><strong>Deferred shading is the natural seam for neural rendering.</strong> Splitting "what the camera sees" (cheap, exact, one ray) from "how it is lit" (expensive, learnable) means the network never wastes capacity on geometry. It learns only the light transport - and that is small enough to be fast.</p>
         </div>
 
         <p><strong>Tiny beats clever when the budget is the render loop.</strong> An 11k-parameter MLP is laughable by modern standards, but because it is per-pixel it becomes a one-thread-per-pixel Metal kernel and shades a full atrium at 64&nbsp;FPS with zero bounces. Architecture that fits the hardware substrate beat architecture that maximised a validation metric. The U-Net is sharper, but the MLP is the one that runs <em>inside</em> the renderer.</p>
 
-        <p><strong>It is per-scene, and that is fine.</strong> Like Neural Radiance Caching, each network is trained on one scene's geometry and lighting and generalises across held-out <em>camera views</em> of that scene — not across scenes. Re-training per scene is the deployment model, not a bug; it is what makes the network small enough to be realtime.</p>
+        <p><strong>It is per-scene, and that is fine.</strong> Like Neural Radiance Caching, each network is trained on one scene's geometry and lighting and generalises across held-out <em>camera views</em> of that scene - not across scenes. Re-training per scene is the deployment model, not a bug; it is what makes the network small enough to be realtime.</p>
 
         <p><strong>Measure against the real curve, not a convenient assumption.</strong> The most reusable lesson had nothing to do with networks: holding out camera views, rendering an independent convergence stack instead of assuming <code>1/√N</code>, and ablating the exact same weights are what turn "looks good" into a number you can defend. And none of it exists without building the honest ground-truth renderer first.</p>
 
-        <p style="margin-top:2rem; color:var(--text-dim); font-size:.82rem;">The renderer, all three networks, the Metal kernels and the data-export pipeline are on GitHub: <a href="https://github.com/brennengreen/metal-pathtracer" target="_blank" rel="noopener">brennengreen/metal-pathtracer</a>. It builds with the Swift Command Line Tools — no Xcode — and compiles its Metal shaders at runtime, so the whole thing is <code>swift build -c release</code> and go.</p>
+        <p style="margin-top:2rem; color:var(--text-dim); font-size:.82rem;">The renderer, all three networks, the Metal kernels and the data-export pipeline are on GitHub: <a href="https://github.com/brennengreen/metal-pathtracer" target="_blank" rel="noopener">brennengreen/metal-pathtracer</a>. It builds with the Swift Command Line Tools - no Xcode - and compiles its Metal shaders at runtime, so the whole thing is <code>swift build -c release</code> and go.</p>
 
       </div>
     </div>

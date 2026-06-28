@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>aircoder: a local coding agent that externalizes its memory to disk — Brennen Green</title>
+  <title>aircoder: a local coding agent that externalizes its memory to disk - Brennen Green</title>
   <meta name="description" content="How a nine-crate Rust agent drives a small local LLM through hour-long coding tasks by treating the model as stateless and a content-addressed ledger as its working memory." />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -23,7 +23,6 @@
       <nav class="links">
         <a href="../../../index.html#experience">Experience</a>
         <a href="../../../index.html#credits">Credits</a>
-        <a href="../../../index.html#systems">Systems</a>
         <a href="../../../archive/index.html">Archive</a>
         <a href="../../../blog/index.html">Blog</a>
         <a href="../../../index.html#portfolio">Portfolio</a>
@@ -37,7 +36,7 @@
       <div class="article-header">
         <a href="../../index.html" class="back-link">Back to blog</a>
         <h1>aircoder: a local coding agent that externalizes its memory to disk</h1>
-        <p class="article-subtitle">How a nine-crate Rust agent drives a small, local LLM through hour-long coding tasks by treating the model as stateless — and a content-addressed ledger on disk as its real working memory.</p>
+        <p class="article-subtitle">How a nine-crate Rust agent drives a small, local LLM through hour-long coding tasks by treating the model as stateless - and a content-addressed ledger on disk as its real working memory.</p>
         <div class="article-meta">
           <span><strong>Published</strong> May 5, 2026</span>
           <span><strong>By</strong> Brennen Green</span>
@@ -50,15 +49,15 @@
 
       <div class="article-body">
 
-        <p class="lede">Every local-LLM user has hit the same wall. A coding task is going fine for fifteen turns, then the agent forgets which file it was editing, hallucinates an import, loops on evidence it already gathered, or just runs out of memory when its KV cache outgrows your RAM. The model isn't dumb. <strong>It is forgetting.</strong> aircoder is my attempt to fix that — not with a bigger model, but with a different architecture.</p>
+        <p class="lede">Every local-LLM user has hit the same wall. A coding task is going fine for fifteen turns, then the agent forgets which file it was editing, hallucinates an import, loops on evidence it already gathered, or just runs out of memory when its KV cache outgrows your RAM. The model isn't dumb. <strong>It is forgetting.</strong> aircoder is my attempt to fix that - not with a bigger model, but with a different architecture.</p>
 
         <h3>The problem: the prompt is a terrible place to keep state</h3>
 
-        <p>Cloud agents paper over the forgetting problem with frontier models and 200k-token context windows. Run locally on a laptop and there is no escape hatch: a 7B model with an 8k effective context cannot hold a twelve-step task, all the files it has read, and every test result in its head at once. As the conversation grows, three things happen — all bad:</p>
+        <p>Cloud agents paper over the forgetting problem with frontier models and 200k-token context windows. Run locally on a laptop and there is no escape hatch: a 7B model with an 8k effective context cannot hold a twelve-step task, all the files it has read, and every test result in its head at once. As the conversation grows, three things happen - all bad:</p>
 
         <ul>
           <li><strong>Dilution.</strong> The instruction that mattered on turn 2 is now buried under ten turns of tool output the model has to re-read every step.</li>
-          <li><strong>Drift.</strong> Re-reading a long, noisy history each turn, a small model loses the thread — it re-opens files it already saw, or contradicts a decision it made earlier.</li>
+          <li><strong>Drift.</strong> Re-reading a long, noisy history each turn, a small model loses the thread - it re-opens files it already saw, or contradicts a decision it made earlier.</li>
           <li><strong>Death.</strong> The KV cache grows with the context until the process OOMs. On a 16&nbsp;GB machine that can happen well before the task is done.</li>
         </ul>
 
@@ -86,7 +85,7 @@
             <rect x="496" y="104" width="238" height="16" rx="4" fill="#2a2118"/><text x="506" y="116" fill="#9c93ad" font-family="monospace" font-size="9">system + task header</text>
             <rect x="496" y="124" width="238" height="16" rx="4" fill="#2a2118"/><text x="506" y="136" fill="#9c93ad" font-family="monospace" font-size="9">curated evidence (just what's relevant)</text>
             <rect x="480" y="178" width="270" height="82" rx="10" fill="#120f0a" stroke="#e8a445" stroke-opacity=".35"/>
-            <text x="615" y="200" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="11" font-weight="600">ledger.sqlite — on disk</text>
+            <text x="615" y="200" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="11" font-weight="600">ledger.sqlite - on disk</text>
             <text x="615" y="222" text-anchor="middle" fill="#b8b0a4" font-family="monospace" font-size="9">file_read · diagnostic · test_result</text>
             <text x="615" y="238" text-anchor="middle" fill="#b8b0a4" font-family="monospace" font-size="9">decision · plan tree · cursor</text>
             <path d="M615 150 L615 178" stroke="#e8a445" stroke-width="1.5" marker-end="url(#ar)"/>
@@ -97,7 +96,7 @@
 
         <h3>The idea: state lives on disk, not in the prompt</h3>
 
-        <p>aircoder decomposes every observation the agent makes into a typed <em>evidence</em> row in a SQLite ledger. Reading a file produces a <code>file_read</code> row. Running the tests produces a <code>test_result</code> row. Forming a hunch produces a <code>decision</code> row. The model never re-reads raw history — instead, each step assembles a fresh, compact prompt by <em>querying</em> the ledger for the handful of evidence rows that matter right now.</p>
+        <p>aircoder decomposes every observation the agent makes into a typed <em>evidence</em> row in a SQLite ledger. Reading a file produces a <code>file_read</code> row. Running the tests produces a <code>test_result</code> row. Forming a hunch produces a <code>decision</code> row. The model never re-reads raw history - instead, each step assembles a fresh, compact prompt by <em>querying</em> the ledger for the handful of evidence rows that matter right now.</p>
 
         <p>The supervisor recognizes seven kinds of evidence:</p>
 
@@ -105,7 +104,7 @@
           <thead><tr><th>Evidence kind</th><th>Produced when…</th></tr></thead>
           <tbody>
             <tr><td><code>file_read</code></td><td>the agent opens a file or a span of one</td></tr>
-            <tr><td><code>diagnostic</code></td><td>a compiler/linter message — or an internal parser/inference failure — is captured</td></tr>
+            <tr><td><code>diagnostic</code></td><td>a compiler/linter message - or an internal parser/inference failure - is captured</td></tr>
             <tr><td><code>test_result</code></td><td>a test run reports pass/fail</td></tr>
             <tr><td><code>edit_applied</code></td><td>a change is written to the working tree</td></tr>
             <tr><td><code>decision</code></td><td>the model commits to a hypothesis or a fix</td></tr>
@@ -118,7 +117,7 @@
 
         <h3>The agent loop</h3>
 
-        <p>One step of aircoder is a tight, four-beat cycle. The supervisor assembles a compact episode, the model answers with exactly one structured action, the supervisor commits the consequences to the ledger as a single transaction, and the next step queries the freshly-updated ledger. There is no growing transcript — every step starts from the durable state, not from a chat log.</p>
+        <p>One step of aircoder is a tight, four-beat cycle. The supervisor assembles a compact episode, the model answers with exactly one structured action, the supervisor commits the consequences to the ledger as a single transaction, and the next step queries the freshly-updated ledger. There is no growing transcript - every step starts from the durable state, not from a chat log.</p>
 
         <figure class="article-figure">
           <svg viewBox="0 0 820 340" role="img" aria-label="The aircoder agent loop: assemble episode, model emits one JSON action, supervisor commits a single SQLite transaction, curate next evidence, repeat.">
@@ -153,14 +152,14 @@
             <text x="410" y="166" text-anchor="middle" fill="#e8a445" font-family="Poppins, sans-serif" font-size="11" font-weight="600">ledger.sqlite</text>
             <text x="410" y="184" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9">the only system of record</text>
           </svg>
-          <figcaption>The loop never carries a transcript forward. Each cycle reads durable state, asks the model for one decision, and writes the result back — so a crash between any two steps loses nothing.</figcaption>
+          <figcaption>The loop never carries a transcript forward. Each cycle reads durable state, asks the model for one decision, and writes the result back - so a crash between any two steps loses nothing.</figcaption>
         </figure>
 
-        <p>The model's whole job each turn is to emit <strong>one JSON object on one line</strong> — no prose, no markdown fences, no commentary — picked from a small set of action shapes:</p>
+        <p>The model's whole job each turn is to emit <strong>one JSON object on one line</strong> - no prose, no markdown fences, no commentary - picked from a small set of action shapes:</p>
 
         <pre class="language-json"><code class="language-json">{"action":"record_evidence",
  "kind":"file_read|diagnostic|test_result|edit_applied|decision|shell_output|symbol_lookup",
- "subject":"&lt;short identifier — a path, command, or symbol&gt;",
+ "subject":"&lt;short identifier - a path, command, or symbol&gt;",
  "summary":"&lt;one or two lines the next step will read&gt;",
  "content":"&lt;verbatim payload bytes&gt;"}
 
@@ -171,11 +170,11 @@
  "cites":["&lt;evidence-id&gt;", "..."],
  "summary":"&lt;why the task (or sub-task) is now done&gt;"}</code></pre>
 
-        <p>That structured-action contract is what makes the loop legible. The agent isn't free-forming a conversation; it's appending rows to a database and walking a plan tree. <code>spawn_child</code> opens a sub-hypothesis (depth-first investigation); <code>resolve</code> closes one and <em>must</em> cite the evidence ids that justify the conclusion — so every resolution is traceable back to the rows that earned it.</p>
+        <p>That structured-action contract is what makes the loop legible. The agent isn't free-forming a conversation; it's appending rows to a database and walking a plan tree. <code>spawn_child</code> opens a sub-hypothesis (depth-first investigation); <code>resolve</code> closes one and <em>must</em> cite the evidence ids that justify the conclusion - so every resolution is traceable back to the rows that earned it.</p>
 
         <h3>Every step is a checkpoint</h3>
 
-        <p>A long-horizon agent has to survive <code>SIGINT</code> and <code>kill -9</code>. If your laptop sleeps, the model server hiccups, or you simply <kbd>Ctrl-C</kbd> a twenty-minute run, you should be able to resume without redoing work — and without a corrupt half-step poisoning the ledger.</p>
+        <p>A long-horizon agent has to survive <code>SIGINT</code> and <code>kill -9</code>. If your laptop sleeps, the model server hiccups, or you simply <kbd>Ctrl-C</kbd> a twenty-minute run, you should be able to resume without redoing work - and without a corrupt half-step poisoning the ledger.</p>
 
         <p>aircoder gets this from a single design rule: <strong>everything a step mutates is committed in one SQLite transaction.</strong> The episode row, every evidence row it recorded, the plan-tree mutation, and the cursor bump all land inside one <code>BEGIN … COMMIT</code>:</p>
 
@@ -191,7 +190,7 @@ match action {
 maybe_insert_plan_revision(&amp;tx, action, ...)?;   // structural change + its narrative, atomically
 self.cursor.bump_in_tx(&amp;tx, task, step_index)?;  // advance the resume cursor
 
-tx.commit()?;                                    // COMMIT — all of it, or none of it</code></pre>
+tx.commit()?;                                    // COMMIT - all of it, or none of it</code></pre>
 
         <p>If the OS kills the process anywhere inside that block, SQLite's write-ahead log rolls the partial work back. The ledger is therefore <em>always</em> at a clean boundary: either "step N is fully committed" or "step N never happened." Resuming just reads the cursor and starts at <code>N+1</code>.</p>
 
@@ -220,7 +219,7 @@ tx.commit()?;                                    // COMMIT — all of it, or non
         </figure>
 
         <div class="callout key">
-          <p><strong>The guarantee, in three invariants:</strong> <strong>(1) No torn writes</strong> — a step is all-or-nothing. <strong>(2) Zero rework on resume</strong> — the model is never re-asked for a step that already committed. <strong>(3) Convergent final state</strong> — a run interrupted any number of times produces the same logical ledger as an uninterrupted one. All three are checked by a property test, not just asserted in prose.</p>
+          <p><strong>The guarantee, in three invariants:</strong> <strong>(1) No torn writes</strong> - a step is all-or-nothing. <strong>(2) Zero rework on resume</strong> - the model is never re-asked for a step that already committed. <strong>(3) Convergent final state</strong> - a run interrupted any number of times produces the same logical ledger as an uninterrupted one. All three are checked by a property test, not just asserted in prose.</p>
         </div>
 
         <h3>When the model misbehaves</h3>
@@ -229,15 +228,15 @@ tx.commit()?;                                    // COMMIT — all of it, or non
 
         <ul>
           <li>The parser <strong>strips markdown fences</strong> and takes the <em>last</em> balanced JSON object if the model emits a preamble.</li>
-          <li>It accepts <code>cites</code> as either a string or a list-of-strings — the kind of schema flex small models constantly need.</li>
-          <li>When parsing fails — or the inference HTTP call itself fails — the supervisor doesn't panic. It <strong>synthesizes a <code>diagnostic</code> evidence row</strong> (<code>mlx_decider/parser_error</code> or <code>mlx_decider/inference_error</code>) and keeps the loop moving. The failure becomes a grep-able fact in the ledger instead of a dead process.</li>
+          <li>It accepts <code>cites</code> as either a string or a list-of-strings - the kind of schema flex small models constantly need.</li>
+          <li>When parsing fails - or the inference HTTP call itself fails - the supervisor doesn't panic. It <strong>synthesizes a <code>diagnostic</code> evidence row</strong> (<code>mlx_decider/parser_error</code> or <code>mlx_decider/inference_error</code>) and keeps the loop moving. The failure becomes a grep-able fact in the ledger instead of a dead process.</li>
         </ul>
 
-        <p>The agent talks to any OpenAI-compatible chat endpoint — by default a local <code>mlx_lm.server</code> on <code>127.0.0.1:8765</code> — so it runs against whatever small model you can fit, with no cloud dependency.</p>
+        <p>The agent talks to any OpenAI-compatible chat endpoint - by default a local <code>mlx_lm.server</code> on <code>127.0.0.1:8765</code> - so it runs against whatever small model you can fit, with no cloud dependency.</p>
 
         <h3>The architecture: nine small crates</h3>
 
-        <p>aircoder is a Rust workspace split into nine focused crates. The split isn't ceremony — it keeps the model-facing seam (<code>inference</code>), the durable seam (<code>ledger</code>), and the decision logic (<code>supervisor</code>) independently testable.</p>
+        <p>aircoder is a Rust workspace split into nine focused crates. The split isn't ceremony - it keeps the model-facing seam (<code>inference</code>), the durable seam (<code>ledger</code>), and the decision logic (<code>supervisor</code>) independently testable.</p>
 
         <figure class="article-figure">
           <svg viewBox="0 0 820 290" role="img" aria-label="aircoder's nine crates: the CLI drives the supervisor, which orchestrates the planner, prompt-asm, inference, repo-index, verifier and core, all persisting through the ledger.">
@@ -284,7 +283,7 @@ tx.commit()?;                                    // COMMIT — all of it, or non
 
         <h3>Does it actually work?</h3>
 
-        <p>Yes — and the honest version of "yes" matters here. The deterministic, script-mode demo (a recorded action stream) proves the loop end-to-end on any machine with <code>cargo</code>, no model required. But the interesting question is whether a <em>real</em> small local model can drive it. The first time I pointed it at a live <code>mlx_lm.server</code>, a 3B quantized coder model diagnosed a real bug — a JWT helper missing its base64 padding before <code>urlsafe_b64decode</code> — and resolved the task cleanly:</p>
+        <p>Yes - and the honest version of "yes" matters here. The deterministic, script-mode demo (a recorded action stream) proves the loop end-to-end on any machine with <code>cargo</code>, no model required. But the interesting question is whether a <em>real</em> small local model can drive it. The first time I pointed it at a live <code>mlx_lm.server</code>, a 3B quantized coder model diagnosed a real bug - a JWT helper missing its base64 padding before <code>urlsafe_b64decode</code> - and resolved the task cleanly:</p>
 
         <div class="stat-grid">
           <div class="stat"><b>2</b><span>episodes to resolve</span></div>
@@ -293,19 +292,19 @@ tx.commit()?;                                    // COMMIT — all of it, or non
           <div class="stat"><b>3B</b><span>Q4 local model</span></div>
         </div>
 
-        <p>Step one emitted a <code>decision</code> evidence row naming the file and the one-line fix; step two emitted a <code>resolve</code> whose <code>cites</code> array correctly referenced that decision's id. The entire run is a five-row ledger you can inspect after the fact — <code>2</code> episodes, <code>2</code> evidence rows, a single plan node, <code>9,644</code> bytes of inline payload. That is the whole point: the agent's reasoning is a queryable artifact, not a vanished chat log.</p>
+        <p>Step one emitted a <code>decision</code> evidence row naming the file and the one-line fix; step two emitted a <code>resolve</code> whose <code>cites</code> array correctly referenced that decision's id. The entire run is a five-row ledger you can inspect after the fact - <code>2</code> episodes, <code>2</code> evidence rows, a single plan node, <code>9,644</code> bytes of inline payload. That is the whole point: the agent's reasoning is a queryable artifact, not a vanished chat log.</p>
 
         <div class="callout">
-          <p>The model used was <code>Qwen2.5-Coder-3B-Instruct-4bit</code>, and getting there took four iterations on the task description — small models are sensitive to how the job is framed. That's a real limitation, honestly reported: aircoder makes a small model <em>survive</em> a long task; it doesn't make a small model as smart as a frontier one.</p>
+          <p>The model used was <code>Qwen2.5-Coder-3B-Instruct-4bit</code>, and getting there took four iterations on the task description - small models are sensitive to how the job is framed. That's a real limitation, honestly reported: aircoder makes a small model <em>survive</em> a long task; it doesn't make a small model as smart as a frontier one.</p>
         </div>
 
-        <h3>What it is — and what it isn't</h3>
+        <h3>What it is - and what it isn't</h3>
 
         <p>aircoder is an argument that the path to capable local agents isn't only "a better model." It's <strong>a better memory architecture around the model</strong>. By treating the LLM as a stateless decision function and the disk as the system of record, you get three things a longer context window can't buy you: bounded memory, crash-resumability, and a fully auditable trace of why the agent did what it did.</p>
 
-        <p>It is <em>not</em> a frontier-coding replacement for tasks where raw reasoning is the bottleneck — it is architecturally different, not architecturally smarter. But for the world where you want an agent that survives a long task on the laptop you already own, externalizing memory to disk turns out to be most of the battle.</p>
+        <p>It is <em>not</em> a frontier-coding replacement for tasks where raw reasoning is the bottleneck - it is architecturally different, not architecturally smarter. But for the world where you want an agent that survives a long task on the laptop you already own, externalizing memory to disk turns out to be most of the battle.</p>
 
-        <p style="margin-top:2rem; color:var(--text-dim); font-size:.82rem;">aircoder is a nine-crate Rust workspace (Apache-2.0). It pairs naturally with <a href="../4/">metalstream</a>, a substrate that streams oversized model weights off NVMe — the two are small-context-by-design and small-memory-by-design, respectively.</p>
+        <p style="margin-top:2rem; color:var(--text-dim); font-size:.82rem;">aircoder is a nine-crate Rust workspace (Apache-2.0). It pairs naturally with <a href="../4/">metalstream</a>, a substrate that streams oversized model weights off NVMe - the two are small-context-by-design and small-memory-by-design, respectively.</p>
 
       </div>
     </div>

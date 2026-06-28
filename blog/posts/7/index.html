@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iris: reconstructing a street as 3D Gaussian splats - Brennen Green</title>
+  <meta name="description" content="How one nuScenes drive - six cameras and a 32-beam LiDAR through Boston - becomes a navigable 3D world: LiDAR for geometry, cameras for colour, a monocular depth network to fill the gaps, semantic masks to delete the sky and the traffic, and a few million oriented Gaussians you can fly through in a browser." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../../css/stylesheet.css" />
+  <link rel="stylesheet" href="../../../css/archive.css" />
+  <style>
+    .article-figure img {
+      max-width: 100%; height: auto; border-radius: var(--radius-md);
+      border: 1px solid rgba(255,255,255,.06); box-shadow: var(--shadow-1);
+      background: #0b0d12;
+    }
+    .article-figure.hero img { width: 100%; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrapper nav">
+      <div style="display:flex; align-items:center; gap:.85rem;">
+        <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#2a1f12,#110a06);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
+          <img src="../../../media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:grayscale(60%) contrast(1.15);"/>
+        </div>
+        <a href="../../../index.html" style="text-decoration:none;"><strong style="font-size:1rem;letter-spacing:.5px;font-weight:600;color:#fff;">Brennen&nbsp;Green</strong></a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <nav class="links">
+        <a href="../../../index.html#experience">Experience</a>
+        <a href="../../../index.html#credits">Credits</a>
+        <a href="../../../archive/index.html">Archive</a>
+        <a href="../../../blog/index.html">Blog</a>
+        <a href="../../../index.html#portfolio">Portfolio</a>
+        <a href="../../../index.html#contact" class="cta">Connect</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="article-wrapper">
+      <div class="article-header">
+        <a href="../../index.html" class="back-link">Back to blog</a>
+        <h1>Iris: reconstructing a street as 3D Gaussian splats</h1>
+        <p class="article-subtitle">I took one twenty-second drive from the nuScenes dataset - six cameras and a 32-beam LiDAR through Boston's Seaport - and rebuilt the street it drove down as a few million 3D Gaussian splats you can fly a camera through in a browser. Here's the pipeline that does it, and an honest account of where it's sharp and where it's still rough.</p>
+        <div class="article-meta">
+          <span><strong>Published</strong> June 19, 2026</span>
+          <span><strong>By</strong> Brennen Green</span>
+          <span><strong>Read</strong> ~9 min</span>
+        </div>
+        <div class="article-tags">
+          <span>Gaussian Splatting</span><span>3D Reconstruction</span><span>Computer Vision</span><span>LiDAR</span><span>Monocular Depth</span><span>nuScenes</span><span>WebGL</span>
+        </div>
+      </div>
+
+      <div class="article-body">
+
+        <p class="lede">The clip below is the whole point, so let me be upfront about what it is before I explain how it's made. It isn't a game map, and it isn't a NeRF I trained overnight. It's a single drive from the public <a href="https://www.nuscenes.org/" target="_blank" rel="noopener">nuScenes</a> dataset - scene-0103, a twenty-second stretch through Boston's Seaport recorded by a car with six cameras and a spinning LiDAR - reconstructed offline into 3D Gaussian splats and replayed under the exact trajectory the car took. Every lane line, crosswalk, parked car and curbside tree you see was built from that car's sensors. Nothing underneath it is a model of a city; it's the street itself, rebuilt.</p>
+
+        <figure class="article-figure hero">
+          <img src="drive.gif" alt="A top-down chase camera follows the recorded trajectory down a Boston street rendered entirely as 3D Gaussian splats - road markings, crosswalks, parked cars, and curbside foliage - with no map underneath, just the reconstruction." />
+          <figcaption>A chase camera follows the recorded trajectory down a Seaport block - road markings, crosswalks, parked cars, curbside foliage - with no map underneath. Just the reconstruction, rendered as Gaussian splats in a browser.</figcaption>
+        </figure>
+
+        <p>So let me work backwards from that clip: what's actually in it, the pipeline that produces it, and - because this is the part most splat demos skip - what it still gets wrong.</p>
+
+        <h3>What you're looking at</h3>
+
+        <p>The source is one nuScenes log: six cameras around the roof and a 32-beam LiDAR, about twenty seconds and forty keyframes of driving through the Seaport. Out of that, the reconstruction is roughly <strong>4.77&nbsp;million</strong> foreground Gaussians - the road surface, the parked cars, the building façades - streamed in 50-metre tiles, sitting over an <strong>18.9&nbsp;million</strong>-point background cloud, for about 23.6&nbsp;million Gaussians all told. It renders in a browser at ~60&nbsp;fps. Up close it's rough; from a chase camera it's unmistakably the street.</p>
+
+        <h3>The pipeline</h3>
+
+        <p>There's a deliberate constraint behind all of this: <em>no per-scene training.</em> The bundle in this post was built analytically in seconds - LiDAR supplies the geometry, the cameras supply the colour, a depth network fills the gaps the LiDAR leaves, a segmentation network deletes everything that shouldn't be in a static scene, and a little linear algebra turns the result into oriented Gaussians sliced into streamable tiles. That's why it builds so fast, and also why it's only as good as it is.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 880 210" role="img" aria-label="The Iris reconstruction pipeline, left to right. One nuScenes drive (six cameras and a 32-beam LiDAR) feeds a stage that accumulates LiDAR sweeps for geometry and projects them into the cameras for colour. A DepthAnything-V2 monocular depth network fills the gaps the LiDAR leaves while a SegFormer Cityscapes model deletes sky, road and dynamic objects. PCA fits surface-aligned oriented Gaussians, which are sliced into 50-metre geo-anchored tiles plus a global background cloud. A three.js / WebGL2 viewer streams, sorts and renders them at about 60 fps.">
+            <text x="440" y="26" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="14" font-weight="700">From one drive to a navigable splat world - no per-scene training</text>
+            <!-- 1 capture -->
+            <rect x="14" y="56" width="150" height="118" rx="11" fill="#17120c" stroke="#e8a445" stroke-opacity=".55"/>
+            <text x="89" y="84" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="13" font-weight="700">Capture</text>
+            <text x="89" y="108" text-anchor="middle" fill="#cbb48f" font-family="monospace" font-size="9.5">nuScenes scene-0103</text>
+            <text x="89" y="126" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">6 cameras · 32-beam LiDAR</text>
+            <text x="89" y="144" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">~20 s · Boston Seaport</text>
+            <!-- 2 geometry+colour -->
+            <rect x="184" y="56" width="150" height="118" rx="11" fill="#1c1610" stroke="rgba(255,255,255,.12)"/>
+            <text x="259" y="84" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="13" font-weight="700">Geometry + colour</text>
+            <text x="259" y="108" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">accumulate LiDAR sweeps</text>
+            <text x="259" y="126" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">project into 6 cameras</text>
+            <text x="259" y="144" text-anchor="middle" fill="#9c93ad" font-family="monospace" font-size="9">metric points → RGB</text>
+            <!-- 3 densify+clean -->
+            <rect x="354" y="56" width="150" height="118" rx="11" fill="#221a10" stroke="rgba(255,255,255,.12)"/>
+            <text x="429" y="84" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="13" font-weight="700">Densify + clean</text>
+            <text x="429" y="108" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">DepthAnything-V2 fills gaps</text>
+            <text x="429" y="126" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">SegFormer drops sky/road</text>
+            <text x="429" y="144" text-anchor="middle" fill="#9c93ad" font-family="monospace" font-size="9">+ moving cars &amp; people</text>
+            <!-- 4 gaussians+tiles -->
+            <rect x="524" y="56" width="150" height="118" rx="11" fill="#2a2014" stroke="rgba(255,255,255,.12)"/>
+            <text x="599" y="84" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="13" font-weight="700">Gaussians + tiles</text>
+            <text x="599" y="108" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">PCA → oriented splats</text>
+            <text x="599" y="126" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">50 m geo-anchored tiles</text>
+            <text x="599" y="144" text-anchor="middle" fill="#9c93ad" font-family="monospace" font-size="9">+ global background</text>
+            <!-- 5 render -->
+            <rect x="694" y="56" width="150" height="118" rx="11" fill="#0f0c08" stroke="#c8542a" stroke-opacity=".55"/>
+            <text x="769" y="84" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="13" font-weight="700">Render</text>
+            <text x="769" y="108" text-anchor="middle" fill="#cbb48f" font-family="monospace" font-size="9.5">three.js · WebGL2</text>
+            <text x="769" y="126" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">stream + sort tiles</text>
+            <text x="769" y="144" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">~60 fps in the browser</text>
+            <!-- arrows -->
+            <path d="M164 115 L184 115" stroke="#e8a445" stroke-width="1.5" fill="none" marker-end="url(#ph)"/>
+            <path d="M334 115 L354 115" stroke="#e8a445" stroke-width="1.5" fill="none" marker-end="url(#ph)"/>
+            <path d="M504 115 L524 115" stroke="#e8a445" stroke-width="1.5" fill="none" marker-end="url(#ph)"/>
+            <path d="M674 115 L694 115" stroke="#c8542a" stroke-width="1.5" fill="none" marker-end="url(#phr)"/>
+            <defs>
+              <marker id="ph" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e8a445"/></marker>
+              <marker id="phr" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c8542a"/></marker>
+            </defs>
+          </svg>
+          <figcaption>The whole path is a direct construction: sensors in on the left, a streamable splat bundle out on the right, no gradient descent in between.</figcaption>
+        </figure>
+
+        <h3>LiDAR for geometry, cameras for colour</h3>
+
+        <p>The base of every reconstruction is the oldest trick in the book: put the geometry where the LiDAR says it is, and paint it with the cameras. The builder accumulates the LiDAR sweeps across the whole drive into one dense point cloud in a common east-north-up world frame, voxel-dedupes it, and colours each surviving point by projecting it back into whichever of the six cameras actually saw it. Metric structure from the laser, colour from the images.</p>
+
+        <p>The catch is that a 32-beam LiDAR is <em>sparse</em>. Past about 30&nbsp;metres the beams fan out to a metre apart, and any surface roughly parallel to the beams - building façades, most usefully - barely gets hit at all. The raw cloud is full of holes exactly where you most want detail.</p>
+
+        <h3>Filling the gaps with a depth network</h3>
+
+        <p>So I lean on a monocular depth model to fill in everything between the laser returns. For each camera frame, <strong>Depth-Anything-V2 (Small)</strong> predicts a dense relative depth map from the single RGB image. Relative depth on its own has no scale, so I fit a two-parameter scale-and-shift by least squares against the LiDAR points that <em>do</em> land in that frame - the laser stays the metric anchor, and the network only gets to fill the in-between. Then every kept pixel is unprojected into the cloud, and the façades and far range the LiDAR never resolved come in sharp.</p>
+
+        <h3>Deleting what shouldn't be there</h3>
+
+        <p>Unproject <em>every</em> pixel, though, and you get a mess: the sky becomes a giant brown smear parked at max range, the road turns into a noisy carpet fighting the ground plane, and every moving car and pedestrian bakes into the static scene as a ghost. The fix is to know what each pixel <em>is</em> before you trust it.</p>
+
+        <p><strong>SegFormer-B0</strong>, fine-tuned on Cityscapes - 3.7&nbsp;million parameters, about a second per frame on my M4 - labels every pixel with one of nineteen driving classes. The densifier then keeps only the static structure that isn't represented some other way: building, wall, fence, vegetation, pole, traffic signs and lights. Sky is drawn procedurally, road and sidewalk are handled by a ground plane, and anything that moves is simply dropped. Those kept building pixels are exactly what later becomes the façade tiles.</p>
+
+        <h3>Oriented Gaussians, not balls</h3>
+
+        <p>A splat is an oriented 3D Gaussian - a little ellipsoid with a position, a colour, an opacity and a covariance. The lazy way to make one per point is to drop an isotropic ball, and a cloud of balls looks like styrofoam. Instead the builder buckets the points spatially and runs a small PCA in each bucket; the dominant axes give a flattened, surface-aligned Gaussian that lies <em>on</em> the wall or the road instead of floating as a sphere. A planarity gate throws out buckets too noisy to trust an orientation. The payoff is that flat things read as surfaces rather than confetti.</p>
+
+        <h3>Tiles that know where they are</h3>
+
+        <p>The finished cloud is sliced into 50-metre tiles with a 5-metre feathered overlap so seams don't pop as you cross them, plus one global background cloud for everything in the distance. The important detail is that <strong>every tile stores the GPS coordinate of its own centre.</strong> The viewer never loads a fixed scene - each frame, it computes the east/north offset between the camera's live position and each tile's coordinate, places the tile exactly there, and flies the camera along the recorded trajectory baked into the bundle's manifest:</p>
+
+        <pre class="language-json"><code class="language-json">"tile_+0001_+0002": {
+  "ply_path":    "tiles/tile_+0001_+0002.ply",
+  "center_lat":  42.35144662,
+  "center_lon":  -71.05086228,
+  "n_gaussians": 400000
+}</code></pre>
+
+        <p>Drop the map underlay and you're left with pure reconstruction - every pixel below placed by where the sensors said it was:</p>
+
+        <figure class="article-figure">
+          <img src="street-topdown.jpg" alt="A clean top-down view of a street rendered as Gaussian splats: asphalt with a yellow centre line and crosswalk, parked cars rendered as colourful splat clusters, and curbside vegetation." />
+          <figcaption>Splats only. The centre line, the crosswalk, the parked cars, the curb vegetation - every one is reconstructed from the drive's sensors. The dark regions are simply where nothing was ever observed.</figcaption>
+        </figure>
+
+        <h3>Rendering it in a browser</h3>
+
+        <p>The viewer is deliberately boring tech: a React + three.js app, with <a href="https://github.com/mkkellogg/GaussianSplats3D" target="_blank" rel="noopener">@mkkellogg/gaussian-splats-3d</a> doing the actual back-to-front sort and rasterization on WebGL2. It streams tiles in as the camera approaches, sorts a few million Gaussians per frame, and holds ~60&nbsp;fps on a laptop - no native engine, no Metal or Vulkan, just the browser.</p>
+
+        <div class="stat-grid">
+          <div class="stat"><b>4.77M</b><span>foreground splats · 30 tiles</span></div>
+          <div class="stat"><b>16 / 14</b><span>ground tiles / façade tiles</span></div>
+          <div class="stat"><b>18.9M</b><span>background Gaussians</span></div>
+          <div class="stat"><b>~60 fps</b><span>in WebGL2, on a laptop</span></div>
+        </div>
+
+        <p>The view I actually work in has every instrument turned on: the splats over a real street-map plane, a speed-and-heading HUD, and the live camera previews. The map isn't decoration - it's the correctness check. If the splats and the road don't line up, the geo-anchoring is wrong.</p>
+
+        <figure class="article-figure">
+          <img src="instrument-view.jpg" alt="The full reconstruction viewer with instrumentation: the splat street over a street-map plane, a speed and heading HUD, a scene selector, and three live camera preview tiles." />
+          <figcaption>The debug view: the splat street registered against an actual map, with the HUD and camera previews I use to check alignment frame by frame.</figcaption>
+        </figure>
+
+        <h3>What works, and what's still rough</h3>
+
+        <p>Honestly? The parts I'm happy with are the geometry and the registration. The street is legible, the tiles land where they belong on the map, and the whole thing streams smoothly in a browser with no per-scene training at all - build it in seconds, fly through it immediately.</p>
+
+        <p>And the parts that are clearly unfinished: this bundle is stored at spherical-harmonic degree&nbsp;0, so the colour is flat - there's no view-dependent shading, and surfaces go a little dull as you orbit them. The absolute geo-origin is only trustworthy to about a hundred metres; what actually carries the scene is the <em>relative</em> east/north placement between tiles, which is exact. Dark patches are just places no sensor ever looked. And because this is a <em>constructed</em> cloud rather than an optimized one, it can never be sharper than the depth prior and the camera projection allow.</p>
+
+        <p>That last point is the whole roadmap. The natural next step is to stop constructing and start optimizing: a proper per-scene 3D Gaussian Splatting trainer that runs gradient descent against the real frames, plus the small ONNX refiner I've been training to clean up novel views. That's where "legible" turns into "photoreal." This analytic version is the fast floor the trained path has to beat - and it's already a place you can fly through.</p>
+
+        <p style="margin-top:2rem; color:var(--text-dim); font-size:.82rem;">The reconstruction shown is <code>scene-0103-lidar-dav2</code>: nuScenes camera&nbsp;+&nbsp;densified LiDAR, gap-filled with a Depth-Anything-V2 prior, masked with a SegFormer/Cityscapes model, fit to ~4.77M oriented Gaussians across 50&nbsp;m tiles over an 18.9M-point background, and rendered with three.js + @mkkellogg/gaussian-splats-3d. Built analytically in seconds - no per-scene optimization.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper footer-inner">
+      <span class="footer-copy">© <script>document.write(new Date().getFullYear())</script> Brennen Green</span>
+      <div class="footer-links">
+        <a href="https://github.com/brennengreen" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:brennengreen@outlook.com">Email</a>
+        <a href="../../../index.html">Home</a>
+      </div>
+      <span class="footer-copy">Custom static build · No trackers</span>
+    </div>
+  </footer>
+  <script src="../../assets/prism.js"></script>
+</body>
+</html>

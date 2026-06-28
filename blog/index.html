@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Blog — Brennen Green</title>
+  <title>Blog - Brennen Green</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/stylesheet.css" />
   <link rel="stylesheet" href="../css/archive.css" />
+  <link rel="stylesheet" href="../css/series.css" />
 </head>
 <body>
   <header class="site-header">
@@ -22,7 +23,6 @@
       <nav class="links">
         <a href="../index.html#experience">Experience</a>
         <a href="../index.html#credits">Credits</a>
-        <a href="../index.html#systems">Systems</a>
         <a href="../archive/index.html">Archive</a>
         <a href="./index.html">Blog</a>
         <a href="../index.html#portfolio">Portfolio</a>
@@ -46,9 +46,49 @@
       <div class="wrapper">
         <div class="archive-grid">
 
+          <div class="series-card" data-part="1" hidden>
+            <div>
+              <div class="ribbon">
+                <svg viewBox="0 0 30 18" aria-hidden="true"><path d="M3 5 C 9 17, 21 17, 27 5"/></svg>
+                <b>New series · The Programmers Who Make Us Smile</b>
+              </div>
+              <h3>Part 1 - How a movie gets made on a GPU</h3>
+              <p>The opener of a three-part series on the invisible engineers behind the entertainment that delights us. The movies: why a single animated frame is a physics problem you brute-force, how Houdini is a parallel-compute engine for make-believe and Nuke a GPU image pipeline, the open-source stack film quietly gave the rest of computing - and where that exact skillset travels once you take the word "movie" off it.</p>
+              <a class="start" href="posts/8/">Start the series →</a>
+              <div class="parts">
+                <span class="on">01 · The Movies</span>
+                <span>02 · Games</span>
+                <span>03 · Rides &amp; Animatronics</span>
+              </div>
+            </div>
+            <div class="card-art">
+              <svg viewBox="0 0 230 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <g>
+                  <circle class="sx-sample" cx="60"  cy="44" r="2.4" style="animation-delay:.0s"/>
+                  <circle class="sx-sample sx-sample--pop" cx="92" cy="34" r="2.6" style="animation-delay:.7s"/>
+                  <circle class="sx-sample" cx="124" cy="48" r="2.2" style="animation-delay:1.3s"/>
+                  <circle class="sx-sample" cx="150" cy="36" r="2.6" style="animation-delay:.4s"/>
+                  <circle class="sx-sample sx-sample--pop" cx="176" cy="52" r="2.3" style="animation-delay:1.8s"/>
+                  <circle class="sx-sample" cx="112" cy="66" r="2" style="animation-delay:2.3s"/>
+                </g>
+                <path class="sx-smile sx-smile--ghost" d="M44 92 C84 134, 150 134, 190 92" stroke-width="3"/>
+                <path class="sx-smile sx-smile--draw" d="M44 78 C84 124, 150 124, 190 78" stroke-width="6" pathLength="100"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <h3>Iris: reconstructing a street as 3D Gaussian splats</h3>
+            <p>One twenty-second nuScenes drive - six cameras and a 32-beam LiDAR through Boston - rebuilt into a navigable 3D world. LiDAR for geometry, cameras for colour, a Depth-Anything-V2 prior to fill the gaps, SegFormer masks to delete the sky and the traffic, PCA-oriented Gaussians sliced into geo-anchored tiles, and a three.js/WebGL2 viewer you can fly through at 60&nbsp;fps. Plus an honest account of what's still rough.</p>
+            <div class="archive-tech">
+              <span>Gaussian Splatting</span><span>3D Reconstruction</span><span>LiDAR</span><span>Computer Vision</span>
+            </div>
+            <a href="posts/7/">Read article →</a>
+          </div>
+
           <div class="archive-card">
             <h3>neural deferred shading: shading Sponza at 64&nbsp;FPS with an 11k-parameter network, in Metal</h3>
-            <p>A from-scratch Apple Metal path tracer becomes a data factory for neural rendering: cast one primary ray per pixel, keep the cheap G-buffer, and let a tiny MLP — compiled into a Metal compute kernel — synthesize the fully globally-illuminated frame at frame rate. Plus a screen-space U-Net, temporal reprojection, and a directly-measured "one ray ≈ 68 samples" amplifier.</p>
+            <p>A from-scratch Apple Metal path tracer becomes a data factory for neural rendering: cast one primary ray per pixel, keep the cheap G-buffer, and let a tiny MLP - compiled into a Metal compute kernel - synthesize the fully globally-illuminated frame at frame rate. Plus a screen-space U-Net, temporal reprojection, and a directly-measured "one ray ≈ 68 samples" amplifier.</p>
             <div class="archive-tech">
               <span>Apple Metal</span><span>Neural Rendering</span><span>Path Tracing</span><span>Swift</span>
             </div>
@@ -57,7 +97,7 @@
 
           <div class="archive-card">
             <h3>aircoder: a local coding agent that externalizes its memory to disk</h3>
-            <p>How a nine-crate Rust agent drives a small local LLM through hour-long coding tasks by treating the model as stateless and a content-addressed SQLite ledger as its working memory — bounded context, crash-resumable, fully auditable.</p>
+            <p>How a nine-crate Rust agent drives a small local LLM through hour-long coding tasks by treating the model as stateless and a content-addressed SQLite ledger as its working memory - bounded context, crash-resumable, fully auditable.</p>
             <div class="archive-tech">
               <span>Rust</span><span>Local LLM</span><span>Agents</span><span>Systems</span>
             </div>
@@ -66,7 +106,7 @@
 
           <div class="archive-card">
             <h3>metalstream: running a 31B model on a 16&nbsp;GB laptop</h3>
-            <p>A drop-in MLX add-on that streams model weights off NVMe so an 18.4&nbsp;GB model produces tokens on a 16&nbsp;GB M4 Air — plus the phase-by-phase investigation, with real benchmarks, that proved every step before taking it.</p>
+            <p>A drop-in MLX add-on that streams model weights off NVMe so an 18.4&nbsp;GB model produces tokens on a 16&nbsp;GB M4 Air - plus the phase-by-phase investigation, with real benchmarks, that proved every step before taking it.</p>
             <div class="archive-tech">
               <span>Python</span><span>MLX</span><span>Apple Metal</span><span>LLM Inference</span>
             </div>
@@ -74,30 +114,12 @@
           </div>
 
           <div class="archive-card">
-            <h3>edgecortex: an intelligence proxy for small local models</h3>
-            <p>A transparent, OpenAI-compatible reverse proxy that sits between any client and any local model server and makes small models reliably agentic — quirk repair, grammar enforcement, compaction, and structured retry. Fix the model, not the client.</p>
-            <div class="archive-tech">
-              <span>Rust</span><span>OpenAI API</span><span>Middleware</span><span>GBNF</span>
-            </div>
-            <a href="posts/5/">Read article →</a>
-          </div>
-
-          <div class="archive-card">
             <h3>Mandelbrot Fractals in OpenGL</h3>
-            <p>Rendering Mandelbrot fractals using the OpenGL Core Profile — covering the math, the shader implementation, and the GPU-accelerated results.</p>
+            <p>Rendering Mandelbrot fractals using the OpenGL Core Profile - covering the math, the shader implementation, and the GPU-accelerated results.</p>
             <div class="archive-tech">
               <span>OpenGL</span><span>C++</span><span>GLSL</span><span>Math</span>
             </div>
             <a href="posts/1/">Read article →</a>
-          </div>
-
-          <div class="archive-card">
-            <h3>Software Internship Interview Guide</h3>
-            <p>A practical review of each stage of the software internship interview process.</p>
-            <div class="archive-tech">
-              <span>Interviews</span><span>Career</span>
-            </div>
-            <a href="posts/2/">Read article →</a>
           </div>
 
         </div>

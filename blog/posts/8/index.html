@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Programmers Who Make Us Smile, Part 1: How a Movie Gets Made on a GPU - Brennen Green</title>
+  <meta name="description" content="Part one of a three-part series on the invisible engineers behind the entertainment that delights us. The movies: why a single animated frame is a physics problem you brute-force, how Houdini is a parallel-compute engine for make-believe and Nuke a GPU image pipeline, the open-source stack film gave the rest of computing, and where that exact skillset travels once you take the word 'movie' off it." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../../css/stylesheet.css" />
+  <link rel="stylesheet" href="../../../css/archive.css" />
+  <link rel="stylesheet" href="../../../css/series.css" />
+</head>
+<body class="series-post" data-part="1">
+  <header class="site-header">
+    <div class="wrapper nav">
+      <div style="display:flex; align-items:center; gap:.85rem;">
+        <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(145deg,#2a1f12,#110a06);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);">
+          <img src="../../../media/prom.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:grayscale(60%) contrast(1.15);"/>
+        </div>
+        <a href="../../../index.html" style="text-decoration:none;"><strong style="font-size:1rem;letter-spacing:.5px;font-weight:600;color:#fff;">Brennen&nbsp;Green</strong></a>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <nav class="links">
+        <a href="../../../index.html#experience">Experience</a>
+        <a href="../../../index.html#credits">Credits</a>
+        <a href="../../../archive/index.html">Archive</a>
+        <a href="../../../blog/index.html">Blog</a>
+        <a href="../../../index.html#portfolio">Portfolio</a>
+        <a href="../../../index.html#contact" class="cta">Connect</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ====================== BRANDED SERIES MASTHEAD ====================== -->
+    <header class="series-hero" data-part="1">
+      <svg class="series-hero-art" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <pattern id="sxFilm" width="60" height="40" patternUnits="userSpaceOnUse">
+            <rect x="21" y="12" width="18" height="16" rx="3" fill="currentColor"/>
+          </pattern>
+        </defs>
+        <!-- ghost part numeral -->
+        <text class="sx-numeral" x="1010" y="318" font-size="300" text-anchor="middle">01</text>
+        <!-- film-strip edge motif (part 1) -->
+        <g class="sx-edge">
+          <rect x="0" y="0"   width="1200" height="40" fill="url(#sxFilm)"/>
+          <rect x="0" y="340" width="1200" height="40" fill="url(#sxFilm)"/>
+        </g>
+        <!-- Monte-Carlo samples converging onto the smile -->
+        <g>
+          <circle class="sx-sample" cx="372" cy="96"  r="2.6" style="animation-delay:.0s"/>
+          <circle class="sx-sample sx-sample--pop" cx="430" cy="74" r="3"  style="animation-delay:.5s"/>
+          <circle class="sx-sample" cx="486" cy="120" r="2.2" style="animation-delay:1.1s"/>
+          <circle class="sx-sample" cx="548" cy="86"  r="3.1" style="animation-delay:.3s"/>
+          <circle class="sx-sample sx-sample--pop" cx="600" cy="64" r="2.6" style="animation-delay:1.6s"/>
+          <circle class="sx-sample" cx="654" cy="104" r="2.4" style="animation-delay:.8s"/>
+          <circle class="sx-sample" cx="712" cy="80"  r="3"  style="animation-delay:2.0s"/>
+          <circle class="sx-sample sx-sample--pop" cx="770" cy="118" r="2.3" style="animation-delay:1.3s"/>
+          <circle class="sx-sample" cx="826" cy="92"  r="2.7" style="animation-delay:.6s"/>
+          <circle class="sx-sample" cx="404" cy="150" r="2.1" style="animation-delay:2.4s"/>
+          <circle class="sx-sample" cx="512" cy="174" r="2.5" style="animation-delay:1.9s"/>
+          <circle class="sx-sample" cx="690" cy="168" r="2.2" style="animation-delay:2.7s"/>
+          <circle class="sx-sample sx-sample--pop" cx="600" cy="150" r="2.4" style="animation-delay:.2s"/>
+          <circle class="sx-sample" cx="864" cy="146" r="2" style="animation-delay:3.0s"/>
+          <circle class="sx-sample" cx="340" cy="124" r="2" style="animation-delay:1.5s"/>
+        </g>
+        <!-- the smile: a faint depth arc + the bright drawn-in light arc -->
+        <path class="sx-smile sx-smile--ghost" d="M360 196 C500 300 700 300 840 196" stroke-width="3"/>
+        <path id="sxSmilePath" class="sx-smile sx-smile--draw" d="M360 168 C500 286 700 286 840 168" stroke-width="7" pathLength="100"/>
+        <!-- specular highlight travelling along the smile -->
+        <circle class="sx-spark" r="4.6">
+          <animateMotion dur="4.8s" repeatCount="indefinite" rotate="auto" keyPoints="0;1" keyTimes="0;1" calcMode="linear">
+            <mpath href="#sxSmilePath"/>
+          </animateMotion>
+        </circle>
+      </svg>
+
+      <div class="series-hero-inner">
+        <a href="../../index.html" class="back-link">Back to blog</a>
+
+        <div class="series-kicker">
+          <svg class="smile-mark" viewBox="0 0 30 18" aria-hidden="true"><path d="M3 5 C 9 17, 21 17, 27 5"/></svg>
+          <b>The Programmers Who Make Us Smile</b>
+          <span class="dot"></span>
+          <em>A series in three parts</em>
+        </div>
+
+        <div class="series-badge">
+          <span class="num">01</span>
+          <span class="lbl"><span>Part one of three</span><strong>The Movies</strong></span>
+        </div>
+
+        <h1>How a movie gets made on a GPU</h1>
+        <p class="series-sub">There is a whole industry of programmers whose entire job is to make you feel something in a dark room - and almost nobody outside it knows the job exists. This series is about them: the people who write the code behind the things that delight us. We start where I spend my mornings - feature animation and visual effects - and the graphics programming that turns out to be the backbone of all of it.</p>
+
+        <div class="article-meta">
+          <span><strong>Published</strong> June 26, 2026</span>
+          <span><strong>By</strong> Brennen Green</span>
+          <span><strong>Read</strong> ~12 min</span>
+          <span><strong>Series</strong> Part 1 of 3</span>
+        </div>
+        <div class="article-tags">
+          <span>VFX</span><span>Animation</span><span>Houdini</span><span>Nuke</span><span>Path Tracing</span><span>GPU</span><span>Color Science</span><span>Rendering</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="article-wrapper">
+      <div class="article-body">
+
+        <p class="lede">The last time a movie made you gasp - a wave the size of a building, a dragon's breath, a pile of fur that moved exactly like a real dog - you were, whether you knew it or not, admiring the output of a computer program. Probably several thousand of them, running across a warehouse of machines, each one quietly solving an equation about how light bounces. Somebody wrote those programs. A lot of somebodies. I'm one of them, and this series is about us.</p>
+
+        <div class="callout">
+          <p>Across three parts I want to introduce <strong>the programmers who make us smile</strong> - the largely invisible engineers behind the entertainment that delights people. <strong>Part&nbsp;1, this one, is the movies.</strong> Part&nbsp;2 is games, where the same math has to finish sixty times a second instead of overnight. Part&nbsp;3 is the physical world - theme-park ride engineers and animatronics, where the render target is steel, water, and a four-year-old's face.</p>
+        </div>
+
+        <h3>The job nobody tells you exists</h3>
+
+        <p>My title at DreamWorks is "lighting tools engineer." Before that it was "Lighting TD." Outside the industry those words mean approximately nothing, which is part of why I'm writing this. A film studio looks, from the inside, less like an art house and more like a software company that happens to wear a creative coat. There are build systems and code reviews and on-call rotations. There are deadlines measured in render hours.</p>
+
+        <p>I don't paint frames. I write the software the artists paint <em>with</em>: the lighting tools, pieces of the rendering pipeline, the plumbing that moves a shot from one department to the next without losing a pixel of fidelity. When the credits scroll at the end of an animated feature and you watch hundreds of names go by - "Technical Director," "Pipeline," "R&amp;D," "Tools," "Software" - a startling fraction of those people are, functionally, software engineers. The movie is a deliverable. The studio is a code base with a release date and a soundtrack.</p>
+
+        <p class="sx-quote">So here's the thesis of the whole series, said once and plainly: <b>the magic is made of code, and the code is made of math you may already know.</b></p>
+
+        <p>Let me show you, working from the inside of a single frame outward.</p>
+
+        <div class="sx-divider"><svg viewBox="0 0 30 18" aria-hidden="true"><path d="M3 5 C 9 17, 21 17, 27 5"/></svg></div>
+
+        <h3>A frame is a physics problem you brute-force</h3>
+
+        <p>A single frame of a modern animated feature is not "drawn." It is <em>solved.</em> The renderer fires millions of virtual light rays out into the scene, lets them bounce off surfaces and refract through glass and scatter inside skin and smoke, and averages the results to estimate how much light lands on each pixel. This is Monte Carlo path tracing, and underneath it is the rendering equation - an integral James Kajiya wrote down in 1986 that nobody can solve in closed form, so we approximate it by throwing random samples at it until the noise settles.</p>
+
+        <p>The honest, slightly absurd consequence: one frame can take hours - sometimes the better part of a day - on a many-core machine. A ninety-minute film runs at twenty-four frames a second, which is roughly <strong>130,000&nbsp;frames.</strong> Multiply that out and you understand instantly why studios run render farms the size of small data centers, with tens of thousands of cores chewing through shots overnight, every night, for years.</p>
+
+        <p>If that sounds less like art class and more like scientific computing, that's because it is the same machinery. The exact Monte Carlo integration that prices financial derivatives and simulates neutron transport is what makes a panda's fur look soft. We just point it at something more fun.</p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 880 210" role="img" aria-label="The journey of a single film frame, left to right, in five stages. Layout and animation produce the staged shot. Houdini FX adds fluids, fire, and destruction by solving Navier-Stokes and other simulations on a render farm. Lighting and rendering compute the image with Monte Carlo path tracing in a renderer such as MoonRay or RenderMan. A neural network de-grains the result using Open Image Denoise. Finally the layers are composited and color-managed in Nuke with OpenColorIO and sent to the screen.">
+            <text x="440" y="26" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="14" font-weight="700">One frame, end to end - every box is a numerical method in a trench coat</text>
+            <rect x="14" y="56" width="150" height="118" rx="11" fill="#17120c" stroke="#e8a445" stroke-opacity=".55"/>
+            <text x="89" y="84" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="13" font-weight="700">Layout + Anim</text>
+            <text x="89" y="108" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">the staged shot</text>
+            <text x="89" y="126" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">cameras · motion</text>
+            <text x="89" y="144" text-anchor="middle" fill="#cbb48f" font-family="monospace" font-size="9">what goes where</text>
+            <rect x="184" y="56" width="150" height="118" rx="11" fill="#1c1610" stroke="rgba(255,255,255,.12)"/>
+            <text x="259" y="84" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="13" font-weight="700">Houdini FX</text>
+            <text x="259" y="108" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">fluids · fire</text>
+            <text x="259" y="126" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">destruction · crowds</text>
+            <text x="259" y="144" text-anchor="middle" fill="#9c93ad" font-family="monospace" font-size="9">Navier-Stokes</text>
+            <rect x="354" y="56" width="150" height="118" rx="11" fill="#221a10" stroke="rgba(255,255,255,.12)"/>
+            <text x="429" y="84" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="13" font-weight="700">Light + Render</text>
+            <text x="429" y="108" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">materials · lights</text>
+            <text x="429" y="126" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">Monte Carlo rays</text>
+            <text x="429" y="144" text-anchor="middle" fill="#9c93ad" font-family="monospace" font-size="9">MoonRay · RenderMan</text>
+            <rect x="524" y="56" width="150" height="118" rx="11" fill="#2a2014" stroke="rgba(255,255,255,.12)"/>
+            <text x="599" y="84" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="13" font-weight="700">Denoise</text>
+            <text x="599" y="108" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">a neural net</text>
+            <text x="599" y="126" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">de-grains the frame</text>
+            <text x="599" y="144" text-anchor="middle" fill="#9c93ad" font-family="monospace" font-size="9">Open Image Denoise</text>
+            <rect x="694" y="56" width="150" height="118" rx="11" fill="#0f0c08" stroke="#c8542a" stroke-opacity=".55"/>
+            <text x="769" y="84" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="13" font-weight="700">Comp + Color</text>
+            <text x="769" y="108" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">Nuke · layers</text>
+            <text x="769" y="126" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">image kernels</text>
+            <text x="769" y="144" text-anchor="middle" fill="#cbb48f" font-family="monospace" font-size="9">OCIO → screen</text>
+            <path d="M164 115 L184 115" stroke="#e8a445" stroke-width="1.5" fill="none" marker-end="url(#fp)"/>
+            <path d="M334 115 L354 115" stroke="#e8a445" stroke-width="1.5" fill="none" marker-end="url(#fp)"/>
+            <path d="M504 115 L524 115" stroke="#e8a445" stroke-width="1.5" fill="none" marker-end="url(#fp)"/>
+            <path d="M674 115 L694 115" stroke="#c8542a" stroke-width="1.5" fill="none" marker-end="url(#fpr)"/>
+            <defs>
+              <marker id="fp" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e8a445"/></marker>
+              <marker id="fpr" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c8542a"/></marker>
+            </defs>
+          </svg>
+          <figcaption>The path of a single frame. Almost every box is a numerical method wearing a friendlier name: a simulation, a Monte Carlo integral, a trained denoiser, a pile of image kernels - then color-managed and thrown onto a screen.</figcaption>
+        </figure>
+
+        <h3>Houdini: a physics engine for make-believe</h3>
+
+        <p>If a shot has fire, water, smoke, sand, a collapsing skyscraper, or a crowd of ten thousand, the odds are overwhelming that somebody built it in <strong>Houdini.</strong> It is the FX department's whole world, and one of the most quietly hardcore pieces of software in entertainment.</p>
+
+        <p>Houdini is <em>procedural</em>: you don't model the finished explosion, you write the recipe that generates it, so you can change one number and regenerate the whole thing. Under its friendly node graph lives VEX - a small, C-like language that executes in parallel over millions of points at once. If you've ever written a CUDA kernel or a compute shader, you already understand the entire mental model: one tiny program, run simultaneously across an enormous array of data.</p>
+
+        <pre class="language-clike"><code class="language-clike">// VEX - this body runs once per point, across millions of points, in parallel.
+// Push each point along its normal by a little animated noise.
+@P += normalize(@N) * noise(@P * 2.1 + @Time) * 0.15;</code></pre>
+
+        <p>That <code>@P</code> is a point's position and <code>@N</code> its normal; the line runs on every point in a simulation at the same time. Change the syntax and you have a GPU kernel - because that is essentially what it is. The artist sitting in Houdini reaching for VEX is doing data-parallel programming; they just get to watch the unit tests come out as ocean spray.</p>
+
+        <p>And the simulations themselves are textbook physics. Houdini's FLIP fluids solve the Navier-Stokes equations. Its Pyro solver is combustion and buoyancy on a voxel grid. Vellum is constraint-based mass-spring dynamics for cloth, hair, and squishy flesh. Rigid-body destruction is contact and fracture mechanics. Crowds are agent-based simulation with behavior trees. The smoke and clouds are stored in <strong>OpenVDB</strong>, a sparse volumetric data structure that DreamWorks built in-house and then handed to the entire world for free - a habit worth pausing on in a moment.</p>
+
+        <p>The takeaway: a Houdini FX artist - an "FX&nbsp;TD" - is, stripped of the job title, a numerical-methods and parallel-computing engineer who happens to render their solver's output as a tidal wave.</p>
+
+        <h3>Nuke: the compositor is a GPU image pipeline</h3>
+
+        <p>Here's a thing that surprises people: almost nothing you see in a finished film is a single render. A final frame is dozens of separate layers - the character, the background plate, the smoke pass, the reflections, atmospheric haze, lens dirt, a dozen subtler things - stacked, balanced, and blended until they read as one photograph that never happened. That stacking is <em>compositing</em>, and it mostly lives in <strong>Nuke.</strong></p>
+
+        <p>Nuke's interface is, again, a node graph, and each node is an image operation: a blur, a color transform, a merge, a warp, a keyer. If that sounds exactly like a computation graph out of deep learning, that's not a coincidence - it's the same idea. A directed graph of array operations, each one a kernel that runs over every pixel of the image. Compositors are building and debugging dataflow programs all day; the nodes just happen to have thumbnails.</p>
+
+        <p>It is so literally a kernel pipeline that Nuke ships <strong>BlinkScript</strong>, a node in which you write GPU kernels - real parallel code - that compile and run across the whole image on the graphics card. A compositor dropping into BlinkScript to invent a custom operation is doing precisely what a graphics programmer does, with a timeline scrubber bolted on.</p>
+
+        <p>The images flowing between those nodes are <strong>OpenEXR</strong>: high-dynamic-range, stored in linear light, carrying arbitrary extra channels - depth, surface normals, object IDs, motion vectors - alongside the color. EXR was built at Industrial Light &amp; Magic and open-sourced, and today it is also how a lot of machine-learning researchers store their HDR datasets. Underneath the artistry, compositing is signal processing and color science: convolution, resampling, transfer functions, alpha algebra, premultiplication. The taste is real. So is the DSP.</p>
+
+        <h3>The hidden stack the whole industry shares</h3>
+
+        <p>When I joined the industry, the thing that genuinely delighted me was discovering how much of film's software backbone is open source - and how much of it was born inside a single studio and then given away to everyone, competitors included.</p>
+
+        <div class="stat-grid">
+          <div class="stat"><b>OpenEXR</b><span>ILM → HDR, everywhere</span></div>
+          <div class="stat"><b>OpenVDB</b><span>DreamWorks → volumes, everywhere</span></div>
+          <div class="stat"><b>OCIO</b><span>Sony Imageworks → color, industry-wide</span></div>
+          <div class="stat"><b>USD</b><span>Pixar → 3D's interchange format</span></div>
+        </div>
+
+        <p>OpenColorIO (OCIO) is the color-management system that keeps a shot looking identical from the artist's monitor to the director's review room to the cinema projector; Sony Pictures Imageworks wrote it, and the same discipline of reproducible color now shows up in game engines and the imaging pipelines descended from it. <strong>USD</strong> - Universal Scene Description - is Pixar's format for describing an entire 3D scene, and it is quietly becoming the interchange format for <em>all</em> of 3D: it is the foundation of NVIDIA's Omniverse and is creeping into robotics, simulation, and CAD. Add OpenSubdiv (Pixar), Alembic (ILM and Sony), MaterialX (Lucasfilm), and Ptex (Disney) and you start to see the shape of it: a generation of hard graphics problems, solved once on a movie, then donated to the commons.</p>
+
+        <p>And then there's denoising. A modern path tracer renders a deliberately <em>noisy</em> image quickly and then runs a trained neural network over it to remove the grain - that's the job of tools like Intel's <strong>Open Image Denoise.</strong> I liked that idea enough that I keep my own <a href="../6/">experiments around neural denoising and rendering</a>. The day it clicks that a film "denoiser" and an AI image "generator" are close cousins from the same family of math, the wall between VFX and machine learning simply stops existing.</p>
+
+        <h3>Where the skill actually goes - the real point of the series</h3>
+
+        <p>Take the word "movie" off any of these jobs and look at what's left, and you find a startlingly portable engineer. A Houdini FX TD is a parallel-compute and numerical-methods person. A Nuke compositor is a signal-processing and color-science person. A lighting and rendering TD is a Monte Carlo and large-systems person.</p>
+
+        <p class="sx-quote">None of those skills care, even slightly, that the output happened to be <b>a film.</b></p>
+
+        <figure class="article-figure">
+          <svg viewBox="0 0 880 300" role="img" aria-label="A diagram showing how the underlying film-graphics skills travel to other industries. On the left, a box labeled 'the skill underneath' lists parallel compute, numerical methods, color and signal processing, and huge-data systems. Arrows fan out to six destinations: games, where the same equations must finish in about 16 milliseconds; real-time and AR or VR, with film looks rendered live; machine learning and generative AI, where denoisers became diffusion models; autonomous vehicles and robotics, described as rendering run backwards; scientific and medical visualization, where a smoke simulation is essentially a CT scan; and, faded as a teaser, rides and animatronics, covered in parts 2 and 3 of this series.">
+            <text x="440" y="26" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="14" font-weight="700">Take "movie" off the job and the engineer is wildly portable</text>
+            <rect x="26" y="96" width="196" height="128" rx="12" fill="#17120c" stroke="#e8a445" stroke-opacity=".55"/>
+            <text x="124" y="124" text-anchor="middle" fill="#ece6da" font-family="Lora, serif" font-size="12.5" font-weight="700">the skill underneath</text>
+            <text x="124" y="152" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10.5">parallel compute</text>
+            <text x="124" y="172" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10.5">numerical methods</text>
+            <text x="124" y="192" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10.5">color &amp; signal</text>
+            <text x="124" y="212" text-anchor="middle" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="10.5">huge-data systems</text>
+            <g font-family="Lora, serif">
+              <rect x="360" y="30" width="496" height="34" rx="8" fill="#161310" stroke="rgba(255,255,255,.10)"/>
+              <text x="376" y="52" fill="#ece6da" font-size="12" font-weight="700">Games</text>
+              <text x="842" y="52" text-anchor="end" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">the same equations, in ~16 ms</text>
+              <rect x="360" y="74" width="496" height="34" rx="8" fill="#161310" stroke="rgba(255,255,255,.10)"/>
+              <text x="376" y="96" fill="#ece6da" font-size="12" font-weight="700">Real-time · AR / VR</text>
+              <text x="842" y="96" text-anchor="end" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">film looks, rendered live</text>
+              <rect x="360" y="118" width="496" height="34" rx="8" fill="#161310" stroke="rgba(255,255,255,.10)"/>
+              <text x="376" y="140" fill="#ece6da" font-size="12" font-weight="700">ML &amp; generative AI</text>
+              <text x="842" y="140" text-anchor="end" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">denoisers became diffusion models</text>
+              <rect x="360" y="162" width="496" height="34" rx="8" fill="#161310" stroke="rgba(255,255,255,.10)"/>
+              <text x="376" y="184" fill="#ece6da" font-size="12" font-weight="700">Autonomous vehicles &amp; robotics</text>
+              <text x="842" y="184" text-anchor="end" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">rendering, run backwards</text>
+              <rect x="360" y="206" width="496" height="34" rx="8" fill="#161310" stroke="rgba(255,255,255,.10)"/>
+              <text x="376" y="228" fill="#ece6da" font-size="12" font-weight="700">Scientific &amp; medical viz</text>
+              <text x="842" y="228" text-anchor="end" fill="#b8b0a4" font-family="Poppins, sans-serif" font-size="9.5">a smoke sim is a CT scan</text>
+              <rect x="360" y="250" width="496" height="34" rx="8" fill="rgba(232,164,69,.05)" stroke="rgba(232,164,69,.4)" stroke-dasharray="4 4"/>
+              <text x="376" y="272" fill="#cbb48f" font-size="12" font-weight="700">Rides &amp; animatronics</text>
+              <text x="842" y="272" text-anchor="end" fill="#9c93ad" font-family="Poppins, sans-serif" font-size="9.5" font-style="italic">parts 2 &amp; 3 of this series →</text>
+            </g>
+            <path d="M226 160 L356 47"  stroke="#e8a445" stroke-opacity=".5" stroke-width="1.3" fill="none" marker-end="url(#sp)"/>
+            <path d="M226 160 L356 91"  stroke="#e8a445" stroke-opacity=".5" stroke-width="1.3" fill="none" marker-end="url(#sp)"/>
+            <path d="M226 160 L356 135" stroke="#e8a445" stroke-opacity=".5" stroke-width="1.3" fill="none" marker-end="url(#sp)"/>
+            <path d="M226 160 L356 179" stroke="#e8a445" stroke-opacity=".5" stroke-width="1.3" fill="none" marker-end="url(#sp)"/>
+            <path d="M226 160 L356 223" stroke="#e8a445" stroke-opacity=".5" stroke-width="1.3" fill="none" marker-end="url(#sp)"/>
+            <path d="M226 160 L356 267" stroke="#c8542a" stroke-opacity=".45" stroke-width="1.3" stroke-dasharray="4 4" fill="none" marker-end="url(#spr)"/>
+            <defs>
+              <marker id="sp" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e8a445"/></marker>
+              <marker id="spr" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c8542a"/></marker>
+            </defs>
+          </svg>
+          <figcaption>One source, many render targets. The skills under a film-graphics job map almost one-to-one onto half a dozen other fields - including, eventually, the physical ones this series ends on.</figcaption>
+        </figure>
+
+        <p>So they travel, and I keep bumping into the proof of it:</p>
+
+        <ul>
+          <li><strong>Games</strong> (Part&nbsp;2) - the same light transport on the same GPUs, but it has to finish in roughly sixteen milliseconds, not sixteen hours, with no second takes. I worked on a GPU compute particle system for <em>World of Warcraft</em>; that is the Houdini mindset wearing a strict frame-rate budget.</li>
+          <li><strong>Machine learning and generative AI</strong> - the render farm became the GPU training cluster, and the denoiser grew up into the diffusion model. The people who already knew how to keep thousands of GPUs fed and happy were, disproportionately, graphics people.</li>
+          <li><strong>Autonomous vehicles and robotics</strong> - reconstructing and simulating the world from sensors is the rendering problem run backwards. My own side project <a href="../7/">rebuilds a city street from a self-driving car's LiDAR and cameras as 3D Gaussian splats</a> - a film-reconstruction skillset pointed straight at a car.</li>
+          <li><strong>Scientific, medical, and data visualization</strong> - volume-rendering a smoke simulation and volume-rendering a CT scan are the same code with different inputs.</li>
+        </ul>
+
+        <div class="callout key">
+          <p>The craft is engineered to <strong>disappear.</strong> A water simulation is "good" precisely when you never think about the four-thousand-line solver that made it wet; a composite "works" when you don't count the forty layers. The better the programming, the more it reads as pure magic - which is a wonderful thing to make and a genuinely terrible thing to get credit for.</p>
+        </div>
+
+        <p>That invisibility is, I think, exactly why the job stays such a well-kept secret. So if you're a student wondering where parallel computing, numerical methods, signal processing, or color science actually get <em>used</em> - here is one honest answer: they get used to make a room full of strangers gasp in the dark. And then they quietly go get used everywhere else, too.</p>
+
+        <h3>Next in the series</h3>
+
+        <p>That's the movies - the luxurious end of this world, where we get hours per frame and spend every one of them. Next time, the same equations and the same silicon, but with a budget of about sixteen milliseconds and absolutely no retakes: <strong>Part&nbsp;2 - Games.</strong> After that, <strong>Part&nbsp;3</strong>, where the render target stops being a screen at all - ride engineers and animatronics, and the programmers who make four-year-olds shriek with joy on purpose.</p>
+
+        <div class="series-rail">
+          <div class="sr active">
+            <b>Part 1 · Now</b>
+            <span>The Movies - Nuke, Houdini, and the graphics industry hiding inside film.</span>
+          </div>
+          <div class="sr">
+            <b>Part 2 · Soon</b>
+            <span>Games - the same math, with a sixteen-millisecond deadline and no second takes.</span>
+          </div>
+          <div class="sr">
+            <b>Part 3 · Soon</b>
+            <span>Rides &amp; Animatronics - when the render target is steel, water, and a kid's face.</span>
+          </div>
+        </div>
+
+        <p style="margin-top:1.6rem; color:var(--text-dim); font-size:.82rem;">Written from the perspective of a working lighting tools engineer. The tools named - Houdini, Nuke, OpenEXR, OpenVDB, OpenColorIO, USD, MoonRay, RenderMan, Open Image Denoise - are real, widely used, and (for the open ones) mostly born inside the studios that gave them away. The opinions, and any oversimplifications, are mine.</p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper footer-inner">
+      <span class="footer-copy">© <script>document.write(new Date().getFullYear())</script> Brennen Green</span>
+      <div class="footer-links">
+        <a href="https://github.com/brennengreen" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:brennengreen@outlook.com">Email</a>
+        <a href="../../../index.html">Home</a>
+      </div>
+      <span class="footer-copy">Custom static build · No trackers</span>
+    </div>
+  </footer>
+  <script src="../../assets/prism.js"></script>
+</body>
+</html>
