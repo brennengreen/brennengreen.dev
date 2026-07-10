@@ -287,19 +287,15 @@ code, pre {font-family:var(--mono); background:var(--panel); padding:.35rem .55r
 .xp-node::before {content:attr(data-range); position:absolute; left:0; top:.15rem; width:56px; font-size:.6rem; letter-spacing:1px; font-weight:600; text-transform:uppercase; color:var(--brand-accent); text-align:right; opacity:.85;}
 .xp-node::after {content:""; position:absolute; left:13px; top:.55rem; width:10px; height:10px; border-radius:50%; background:var(--accent-warm); box-shadow:0 0 0 4px rgba(232,164,69,.15),0 0 0 8px rgba(232,164,69,.04), 0 0 14px rgba(232,164,69,.3); animation:dotPulse 4s ease-in-out infinite;}
 @keyframes dotPulse {0%,100%{box-shadow:0 0 0 4px rgba(232,164,69,.15),0 0 0 8px rgba(232,164,69,.04),0 0 14px rgba(232,164,69,.25);}50%{box-shadow:0 0 0 5px rgba(232,164,69,.22),0 0 0 10px rgba(232,164,69,.06),0 0 20px rgba(232,164,69,.4);}}
-.xp-card {background:var(--glass-bg); backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur); border:var(--glass-border); border-radius:var(--radius-glass); padding:1.35rem 1.4rem 1.4rem; position:relative; box-shadow:var(--glass-edge), var(--glass-shadow); overflow:hidden;}
-.xp-card h3 {margin:0 0 .25rem; font-size:1rem; font-weight:600; letter-spacing:.25px;}
-.xp-role {font-size:.7rem; letter-spacing:.85px; text-transform:uppercase; font-weight:600; color:var(--brand-accent); margin-bottom:.85rem; display:flex; gap:.5rem; align-items:center;}
+.xp-card {background:var(--glass-bg); backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur); border:var(--glass-border); border-radius:var(--radius-glass); padding:1.1rem 1.35rem 1.15rem; position:relative; box-shadow:var(--glass-edge), var(--glass-shadow); overflow:hidden;}
+.xp-head {display:flex; justify-content:space-between; align-items:baseline; gap:1rem; flex-wrap:wrap; margin-bottom:.65rem;}
+.xp-card h3 {margin:0; font-size:1rem; font-weight:600; letter-spacing:.25px;}
+.xp-role {font-size:.7rem; letter-spacing:.85px; text-transform:uppercase; font-weight:600; color:var(--brand-accent); margin:0; white-space:nowrap; display:flex; gap:.5rem; align-items:center;}
 .xp-pill-row {display:flex; flex-wrap:wrap; gap:.45rem; margin:.25rem 0 1rem;}
 .pill {background:var(--glass-bg-chip); border:1px solid rgba(255,255,255,.1); font-size:.55rem; letter-spacing:.6px; padding:.45rem .6rem; border-radius:var(--radius-pill); font-weight:500; color:var(--text-dim); position:relative; overflow:hidden; box-shadow:var(--glass-edge-soft);}
 .pill[data-type="stack"] {background:rgba(232,164,69,.08); color:var(--accent-warm); border-color:rgba(232,164,69,.1);}
 .pill[data-type="theme"] {background:rgba(200,84,42,.12); color:#f0a472; border-color:rgba(200,84,42,.18);}
-.xp-narrative {display:grid; gap:.55rem; margin-bottom:1rem;}
-.xp-line {display:flex; gap:.55rem; font-size:.72rem; line-height:1.35; color:var(--text-dim);}
-.xp-line span.key {color:var(--brand-accent); font-weight:600; min-width:64px; font-size:.6rem; letter-spacing:.75px; text-transform:uppercase; display:inline-block;}
-.xp-metrics {display:grid; gap:.4rem; margin:0 0 .35rem;}
-.xp-metric {background:var(--glass-bg-chip); padding:.55rem .7rem; border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-chip-lg); font-size:.62rem; letter-spacing:.4px; display:flex; gap:.5rem; align-items:flex-start; box-shadow:var(--glass-edge-soft);}
-.xp-metric strong {color:var(--brand-accent); font-weight:600;}
+.xp-summary {font-size:.75rem; line-height:1.55; color:var(--text-dim); margin:0; max-width:80ch;}
 .xp-footer {font-size:.55rem; letter-spacing:.6px; color:var(--text-dim); opacity:.8; margin-top:.5rem;}
 /* (.xp-card:hover lives with the card micro-interactions below - single source of truth) */
 
@@ -336,8 +332,9 @@ code, pre {font-family:var(--mono); background:var(--panel); padding:.35rem .55r
 @media (max-width:560px){
   .xp-node {padding-left:50px;}
   .xp-card {padding:1.05rem 1rem 1.15rem;}
-  .xp-line {font-size:.66rem;}
-  .xp-metric {font-size:.58rem;}
+  .xp-head {flex-direction:column; gap:.25rem; align-items:flex-start; margin-bottom:.55rem;}
+  .xp-role {white-space:normal;}
+  .xp-summary {font-size:.7rem;}
 }
 
 /* --- Collapsible experience entries --- */
