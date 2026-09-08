@@ -141,9 +141,87 @@
       border-color: var(--fg);
     }
 
+    .corner-peek {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 14px;
+      height: 14px;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .corner-peek::before,
+    .corner-peek::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+
+    .corner-peek::before {
+      background: #080808;
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
+    }
+
+    .corner-peek::after {
+      background: linear-gradient(135deg, #efeff1 0%, #9b9ba0 47%, #313136 50%, #111113 54%);
+      clip-path: polygon(0 0, 100% 100%, 0 100%);
+      filter: drop-shadow(2px 2px 3px rgb(0 0 0 / 0.45));
+      z-index: 2;
+    }
+
+    .corner-eyes {
+      position: absolute;
+      top: 13px;
+      right: 6px;
+      width: 43px;
+      height: 13px;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .corner-eyes::before,
+    .corner-eyes::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      width: 15px;
+      height: 8px;
+      border-radius: 70% 30% 70% 30%;
+      background: radial-gradient(circle at 55% 50%, #090900 0 24%, #ffe45c 28% 64%, #9c7200 68%);
+      box-shadow: 0 0 5px #ffd83d, 0 0 10px rgb(255 216 61 / 0.45);
+    }
+
+    .corner-eyes::before {
+      left: 4px;
+      transform: rotate(8deg);
+    }
+
+    .corner-eyes::after {
+      right: 2px;
+      transform: rotate(-8deg) scaleX(-1);
+    }
+
+    .corner-peek:hover {
+      width: 68px;
+      height: 68px;
+    }
+
+    .corner-peek:hover .corner-eyes {
+      opacity: 1;
+    }
+
     @media (prefers-reduced-motion: no-preference) {
       .roles li {
         animation: fade-up 0.6s ease both;
+      }
+
+      .corner-peek {
+        transition: width 0.3s ease, height 0.3s ease;
+      }
+
+      .corner-eyes {
+        transition: opacity 0.16s ease 0.12s;
       }
 
       .roles li:nth-child(1) {
@@ -187,5 +265,8 @@
     <li><span class="role-title">engineering @</span> <span class="company company--intel">intel</span></li>
   </ul>
   <a class="resume-link" href="/bg_resume.pdf" target="_blank" rel="noopener">resume</a>
+  <div class="corner-peek" aria-hidden="true">
+    <span class="corner-eyes"></span>
+  </div>
 </body>
 </html>

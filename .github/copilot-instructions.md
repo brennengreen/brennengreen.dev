@@ -17,6 +17,7 @@ There is no package manifest, build step, bundler, or framework.
 
 - Keep the background dark grey/black with no imagery.
 - Company names use their brand color; role text stays neutral/dim for contrast.
+- Preserve the subtle top-right page-peel easter egg that reveals yellow eyes on hover.
 - Do not add external fonts, analytics, or runtime dependencies; use the system font stack.
 - Respect `prefers-reduced-motion`: entrance animations only run when motion is not reduced.
 - Use shared CSS custom properties for the palette and flat, hyphenated class names.
