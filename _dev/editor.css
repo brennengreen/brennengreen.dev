@@ -1,0 +1,577 @@
+/* Blog editor chrome. Only `node _dev/serve.mjs` injects this file; the live site never loads it. */
+
+.dev-ui {
+  --dev-glass: rgb(12 13 18 / 0.9);
+  --dev-edge: rgb(255 255 255 / 0.1);
+  --dev-fg: #efedf0;
+  --dev-dim: #a3a1aa;
+  --dev-faint: #75737c;
+  --dev-hover: rgb(255 255 255 / 0.075);
+  --dev-prism: linear-gradient(90deg, transparent, rgb(255 96 150 / 0.55) 18%, rgb(255 196 132 / 0.65) 34%, rgb(246 246 255 / 0.95) 50%, rgb(112 196 255 / 0.65) 66%, rgb(168 118 255 / 0.55) 82%, transparent);
+  color: var(--dev-fg);
+  font: 12.5px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dev-ui :where(button, input, select, textarea) {
+  font: inherit;
+  color: inherit;
+}
+
+.dev-dock,
+.dev-toolbar,
+.dev-panel {
+  position: fixed;
+  z-index: 100;
+  border: 1px solid var(--dev-edge);
+  border-radius: 12px;
+  background: var(--dev-glass);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.55), 0 22px 60px -18px rgb(0 0 0 / 0.85);
+}
+
+.dev-dock::before,
+.dev-toolbar::before,
+.dev-code-panel::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: var(--dev-prism);
+  pointer-events: none;
+}
+
+.dev-dock {
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+}
+
+.dev-dock[hidden] {
+  display: none;
+}
+
+.dev-badge {
+  padding: 0 8px 0 6px;
+  color: var(--dev-faint);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dev-btn,
+.dev-tool {
+  display: inline-grid;
+  place-items: center;
+  height: 28px;
+  min-width: 28px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dev-dim);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, text-shadow 0.2s ease;
+}
+
+.dev-btn:hover,
+.dev-tool:hover,
+.dev-btn:focus-visible,
+.dev-tool:focus-visible {
+  background: var(--dev-hover);
+  color: #fff;
+  outline: none;
+}
+
+.dev-tool[aria-pressed="true"] {
+  background: rgb(255 255 255 / 0.1);
+  color: #fff;
+  text-shadow: -1px 0 rgb(255 70 110 / 0.85), 1px 0 rgb(70 176 255 / 0.85), 0 0 8px rgb(206 196 255 / 0.5);
+}
+
+.dev-btn-main {
+  background: #efedf0;
+  color: #0b0c10;
+  font-weight: 600;
+}
+
+.dev-btn-main:hover,
+.dev-btn-main:focus-visible {
+  background: #fff;
+  color: #0b0c10;
+  box-shadow: -1.5px 0 0 rgb(255 70 110 / 0.8), 1.5px 0 0 rgb(70 176 255 / 0.8), 0 0 14px rgb(206 196 255 / 0.45);
+}
+
+.dev-bold {
+  font-weight: 700;
+}
+
+.dev-italic {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+}
+
+.dev-strike {
+  text-decoration: line-through;
+}
+
+.dev-input,
+.dev-select {
+  height: 30px;
+  min-width: 0;
+  padding: 0 10px;
+  border: 1px solid var(--dev-edge);
+  border-radius: 8px;
+  background: rgb(0 0 0 / 0.35);
+  outline: none;
+}
+
+.dev-input:focus,
+.dev-select:focus {
+  border-color: rgb(190 176 255 / 0.55);
+  box-shadow: 0 0 0 3px rgb(160 140 255 / 0.14);
+}
+
+.dev-input::placeholder {
+  color: var(--dev-faint);
+}
+
+.dev-select {
+  padding-right: 6px;
+  cursor: pointer;
+}
+
+.dev-textarea {
+  height: auto;
+  padding: 7px 10px;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.dev-input[type="date"] {
+  color-scheme: dark;
+}
+
+.dev-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dev-row .dev-input {
+  flex: 1;
+}
+
+.dev-spacer {
+  flex: 1;
+}
+
+.dev-label {
+  color: var(--dev-faint);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.dev-hint,
+.dev-muted {
+  margin: 0;
+  color: var(--dev-faint);
+  font-size: 11.5px;
+}
+
+.dev-hint code {
+  color: var(--dev-dim);
+  font: 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.dev-error {
+  color: #ff9aa8;
+}
+
+.dev-pill {
+  padding: 1px 7px;
+  border: 1px solid rgb(255 212 148 / 0.3);
+  border-radius: 99px;
+  color: #ffd494;
+  font-size: 10.5px;
+}
+
+/* Posts panel */
+
+.dev-posts {
+  right: 16px;
+  bottom: 62px;
+  width: min(360px, calc(100vw - 32px));
+  padding: 10px;
+}
+
+.dev-post-list {
+  max-height: min(50vh, 420px);
+  margin: 8px 0 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.dev-post-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 4px;
+  border-top: 1px solid rgb(255 255 255 / 0.06);
+}
+
+.dev-post-list a {
+  color: var(--dev-fg);
+  text-decoration: none;
+}
+
+.dev-post-list a:hover,
+.dev-post-list a[aria-current="page"] {
+  text-shadow: -1px 0 rgb(255 70 110 / 0.8), 1px 0 rgb(70 176 255 / 0.8);
+}
+
+/* Formatting toolbar */
+
+.dev-toolbar {
+  left: 50%;
+  bottom: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 10px;
+  width: max-content;
+  max-width: calc(100vw - 20px);
+  padding: 5px;
+  translate: -50% 0;
+}
+
+.dev-tools,
+.dev-actions,
+.dev-group,
+.dev-switch {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.dev-tools {
+  flex-wrap: wrap;
+  gap: 1px 4px;
+}
+
+.dev-group + .dev-group {
+  padding-left: 4px;
+  border-left: 1px solid rgb(255 255 255 / 0.07);
+}
+
+.dev-actions {
+  gap: 4px;
+  padding-left: 10px;
+  border-left: 1px solid rgb(255 255 255 / 0.07);
+}
+
+.dev-switch {
+  padding: 2px;
+  border-radius: 10px;
+  background: rgb(0 0 0 / 0.3);
+}
+
+.dev-switch .dev-tool {
+  height: 24px;
+  padding: 0 8px;
+  font-size: 11.5px;
+}
+
+.dev-status {
+  min-width: 96px;
+  color: var(--dev-faint);
+  font-size: 11.5px;
+  text-align: center;
+}
+
+.dev-status[data-state="dirty"] {
+  color: #ffd494;
+}
+
+.dev-status[data-state="busy"] {
+  color: var(--dev-dim);
+}
+
+.dev-html-mode .dev-tools .dev-tool:not([data-tool="html"]) {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.dev-restore {
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  bottom: 64px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 3px 3px 12px;
+  border: 1px solid rgb(255 212 148 / 0.28);
+  border-radius: 10px;
+  background: var(--dev-glass);
+  box-shadow: 0 18px 40px -16px rgb(0 0 0 / 0.8);
+  color: #ffd494;
+  font-size: 11.5px;
+  white-space: nowrap;
+  translate: -50% 0;
+}
+
+/* Popovers and toasts */
+
+.dev-popover {
+  z-index: 110;
+  min-width: 300px;
+  max-width: min(440px, calc(100vw - 20px));
+  padding: 8px;
+}
+
+.dev-form {
+  display: grid;
+  gap: 10px;
+  width: 340px;
+  max-width: 100%;
+  padding: 4px;
+}
+
+.dev-field {
+  display: grid;
+  gap: 4px;
+}
+
+.dev-toast {
+  position: fixed;
+  z-index: 130;
+  left: 50%;
+  bottom: 84px;
+  max-width: calc(100vw - 40px);
+  padding: 8px 14px;
+  border: 1px solid var(--dev-edge);
+  border-radius: 10px;
+  background: var(--dev-glass);
+  box-shadow: 0 18px 40px -16px rgb(0 0 0 / 0.8);
+  translate: -50% 0;
+  transition: opacity 0.3s ease, translate 0.3s ease;
+}
+
+.dev-toast-error {
+  border-color: rgb(255 120 140 / 0.35);
+  color: #ffc2cb;
+}
+
+.dev-toast-out {
+  opacity: 0;
+  translate: -50% 6px;
+}
+
+/* Code block editor: a transparent textarea over live-highlighted code, drawn as the same well as published code. */
+
+.dev-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(3 4 6 / 0.62);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.dev-code-panel {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  width: min(900px, 100%);
+  padding: 10px;
+  box-shadow: none;
+}
+
+.dev-code-stage {
+  --gutter: 3.4em;
+  position: relative;
+  height: min(62vh, 580px);
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.05);
+  border-top-color: rgb(0 0 0 / 0.7);
+  border-bottom-color: rgb(255 255 255 / 0.09);
+  border-radius: 8px;
+  background: var(--well);
+  font: 13px/1.68 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-variant-ligatures: none;
+  tab-size: 4;
+}
+
+.dev-code-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--grain) 0 0 / 128px 128px;
+  image-rendering: pixelated;
+  opacity: 0.045;
+  pointer-events: none;
+}
+
+.dev-code-gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--gutter);
+  overflow: hidden;
+  border-right: 1px solid var(--well-rule);
+}
+
+.dev-code-numbers {
+  padding: 16px 11px 16px 0;
+  color: var(--well-number);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: pre;
+}
+
+.dev-code-pre,
+.dev-code-input {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--gutter);
+  right: 0;
+  margin: 0;
+  padding: 16px 18px 16px 16px;
+  font: inherit;
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  tab-size: inherit;
+  white-space: pre;
+}
+
+.dev-code-pre {
+  overflow: hidden;
+  color: var(--syn-plain);
+  pointer-events: none;
+}
+
+.dev-code-view {
+  display: grid;
+  width: max-content;
+  min-width: 100%;
+  font: inherit;
+}
+
+.dev-code-view .line:empty::after {
+  content: "\200b";
+}
+
+.dev-code-input {
+  z-index: 1;
+  width: auto;
+  height: auto;
+  overflow: auto;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: transparent;
+  caret-color: #f4f1ff;
+  resize: none;
+}
+
+.dev-code-input::selection {
+  background: rgb(160 140 255 / 0.32);
+  color: transparent;
+}
+
+/* The page while editing */
+
+.dev-editing .page {
+  padding-bottom: 170px;
+}
+
+.dev-editing .post-title,
+.dev-editing .post-dek,
+.dev-editing .post-body {
+  outline: none;
+  caret-color: #ffd494;
+}
+
+.dev-editing .post-body {
+  min-height: 24vh;
+}
+
+.dev-editing .post-body[hidden] {
+  display: none;
+}
+
+.dev-editing .post-dek.dev-empty {
+  display: block;
+}
+
+.dev-editing .dev-empty::before {
+  content: attr(data-dev-placeholder);
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+.dev-editing .post-meta {
+  cursor: pointer;
+}
+
+.dev-editing .post-meta:hover {
+  color: var(--fg);
+}
+
+.dev-editing .post-body pre {
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.dev-editing .post-body pre:hover {
+  border-color: rgb(206 190 255 / 0.3);
+}
+
+.dev-editing .post-body img {
+  cursor: pointer;
+}
+
+.dev-editing .post-body img.dev-selected {
+  outline: 2px solid rgb(185 160 255 / 0.8);
+  outline-offset: 3px;
+}
+
+.dev-editing .post-body ::selection,
+.dev-editing .post-title::selection,
+.dev-editing .post-dek::selection {
+  background: rgb(160 140 255 / 0.34);
+}
+
+.dev-html {
+  display: block;
+  width: 100%;
+  min-height: 40vh;
+  margin-top: 30px;
+  padding: 14px 16px;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 10px;
+  background: #0c0d11;
+  color: #e4e1ea;
+  font: 12.5px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  tab-size: 2;
+  white-space: pre-wrap;
+  resize: vertical;
+  outline: none;
+}
