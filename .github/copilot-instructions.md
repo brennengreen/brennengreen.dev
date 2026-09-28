@@ -3,23 +3,37 @@
 ## Architecture
 
 Static site hosted on GitHub Pages at `www.brennengreen.dev`.
-There is no package manifest, build step, bundler, or framework.
+There is no package manifest, build step, bundler, or framework. The design is CSS; `assets/foil.js` is the only site script, an optional pointer tilt for the card foil. Every page also loads the existing GoatCounter snippet, and the post template carries it so new posts do too. count.js ignores localhost, so the dev server never records visits.
 
-- `index.html` is fully self-contained: an inline `<style>` block plus a centered list of role/company lines. There is no separate CSS file.
-- `404.html` matches the homepage so retired and unknown URLs show the same content. Keep their markup in sync.
-- Styles are inlined in `<head>`: a dark charcoal/black background, system font stack, and per-company brand colors (xbox green, dreamworks rainbow gradient, blizzard blue, twitch purple, intel blue). Company names render lowercase.
+GitHub Pages builds `master` with Jekyll, which never publishes `_`-prefixed paths. That is what keeps `_dev/` and `blog/_post-template.html` off the live site, so never add a `.nojekyll` file. Markdown files are published (raw and rendered), so keep dev docs inside `_dev/`.
+
+- Every page links the single shared stylesheet `/assets/site.css`; there are no inline `<style>` blocks. Use root-relative paths so pages and the 404 resolve at any URL depth.
+- `index.html` is one small sheet: name and links, a one-line intro with the headshot (`assets/brennen.jpg`) inline in the headline, the role/company list, and a link to the blog.
+- `404.html` matches the homepage plus a `noindex` meta so retired and unknown URLs show the same content. Keep their markup in sync.
+- `blog/` is a plain HTML blog. Each post is `blog/<slug>/index.html` built from `blog/_post-template.html`, with its images beside it; `blog/index.html` lists published posts, newest first. `blog/posts/1/` is the restored 2020 Mandelbrot post; keep its prose verbatim.
+- Code in posts is highlighted ahead of time: `<pre data-lang><code class="language-*">` holding one `<span class="line">` per line and `tok-*` token spans, numbered by CSS counters. Don't hand-write that markup; write plain `<pre><code class="language-*">` and bake it.
+- `_dev/` holds local-only tooling (see `_dev/README.md`): `node _dev/serve.mjs` serves the site with an in-browser post editor injected into HTML responses, `--prod` serves exactly what Pages publishes, and `--bake` re-highlights every post. The editor never writes itself into site files, and its save API only accepts same-origin requests from localhost.
+- `assets/grain.png` is a 1-bit noise tile used for the grain, and `assets/foil.png` is the etched holo-foil texture (alpha mask). The ray fans, dust tiles, and glitter fleck tiles at the end of `site.css` are generated data pasted in once; tweak them by hand.
 - `bg_resume.pdf` at the repo root is linked from the resume link using a root-relative path so it resolves at any URL depth.
-- `resume.md` is the machine-readable resume and is advertised from both HTML pages using a `text/markdown` alternate link.
+- `resume.md` is the machine-readable resume and is advertised from every page using a `text/markdown` alternate link.
 - Keep `CNAME` for the existing custom domain.
 - The former portfolio, articles, downloads, artwork, and animated smoke/dust backdrop have been removed from this branch.
 
 ## Design and behavior
 
-- Keep the background dark grey/black with no imagery.
-- Company names use their brand color; role text stays neutral/dim for contrast.
+- The feel: Pink Floyd's prism, Tame Impala's psychedelia, and Sturgill Simpson's analog warmth, edited with Steve Jobs' taste. Subtle and confident; less is more. When in doubt, remove a layer rather than add one.
+- Near-black page. Soft, blurred prism streaks drift across the top third of the viewport; each streak fades out along its own length rather than at a horizontal edge.
+- All content sits on one small, opaque `.paper` sheet over that light: coloured god rays fanning from above its top edge, a flare with a thin spectral streak on the edge, drifting dust, and overlay-blended grain that shows mainly where light falls.
+- The sheet has a very subtle trading-card holo finish (`.paper-foil`): a pastel rainbow seen only through the etched foil texture, glitter glints, and a soft shine band. It drifts on its own and shifts with the mouse via `--foil-x`/`--foil-y`, set by `foil.js`.
+- Keep every effect subtle. Light breathes in slow, smooth swells; nothing flickers or strobes. Animate only `transform`/`opacity`/`filter`, and never let a layer's own edge enter view: rotate oversized ray layers around their source and keep moving layers larger than their clip.
+- Type is solid, never gradient-filled; hierarchy comes from size, weight, and the `--fg`/`--dim`/`--faint` greys. Short pages rest the sheet at the optical center (spare height splits 1:3 above and below); long pages start at the top.
+- A dark floor at the bottom of the viewport faintly mirrors that light (`.floor`): the four broad streaks again, flipped, heavily blurred, and dimmed, moving in step with the ones above. Keep it barely there, with no fog or noise clouds; its markup repeats those streak spans on every page.
+- Code blocks are dark wells cut into the sheet (`--well*`): opaque, grained like the sheet, edges lit from above, quiet line numbers behind a hairline, the language as a small caption above, and a token palette drawn from the prism colors (`--syn-*`). No drop shadows or editor chrome; the dev editor's code panel draws the same well.
+- Links (GitHub, LinkedIn, resume, writing) share one hover: the glyph whitens and splits into red and blue fringes, with a small caption where useful.
+- Company names use their brand color; role text stays neutral/dim for contrast. DreamWorks is solid per letter: red, blue, gold, purple, green, repeated (`--dw-*`).
 - Preserve the subtle top-right page-peel easter egg that reveals yellow eyes on hover.
 - Do not add external fonts, analytics, or runtime dependencies; use the system font stack.
-- Respect `prefers-reduced-motion`: entrance animations only run when motion is not reduced.
+- Respect `prefers-reduced-motion`: all animation and transitions live inside `@media (prefers-reduced-motion: no-preference)`.
 - Use shared CSS custom properties for the palette and flat, hyphenated class names.
 - Do not restore private source documents or contact details without an explicit request.
 - `.gitattributes` enforces LF, except for `.cmd` and `.bat` files.
