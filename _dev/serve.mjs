@@ -3,10 +3,12 @@
 //
 //   node _dev/serve.mjs            the site plus the in-browser post editor
 //   node _dev/serve.mjs --prod     exactly what GitHub Pages publishes: no editor, no API
-//   node _dev/serve.mjs --bake     re-highlight the code blocks in every post, then exit
+//   node _dev/serve.mjs --bake     rebuild every post from the template (re-highlighting its code), refresh the
+//                                  blog index, feed, sitemap and llms.txt, then exit
 //   --port <n>                     default 8080
 //
 // The editor is injected into HTML responses on the fly, so nothing about it is ever written into a page.
+// Saving a post refreshes its search and share tags, the blog index, blog/feed.xml, sitemap.xml and llms.txt.
 // GitHub Pages builds this repo with Jekyll, which never publishes `_`-prefixed paths such as this folder.
 
 import http from 'node:http';
@@ -16,9 +18,20 @@ import { fileURLToPath } from 'node:url';
 import { bakeCodeBlocks, decodeEntities } from './highlight.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const DEV = path.join(ROOT, '_dev');
 const BLOG = path.join(ROOT, 'blog');
 const TEMPLATE = path.join(BLOG, '_post-template.html');
 const BLOG_INDEX = path.join(BLOG, 'index.html');
+const FEED = path.join(BLOG, 'feed.xml');
+const SITEMAP = path.join(ROOT, 'sitemap.xml');
+const LLMS = path.join(ROOT, 'llms.txt');
+// Absolute URLs for canonical links, share tags, the feed and the sitemap: the custom domain in CNAME.
+const SITE = `https://${(await fs.readFile(path.join(ROOT, 'CNAME'), 'utf8')).trim()}`;
+const AUTHOR = { '@type': 'Person', '@id': `${SITE}/#person`, name: 'Brennen Green', url: `${SITE}/` };
+const SHARE_IMAGE = { url: `${SITE}/assets/og.jpg`, width: 1200, height: 630 };
+const SEO_START = '  <link rel="canonical"';
+const LD_START = '  <script type="application/ld+json">\n';
+const LD_END = '  </script>\n';
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(name);
@@ -95,11 +108,18 @@ const today = () => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
 const urlFor = (dir) => `/${path.relative(ROOT, dir).split(path.sep).join('/')}/`;
+const absolute = (url) => new URL(url, `${SITE}/`).href;
+// Structured data as a head script; `<` is escaped so no string in it can close the script early.
+const jsonLd = (value) => `${LD_START}${JSON.stringify(value, null, 2).replace(/</g, '\\u003c').replace(/^/gm, '  ')}\n${LD_END}`;
 
 async function writeAtomic(file, data) {
   const tmp = path.join(path.dirname(file), `.${path.basename(file)}.${process.pid}.tmp`);
   await fs.writeFile(tmp, data);
   await fs.rename(tmp, file);
+}
+
+async function writeIfChanged(file, data) {
+  if ((await fs.readFile(file, 'utf8').catch(() => null)) !== data) await writeAtomic(file, data);
 }
 
 // Static files, served the way GitHub Pages serves them.
@@ -138,7 +158,7 @@ async function serveStatic(req, res, url) {
 async function sendFile(req, res, file, status) {
   const type = TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream';
   let data = await fs.readFile(file);
-  if (!PROD && type.startsWith('text/html')) {
+  if (!PROD && type.startsWith('text/html') && !isInside(file, DEV)) {
     const html = data.toString('utf8');
     data = Buffer.from(html.includes('</head>') ? html.replace('</head>', `${EDITOR_TAGS}</head>`) : html + EDITOR_TAGS);
   }
@@ -203,7 +223,28 @@ function readPost(html, file) {
     title: decodeEntities(titleHtml),
     titleHtml,
     date: (html.match(/<time datetime="(\d{4}-\d{2}-\d{2})"/) || [])[1] || '',
+    description: decodeEntities((html.match(/<meta name="description" content="([^"]*)"/) || [])[1] || ''),
     draft: /<meta name="robots" content="noindex/.test(html),
+  };
+}
+
+// Reads back every field composePost wrote, so --bake can rebuild a post from the current template.
+function parsePost(html) {
+  const pick = (re) => (html.match(re) || [])[1];
+  const title = pick(/<h1 class="post-title">([\s\S]*?)<\/h1>/);
+  const meta = pick(/<p class="post-meta">([\s\S]*?)<\/p>/);
+  const open = '      <div class="post-body">\n';
+  const start = html.indexOf(open);
+  const end = html.lastIndexOf('\n      </div>\n    </article>');
+  if (title === undefined || meta === undefined || start < 0 || end < start) return null;
+  return {
+    title: decodeEntities(title),
+    date: pick(/<time datetime="(\d{4}-\d{2}-\d{2})"/) || '',
+    tags: decodeEntities((meta.split('<span aria-hidden="true">&middot;</span>')[1] || '').trim()),
+    dek: decodeEntities(pick(/<p class="post-dek">([\s\S]*?)<\/p>/) || ''),
+    description: decodeEntities(pick(/<meta name="description" content="([^"]*)"/) || ''),
+    draft: /<meta name="robots" content="noindex/.test(html),
+    body: html.slice(start + open.length, end),
   };
 }
 
@@ -236,6 +277,52 @@ function replaceBlock(html, start, end, replacement) {
   return html.slice(0, i) + replacement + html.slice(j + end.length);
 }
 
+// A post shares its first sizeable image, else the site's card.
+function shareImage(body, pageUrl) {
+  for (const [tag] of String(body).matchAll(/<img\b[^>]*>/g)) {
+    const attr = (name) => (tag.match(new RegExp(`\\s${name}="([^"]*)"`)) || [])[1];
+    const src = attr('src');
+    const width = Number(attr('width')) || 0;
+    const height = Number(attr('height')) || 0;
+    if (!src || src.startsWith('data:') || (width && width < 400)) continue;
+    return { url: new URL(decodeEntities(src), pageUrl).href, width, height };
+  }
+  return SHARE_IMAGE;
+}
+
+// Canonical link, share tags and structured data for a published post, all from its own fields.
+function seoBlock({ path: postPath, title, description, date, tags, body }) {
+  const url = absolute(postPath);
+  const image = shareImage(body, url);
+  const lines = [
+    `  <link rel="canonical" href="${url}" />`,
+    '  <meta name="author" content="Brennen Green" />',
+    '  <meta property="og:type" content="article" />',
+    '  <meta property="og:site_name" content="Brennen Green" />',
+    `  <meta property="og:title" content="${escapeAttr(title)}" />`,
+    ...(description ? [`  <meta property="og:description" content="${escapeAttr(description)}" />`] : []),
+    `  <meta property="og:url" content="${url}" />`,
+    `  <meta property="og:image" content="${escapeAttr(image.url)}" />`,
+    ...(image.width && image.height ? [`  <meta property="og:image:width" content="${image.width}" />`, `  <meta property="og:image:height" content="${image.height}" />`] : []),
+    `  <meta property="article:published_time" content="${date}" />`,
+    '  <meta name="twitter:card" content="summary_large_image" />',
+  ];
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    ...(description ? { description } : {}),
+    datePublished: date,
+    url,
+    mainEntityOfPage: url,
+    image: image.url,
+    ...(tags ? { keywords: tags } : {}),
+    inLanguage: 'en',
+    author: AUTHOR,
+  };
+  return `${lines.join('\n')}\n${jsonLd(data)}`;
+}
+
 // Builds a post from blog/_post-template.html so every post shares the current site chrome.
 function composePost(template, post) {
   const date = /^\d{4}-\d{2}-\d{2}$/.test(post.date || '') ? post.date : fail(400, 'the date must look like YYYY-MM-DD');
@@ -251,6 +338,10 @@ function composePost(template, post) {
   let html = template.replace(robots, post.draft ? robots : '');
   html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeAttr(description)}" />`);
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeText(title)} | Brennen Green</title>`);
+  // Drafts are noindex and unlisted, so they carry no canonical link, share tags or structured data.
+  if (html.includes(SEO_START)) {
+    html = replaceBlock(html, SEO_START, LD_END, post.draft ? '' : seoBlock({ path: post.path, title, description, date, tags, body }));
+  }
   const meta = `<time datetime="${date}">${prettyDate(date)}</time>${tags ? ` <span aria-hidden="true">&middot;</span> ${escapeText(tags)}` : ''}`;
   const header = [
     '      <header class="post-header">',
@@ -265,8 +356,12 @@ function composePost(template, post) {
   return bakeCodeBlocks(html);
 }
 
-async function rebuildIndex() {
+// Everything that lists published posts: the blog index and its structured data, the Atom feed, the sitemap,
+// and the Writing section of llms.txt. Files are only rewritten when their content changes.
+async function rebuildListings() {
   const posts = (await listPosts()).filter((post) => !post.draft);
+  const newest = posts.map((post) => post.date).sort().pop() || today();
+
   const items = posts.map((post) =>
     [
       '          <li>',
@@ -276,9 +371,70 @@ async function rebuildIndex() {
     ].join('\n'),
   );
   const list = items.length ? `<ol class="post-list">\n${items.join('\n')}\n        </ol>` : '<ol class="post-list"></ol>';
-  const html = await fs.readFile(BLOG_INDEX, 'utf8');
-  const next = html.replace(/<ol class="post-list">[\s\S]*?<\/ol>/, list);
-  if (next !== html) await writeAtomic(BLOG_INDEX, next);
+  let index = (await fs.readFile(BLOG_INDEX, 'utf8')).replace(/<ol class="post-list">[\s\S]*?<\/ol>/, list);
+  if (index.includes(LD_START)) {
+    const blog = {
+      '@context': 'https://schema.org',
+      '@type': 'Blog',
+      '@id': `${SITE}/blog/#blog`,
+      url: `${SITE}/blog/`,
+      name: 'Writing',
+      inLanguage: 'en',
+      author: AUTHOR,
+      blogPost: posts.map((post) => ({ '@type': 'BlogPosting', headline: post.title, url: absolute(post.path), datePublished: post.date })),
+    };
+    index = replaceBlock(index, LD_START, LD_END, jsonLd(blog));
+  }
+  await writeIfChanged(BLOG_INDEX, index);
+
+  const urls = [{ loc: `${SITE}/` }, { loc: `${SITE}/blog/`, lastmod: newest }, ...posts.map((post) => ({ loc: absolute(post.path), lastmod: post.date }))];
+  const sitemap = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls.map(({ loc, lastmod }) => `  <url>\n    <loc>${loc}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}\n  </url>`),
+    '</urlset>',
+    '',
+  ].join('\n');
+  await writeIfChanged(SITEMAP, sitemap);
+
+  const stamp = (date) => `${date}T00:00:00Z`;
+  const feed = [
+    '<?xml version="1.0" encoding="utf-8"?>',
+    '<feed xmlns="http://www.w3.org/2005/Atom">',
+    '  <title>Brennen Green</title>',
+    '  <subtitle>Writing</subtitle>',
+    `  <link href="${SITE}/blog/" />`,
+    `  <link rel="self" href="${SITE}/blog/feed.xml" />`,
+    `  <id>${SITE}/blog/</id>`,
+    `  <updated>${stamp(newest)}</updated>`,
+    '  <author>',
+    '    <name>Brennen Green</name>',
+    `    <uri>${SITE}/</uri>`,
+    '  </author>',
+    ...posts.flatMap((post) => [
+      '  <entry>',
+      `    <title>${escapeText(post.title)}</title>`,
+      `    <link href="${absolute(post.path)}" />`,
+      `    <id>${absolute(post.path)}</id>`,
+      `    <published>${stamp(post.date)}</published>`,
+      `    <updated>${stamp(post.date)}</updated>`,
+      ...(post.description ? [`    <summary>${escapeText(post.description)}</summary>`] : []),
+      '  </entry>',
+    ]),
+    '</feed>',
+    '',
+  ].join('\n');
+  await writeIfChanged(FEED, feed);
+
+  const llms = await fs.readFile(LLMS, 'utf8').catch(() => null);
+  const heading = '\n## Writing\n';
+  if (llms?.includes(heading)) {
+    const start = llms.indexOf(heading) + heading.length;
+    const next = llms.indexOf('\n## ', start);
+    const link = (post) => `- [${post.title.replace(/[[\]]/g, '\\$&')}](${absolute(post.path)}): ${prettyDate(post.date)}.${post.description ? ` ${post.description}` : ''}`;
+    const section = `\n${posts.map(link).join('\n')}\n`;
+    await writeIfChanged(LLMS, llms.slice(0, start) + section + (next < 0 ? '' : llms.slice(next)));
+  }
 }
 
 async function createPost({ title }) {
@@ -287,6 +443,7 @@ async function createPost({ title }) {
   let slug = base;
   for (let n = 2; await stat(path.join(BLOG, slug)); n += 1) slug = `${base}-${n}`;
   const html = composePost(await fs.readFile(TEMPLATE, 'utf8'), {
+    path: `/blog/${slug}/`,
     title: name,
     date: today(),
     draft: true,
@@ -304,7 +461,7 @@ async function savePost(post) {
   if (typeof post.body !== 'string') fail(400, 'the body must be HTML text');
   const html = composePost(await fs.readFile(TEMPLATE, 'utf8'), { ...post, draft: Boolean(post.draft) });
   await writeAtomic(file, html);
-  await rebuildIndex();
+  await rebuildListings();
   console.log(`  saved ${path.relative(ROOT, file)}${post.draft ? ' (draft)' : ''}`);
   return { path: post.path, draft: Boolean(post.draft) };
 }
@@ -345,16 +502,27 @@ async function handleApi(req, res, url) {
 }
 
 async function bakeAll() {
+  const template = await fs.readFile(TEMPLATE, 'utf8');
   let changed = 0;
   for (const file of await postFiles()) {
+    const name = path.relative(ROOT, file);
     const html = await fs.readFile(file, 'utf8');
-    const baked = bakeCodeBlocks(html);
-    if (baked === html) continue;
-    await writeAtomic(file, baked);
+    const fields = parsePost(html);
+    let next;
+    try {
+      next = fields ? composePost(template, { ...fields, path: urlFor(path.dirname(file)) }) : bakeCodeBlocks(html);
+    } catch (error) {
+      console.log(`  skipped ${name}: ${error.message}`);
+      continue;
+    }
+    if (!fields) console.log(`  ${name} doesn't follow the post template, so only its code was re-highlighted`);
+    if (next === html) continue;
+    await writeAtomic(file, next);
     changed += 1;
-    console.log(`  baked ${path.relative(ROOT, file)}`);
+    console.log(`  rebuilt ${name}`);
   }
-  console.log(`${changed} post${changed === 1 ? '' : 's'} updated`);
+  await rebuildListings();
+  console.log(`${changed} post${changed === 1 ? '' : 's'} updated; blog index, feed, sitemap and llms.txt are current`);
 }
 
 if (flag('--bake')) {

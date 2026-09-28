@@ -10,7 +10,7 @@ would publish this folder.
 ```sh
 node _dev/serve.mjs            # http://127.0.0.1:8080/ with the post editor
 node _dev/serve.mjs --prod     # exactly what GitHub Pages publishes: no editor, no API
-node _dev/serve.mjs --bake     # re-highlight the code blocks in every post, then exit
+node _dev/serve.mjs --bake     # rebuild every post from the template and refresh the lists of posts, then exit
 node _dev/serve.mjs --port 9000
 ```
 
@@ -37,21 +37,24 @@ only answers requests from this machine and this page.
 4. **details** sets the date, tags and description. Flip **draft** to
    **published** when it's ready, then `⌘S` to save.
 
-Saving writes `blog/<slug>/index.html` from `blog/_post-template.html`, bakes
-the code highlighting in, and rebuilds the list on `/blog/`. Drafts are marked
-noindex and left off that list. Unsaved work is kept in the browser, so a
-reload offers to restore it.
+Saving writes `blog/<slug>/index.html` from `blog/_post-template.html` and
+bakes the code highlighting in. A published post also gets its canonical link,
+share tags and structured data, and every list of posts is refreshed: `/blog/`,
+`blog/feed.xml`, `sitemap.xml` and `llms.txt`. Drafts are marked noindex, get
+none of that, and stay off those lists. Unsaved work is kept in the browser,
+so a reload offers to restore it.
 
-Commit the new folder when you're happy with it. Drafts are real files too, so
-leave a draft's folder uncommitted until it's published.
+Commit the post's folder together with those four refreshed files when you're
+happy with it. Drafts are real files too, so leave a draft's folder
+uncommitted until it's published.
 
 ## Without the editor
 
-Copy `blog/_post-template.html` to `blog/<slug>/index.html`, fill it in,
-remove the noindex line, and add a link to the `<ol class="post-list">` in
-`blog/index.html`, newest first. Write code as
-`<pre><code class="language-glsl">…</code></pre>` and run
-`node _dev/serve.mjs --bake` to add the highlighting and line numbers.
+Copy `blog/_post-template.html` to `blog/<slug>/index.html`, fill it in, and
+remove the noindex line. Write code as
+`<pre><code class="language-glsl">…</code></pre>`. Then run
+`node _dev/serve.mjs --bake`: it adds the highlighting and line numbers, the
+post's search and share tags, and lists it everywhere posts are listed.
 
 `blog/posts/1/` is the 2020 Mandelbrot post, kept at its original address so
 old links still work.
@@ -61,3 +64,12 @@ old links still work.
 - `serve.mjs` is the server, the save API, and `--bake`.
 - `highlight.mjs` is the syntax highlighter, shared by the server and the editor.
 - `editor.js` and `editor.css` are the in-page editor.
+- `og.html` is the card shown when a page is shared. After changing it, render
+  `assets/og.jpg` with the dev server running:
+
+  ```sh
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --hide-scrollbars \
+    --window-size=1200,630 --virtual-time-budget=3000 \
+    --screenshot=/tmp/og.png http://127.0.0.1:8080/_dev/og.html
+  sips -s format jpeg -s formatOptions 90 /tmp/og.png --out assets/og.jpg
+  ```

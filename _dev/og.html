@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex" />
+  <title>Share image | Brennen Green</title>
+  <link rel="stylesheet" href="/assets/site.css" />
+  <!-- The 1200x630 card shown when a page is shared (assets/og.jpg). _dev/README.md has the command that renders it. -->
+  <style>
+    html,
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    .page {
+      min-height: 0;
+      height: 630px;
+      padding: 0;
+      justify-content: center;
+    }
+
+    .page::before,
+    .page::after {
+      display: none;
+    }
+
+    .og-card {
+      width: 720px;
+      padding: 56px 64px 54px;
+      text-align: center;
+    }
+
+    .og-portrait {
+      display: block;
+      width: 76px;
+      height: 76px;
+      margin: 0 auto;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px rgb(255 255 255 / 0.2), 0 6px 18px rgb(0 0 0 / 0.55);
+      filter: saturate(0.72) brightness(0.94);
+    }
+
+    .og-name {
+      margin: 24px 0 0;
+      color: var(--fg);
+      font-size: 60px;
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .og-line {
+      margin: 16px 0 0;
+      color: var(--dim);
+      font-size: 25px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="spectrum" aria-hidden="true">
+    <div class="spectrum-light">
+      <span class="streak streak-haze"></span>
+      <span class="streak streak-warm"></span>
+      <span class="streak streak-cool"></span>
+      <span class="streak streak-prism"></span>
+      <span class="streak streak-green"></span>
+      <span class="streak streak-red"></span>
+      <span class="streak streak-violet"></span>
+    </div>
+  </div>
+  <div class="floor" aria-hidden="true">
+    <div class="spectrum-light">
+      <span class="streak streak-haze"></span>
+      <span class="streak streak-warm"></span>
+      <span class="streak streak-cool"></span>
+      <span class="streak streak-prism"></span>
+    </div>
+  </div>
+  <main class="page">
+    <article class="paper og-card">
+      <div class="paper-light" aria-hidden="true">
+        <span class="paper-glow"></span>
+        <span class="paper-rays paper-rays-a"></span>
+        <span class="paper-rays paper-rays-b"></span>
+        <span class="paper-dust"></span>
+        <span class="paper-flare"></span>
+        <span class="paper-streak"></span>
+      </div>
+      <div class="paper-foil" aria-hidden="true"><span class="foil-holo"></span><span class="glitter-flecks"></span><span class="foil-glare"></span></div>
+      <img class="og-portrait" src="/assets/brennen.jpg" alt="" width="76" height="76" />
+      <h1 class="og-name">Brennen Green</h1>
+      <p class="og-line">I make tools for people making games and films.</p>
+    </article>
+  </main>
+</body>
+</html>
