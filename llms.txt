@@ -1,0 +1,18 @@
+# Brennen Green
+
+> Brennen Green makes tools for people who make games and films. Today that means developer relations at Xbox; before that, tech art and engineering at DreamWorks Animation and Blizzard Entertainment, and engineering at Twitch and Intel.
+
+Brennen studied computer science at the University of Kentucky, specializing in computer graphics and mathematics. This site is Brennen's home page and writing.
+
+## About
+
+- [Home](https://www.brennengreen.dev/): introduction and where Brennen has worked
+- [Resume](https://www.brennengreen.dev/resume.md): work history, projects and education, in Markdown
+- [Resume PDF](https://www.brennengreen.dev/bg_resume.pdf)
+- [GitHub](https://github.com/brennengreen)
+- [LinkedIn](https://www.linkedin.com/in/brennen-green)
+
+## Writing
+
+- [The Future of this Website](https://www.brennengreen.dev/blog/what-even-goes-here-anymore/): Sep 28, 2026. I've struggled in the agentic era deciding how / what my personal website should be.
+- [Mandelbrot Fractals in OpenGL](https://www.brennengreen.dev/blog/posts/1/): May 15, 2020. A Mandelbrot Fractal is a fractal from the Mandelbrot Set, in this article we'll discuss rendering the fractals in version 330 of the OpenGL Core Profile

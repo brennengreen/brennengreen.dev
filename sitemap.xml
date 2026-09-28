@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.brennengreen.dev/</loc>
+  </url>
+  <url>
+    <loc>https://www.brennengreen.dev/blog/</loc>
+    <lastmod>2026-09-28</lastmod>
+  </url>
+  <url>
+    <loc>https://www.brennengreen.dev/blog/what-even-goes-here-anymore/</loc>
+    <lastmod>2026-09-28</lastmod>
+  </url>
+  <url>
+    <loc>https://www.brennengreen.dev/blog/posts/1/</loc>
+    <lastmod>2020-05-15</lastmod>
+  </url>
+</urlset>

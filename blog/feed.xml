@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Brennen Green</title>
+  <subtitle>Writing</subtitle>
+  <link href="https://www.brennengreen.dev/blog/" />
+  <link rel="self" href="https://www.brennengreen.dev/blog/feed.xml" />
+  <id>https://www.brennengreen.dev/blog/</id>
+  <updated>2026-09-28T00:00:00Z</updated>
+  <author>
+    <name>Brennen Green</name>
+    <uri>https://www.brennengreen.dev/</uri>
+  </author>
+  <entry>
+    <title>The Future of this Website</title>
+    <link href="https://www.brennengreen.dev/blog/what-even-goes-here-anymore/" />
+    <id>https://www.brennengreen.dev/blog/what-even-goes-here-anymore/</id>
+    <published>2026-09-28T00:00:00Z</published>
+    <updated>2026-09-28T00:00:00Z</updated>
+    <summary>I've struggled in the agentic era deciding how / what my personal website should be.</summary>
+  </entry>
+  <entry>
+    <title>Mandelbrot Fractals in OpenGL</title>
+    <link href="https://www.brennengreen.dev/blog/posts/1/" />
+    <id>https://www.brennengreen.dev/blog/posts/1/</id>
+    <published>2020-05-15T00:00:00Z</published>
+    <updated>2020-05-15T00:00:00Z</updated>
+    <summary>A Mandelbrot Fractal is a fractal from the Mandelbrot Set, in this article we'll discuss rendering the fractals in version 330 of the OpenGL Core Profile</summary>
+  </entry>
+</feed>
