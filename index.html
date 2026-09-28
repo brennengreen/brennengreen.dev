@@ -3,267 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#050506" />
+  <meta name="theme-color" content="#050608" />
   <meta name="color-scheme" content="dark" />
-  <title>brennengreen.dev</title>
+  <meta name="description" content="Brennen Green makes tools for people who make games and films." />
+  <title>Brennen Green</title>
   <link rel="icon" href="data:," />
   <link rel="alternate" type="text/markdown" href="/resume.md" title="Resume in Markdown" />
-  <style>
-    :root {
-      --bg: #030303;
-      --fg: #e8e8ea;
-      --dim: #7a7a80;
-      --xbox: #107c10;
-      --blizzard: #009ae4;
-      --twitch: #9146ff;
-      --intel: #0071c5;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      height: 100%;
-    }
-
-    body {
-      margin: 0;
-      background: radial-gradient(circle at 50% 40%, #0c0c0d 0%, var(--bg) 70%);
-      color: var(--fg);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", system-ui, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2rem;
-      min-height: 100vh;
-      padding: 2rem;
-    }
-
-    .headline {
-      margin: 0;
-      font-size: clamp(2rem, 6vw, 3.5rem);
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      text-transform: lowercase;
-      color: var(--fg);
-    }
-
-    .roles {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
-      font-size: clamp(1.1rem, 3vw, 1.8rem);
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      text-align: center;
-    }
-
-    .roles li {
-      color: var(--dim);
-    }
-
-    .role-title {
-      color: var(--fg);
-      font-weight: 400;
-    }
-
-    .company {
-      font-weight: 700;
-    }
-
-    .company--xbox {
-      color: var(--xbox);
-    }
-
-    .company--blizzard {
-      color: var(--blizzard);
-    }
-
-    .company--twitch {
-      color: var(--twitch);
-    }
-
-    .company--intel {
-      color: var(--intel);
-    }
-
-    .dw-d {
-      color: #e8332b;
-    }
-    .dw-r1 {
-      color: #2e6fd9;
-    }
-    .dw-e {
-      color: #f2a91c;
-    }
-    .dw-a {
-      color: #7b4fa6;
-    }
-    .dw-m {
-      color: #3aa655;
-    }
-    .dw-w {
-      color: #e8332b;
-    }
-    .dw-o {
-      color: #2e6fd9;
-    }
-    .dw-r2 {
-      color: #f2a91c;
-    }
-    .dw-k {
-      color: #7b4fa6;
-    }
-    .dw-s {
-      color: #3aa655;
-    }
-
-    .resume-link {
-      color: var(--dim);
-      font-size: 0.95rem;
-      letter-spacing: 0.02em;
-      text-decoration: none;
-      border-bottom: 1px solid var(--dim);
-      padding-bottom: 0.15rem;
-      transition: color 0.2s ease, border-color 0.2s ease;
-    }
-
-    .resume-link:hover,
-    .resume-link:focus-visible {
-      color: var(--fg);
-      border-color: var(--fg);
-    }
-
-    .corner-peek {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 14px;
-      height: 14px;
-      overflow: hidden;
-      z-index: 10;
-    }
-
-    .corner-peek::before,
-    .corner-peek::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-    }
-
-    .corner-peek::before {
-      background: #080808;
-      clip-path: polygon(0 0, 100% 0, 100% 100%);
-    }
-
-    .corner-peek::after {
-      background: linear-gradient(135deg, #efeff1 0%, #9b9ba0 47%, #313136 50%, #111113 54%);
-      clip-path: polygon(0 0, 100% 100%, 0 100%);
-      filter: drop-shadow(2px 2px 3px rgb(0 0 0 / 0.45));
-      z-index: 2;
-    }
-
-    .corner-eyes {
-      position: absolute;
-      top: 13px;
-      right: 6px;
-      width: 43px;
-      height: 13px;
-      opacity: 0;
-      z-index: 1;
-    }
-
-    .corner-eyes::before,
-    .corner-eyes::after {
-      content: "";
-      position: absolute;
-      top: 1px;
-      width: 15px;
-      height: 8px;
-      border-radius: 70% 30% 70% 30%;
-      background: radial-gradient(circle at 55% 50%, #090900 0 24%, #ffe45c 28% 64%, #9c7200 68%);
-      box-shadow: 0 0 5px #ffd83d, 0 0 10px rgb(255 216 61 / 0.45);
-    }
-
-    .corner-eyes::before {
-      left: 4px;
-      transform: rotate(8deg);
-    }
-
-    .corner-eyes::after {
-      right: 2px;
-      transform: rotate(-8deg) scaleX(-1);
-    }
-
-    .corner-peek:hover {
-      width: 68px;
-      height: 68px;
-    }
-
-    .corner-peek:hover .corner-eyes {
-      opacity: 1;
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .roles li {
-        animation: fade-up 0.6s ease both;
-      }
-
-      .corner-peek {
-        transition: width 0.3s ease, height 0.3s ease;
-      }
-
-      .corner-eyes {
-        transition: opacity 0.16s ease 0.12s;
-      }
-
-      .roles li:nth-child(1) {
-        animation-delay: 0.05s;
-      }
-      .roles li:nth-child(2) {
-        animation-delay: 0.15s;
-      }
-      .roles li:nth-child(3) {
-        animation-delay: 0.25s;
-      }
-      .roles li:nth-child(4) {
-        animation-delay: 0.35s;
-      }
-      .roles li:nth-child(5) {
-        animation-delay: 0.45s;
-      }
-    }
-
-    @keyframes fade-up {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/site.css" />
+  <script src="/assets/foil.js" defer></script>
   <script data-goatcounter="https://brennengreen.goatcounter.com/count"
           async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
-  <h1 class="headline">brennen</h1>
-  <ul class="roles">
-    <li><span class="role-title">developer relations @</span> <span class="company company--xbox">xbox</span></li>
-    <li><span class="role-title">engineering @</span> <span class="company company--dreamworks"><span class="dw-d">d</span><span class="dw-r1">r</span><span class="dw-e">e</span><span class="dw-a">a</span><span class="dw-m">m</span><span class="dw-w">w</span><span class="dw-o">o</span><span class="dw-r2">r</span><span class="dw-k">k</span><span class="dw-s">s</span></span></li>
-    <li><span class="role-title">engineering @</span> <span class="company company--blizzard">blizzard</span></li>
-    <li><span class="role-title">engineering @</span> <span class="company company--twitch">twitch</span></li>
-    <li><span class="role-title">engineering @</span> <span class="company company--intel">intel</span></li>
-  </ul>
-  <a class="resume-link" href="/bg_resume.pdf" target="_blank" rel="noopener">resume</a>
+  <div class="spectrum" aria-hidden="true">
+    <div class="spectrum-light">
+      <span class="streak streak-haze"></span>
+      <span class="streak streak-warm"></span>
+      <span class="streak streak-cool"></span>
+      <span class="streak streak-prism"></span>
+      <span class="streak streak-green"></span>
+      <span class="streak streak-red"></span>
+      <span class="streak streak-violet"></span>
+    </div>
+  </div>
+  <div class="floor" aria-hidden="true">
+    <div class="spectrum-light">
+      <span class="streak streak-haze"></span>
+      <span class="streak streak-warm"></span>
+      <span class="streak streak-cool"></span>
+      <span class="streak streak-prism"></span>
+    </div>
+  </div>
+  <main class="page">
+    <article class="paper">
+      <div class="paper-light" aria-hidden="true">
+        <span class="paper-glow"></span>
+        <span class="paper-rays paper-rays-a"></span>
+        <span class="paper-rays paper-rays-b"></span>
+        <span class="paper-dust"></span>
+        <span class="paper-flare"></span>
+        <span class="paper-streak"></span>
+      </div>
+      <div class="paper-foil" aria-hidden="true"><span class="foil-holo"></span><span class="glitter-flecks"></span><span class="foil-glare"></span></div>
+      <nav class="site-nav" aria-label="Site">
+        <span class="site-name">brennen green</span>
+        <div class="nav-links">
+          <a class="social-link" href="https://github.com/brennengreen" target="_blank" rel="me noopener noreferrer" aria-label="GitHub" data-label="github">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 4.73c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          </a>
+          <a class="social-link" href="https://www.linkedin.com/in/brennen-green" target="_blank" rel="me noopener noreferrer" aria-label="LinkedIn" data-label="linkedin">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="1.2" y="1.2" width="13.6" height="13.6" rx="2.1"/><path d="M4.4 7v4.6M4.4 4.8h.01M7.6 11.6V7h1.7v.7a2 2 0 0 1 3 1.8v2.1"/></svg>
+          </a>
+          <a class="text-link" href="/bg_resume.pdf" target="_blank" rel="noopener" data-label="pdf">resume <span class="arrow" aria-hidden="true">&nearr;</span></a>
+        </div>
+      </nav>
+      <header class="intro-block">
+        <h1 class="headline">I'm <img class="portrait" src="/assets/brennen.jpg" alt="" width="28" height="28" /> Brennen. I make tools for people making games and films.</h1>
+        <p class="intro">These days I'm working with developers at Xbox.</p>
+      </header>
+      <section class="work" aria-labelledby="work-heading">
+        <h2 class="section-label" id="work-heading">worked with</h2>
+        <ul class="roles">
+          <li><span class="role-title">developer relations</span> <span class="role-at">@</span> <span class="company company--xbox">xbox</span></li>
+          <li><span class="role-title">tech art & engineering</span> <span class="role-at">@</span> <span class="company company--dreamworks"><span class="dw-red">d</span><span class="dw-blue">r</span><span class="dw-gold">e</span><span class="dw-purple">a</span><span class="dw-green">m</span><span class="dw-red">w</span><span class="dw-blue">o</span><span class="dw-gold">r</span><span class="dw-purple">k</span><span class="dw-green">s</span></span></li>
+          <li><span class="role-title">tech art & engineering</span> <span class="role-at">@</span> <span class="company company--blizzard">blizzard</span></li>
+          <li><span class="role-title">engineering</span> <span class="role-at">@</span> <span class="company company--twitch">twitch</span></li>
+          <li><span class="role-title">engineering</span> <span class="role-at">@</span> <span class="company company--intel">intel</span></li>
+        </ul>
+      </section>
+      <section class="writing" aria-labelledby="writing-heading">
+        <h2 id="writing-heading"><a class="text-link" href="/blog/">writing <span class="arrow" aria-hidden="true">&rarr;</span></a></h2>
+        <p>Notes, when I have them.</p>
+      </section>
+    </article>
+  </main>
   <div class="corner-peek" aria-hidden="true">
     <span class="corner-eyes"></span>
   </div>
