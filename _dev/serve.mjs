@@ -29,7 +29,9 @@ const LLMS = path.join(ROOT, 'llms.txt');
 const SITE = `https://${(await fs.readFile(path.join(ROOT, 'CNAME'), 'utf8')).trim()}`;
 const AUTHOR = { '@type': 'Person', '@id': `${SITE}/#person`, name: 'Brennen Green', url: `${SITE}/` };
 const SHARE_IMAGE = { url: `${SITE}/assets/og.jpg`, width: 1200, height: 630 };
-const SEO_START = '  <link rel="canonical"';
+// Where the template takes a published post's canonical link, share tags and structured data. It's a comment, so a
+// post copied from the template by hand never claims the wrong canonical URL before it's baked.
+const SEO_MARKER = '  <!-- search and share tags: _dev/serve.mjs fills these in for published posts -->\n';
 const LD_START = '  <script type="application/ld+json">\n';
 const LD_END = '  </script>\n';
 
@@ -335,13 +337,13 @@ function composePost(template, post) {
 
   const robots = '  <meta name="robots" content="noindex" />\n';
   if (!template.includes(robots)) fail(500, 'the post template lost its noindex line');
+  if (!template.includes(SEO_MARKER)) fail(500, 'the post template lost its search and share tags line');
+  // Replacer functions keep a `$` in a title or description literal.
   let html = template.replace(robots, post.draft ? robots : '');
-  html = html.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escapeAttr(description)}" />`);
-  html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeText(title)} | Brennen Green</title>`);
+  html = html.replace(/<meta name="description" content="[^"]*" \/>/, () => `<meta name="description" content="${escapeAttr(description)}" />`);
+  html = html.replace(/<title>[\s\S]*?<\/title>/, () => `<title>${escapeText(title)} | Brennen Green</title>`);
   // Drafts are noindex and unlisted, so they carry no canonical link, share tags or structured data.
-  if (html.includes(SEO_START)) {
-    html = replaceBlock(html, SEO_START, LD_END, post.draft ? '' : seoBlock({ path: post.path, title, description, date, tags, body }));
-  }
+  html = html.replace(SEO_MARKER, () => (post.draft ? '' : seoBlock({ path: post.path, title, description, date, tags, body })));
   const meta = `<time datetime="${date}">${prettyDate(date)}</time>${tags ? ` <span aria-hidden="true">&middot;</span> ${escapeText(tags)}` : ''}`;
   const header = [
     '      <header class="post-header">',
@@ -371,7 +373,7 @@ async function rebuildListings() {
     ].join('\n'),
   );
   const list = items.length ? `<ol class="post-list">\n${items.join('\n')}\n        </ol>` : '<ol class="post-list"></ol>';
-  let index = (await fs.readFile(BLOG_INDEX, 'utf8')).replace(/<ol class="post-list">[\s\S]*?<\/ol>/, list);
+  let index = (await fs.readFile(BLOG_INDEX, 'utf8')).replace(/<ol class="post-list">[\s\S]*?<\/ol>/, () => list);
   if (index.includes(LD_START)) {
     const blog = {
       '@context': 'https://schema.org',

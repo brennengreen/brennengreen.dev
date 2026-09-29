@@ -48,6 +48,16 @@ Commit the post's folder together with those four refreshed files when you're
 happy with it. Drafts are real files too, so leave a draft's folder
 uncommitted until it's published.
 
+Once the push is live, ask Bing to crawl the new post. Bing is behind Copilot
+and ChatGPT search, and this uses the site's public IndexNow key. A `200` or
+`202` means it was accepted:
+
+```sh
+curl -s -o /dev/null -w '%{http_code}\n' https://api.indexnow.org/indexnow \
+  -H 'Content-Type: application/json; charset=utf-8' \
+  -d '{"host":"www.brennengreen.dev","key":"e49e7add760b23bffcb2cf8cca2f23c7","urlList":["https://www.brennengreen.dev/blog/<slug>/","https://www.brennengreen.dev/blog/"]}'
+```
+
 ## Without the editor
 
 Copy `blog/_post-template.html` to `blog/<slug>/index.html`, fill it in, and
